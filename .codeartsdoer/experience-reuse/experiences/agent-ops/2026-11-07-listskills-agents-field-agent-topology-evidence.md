@@ -4,14 +4,14 @@ title: listSkills 的 agents 字段是平台主/子智能体拓扑的一手实�
 category: agent-ops
 nature: technique
 created_at: 2026-11-07T06:27:00
-updated_at: 2026-11-07T06:27:00
+updated_at: 2026-11-07T06:52:33
 tags: [平台实证, 主子智能体, listSkills, AgentTeam, 能力盘点]
 keywords: [listSkills, agents字段, 主智能体, 子智能体, 两级形态, scope分层, system/project, cloud_enterprise, AgentTeam, 配置载体, 空目录枚举]
 problem_patterns: [调研平台智能体体系时不知主/子智能体真实形态与配置载体在哪, 需要实证"平台有哪些主/子智能体及其关联"却没有显式的智能体清单API, 凭设置面板截图或二手信息写平台能力结论无法溯源]
 source_sessions: [ses_e4d11ce50ffesKQFm6qpmDfFP0]
 project: Date
 severity: medium
-quality_score: 86
+quality_score: 87
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
@@ -55,6 +55,7 @@ related_experiences: [2026-11-06-codeartsdoer-skill-market-registry, 2026-11-06-
 - 适用于提供 listSkills（或等价技能/智能体清单工具）且返回体含 agents 关联字段的 Agent 平台（实证于码道 CodeArts Agent）。
 - 单次实证只能确认被验证案例的映射；其余主/子关联属推断，需逐例验证后才可写入正式结论。
 - 不适用于：平台无技能清单工具的场景（应转为配置文件逆向或文档检索）；agents 字段语义的官方口径与实证不符时以官方口径为准。
+- 谨慎使用（tier A）：本经验强绑定码道平台的 listSkills 返回体结构，且主/子智能体映射含单例推断成分；写入正式能力结论前须按 Approach 第 5 步标注证据等级并逐例复验。
 
 ## Evidence or Examples
 

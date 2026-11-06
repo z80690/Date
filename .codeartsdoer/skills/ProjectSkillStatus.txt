@@ -4,3 +4,5 @@ lazy-exec=true
 find-skills=true
 grill-me=true
 review-code=true
+learn-gate=true
+register-feature=true

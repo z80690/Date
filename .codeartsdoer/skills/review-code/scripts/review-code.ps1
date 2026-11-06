@@ -1,7 +1,7 @@
 ﻿param(
     [string]$RepoRoot = (Get-Location).Path,
-    [string]$PmdClasses = "C:\Users\Administrator\Desktop\refs\p3c\p3c-pmd\target\classes",
-    [string]$PmdDep = "C:\Users\Administrator\Desktop\refs\p3c\p3c-pmd\target\dep\*",
+    [string]$PmdClasses = "D:\refs\p3c\p3c-pmd\target\classes",
+    [string]$PmdDep = "D:\refs\p3c\p3c-pmd\target\dep\*",
     [string]$OutReport = "$env:TEMP\p3c-review-report.txt"
 )
 $ErrorActionPreference = 'Stop'
