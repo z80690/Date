@@ -4,19 +4,19 @@ title: 学习考核出题任务契约：维度分段编号+双文件分离+难�
 category: workflow
 nature: methodology
 created_at: 2026-11-07T04:52:00
-updated_at: 2026-11-07T04:52:00
+updated_at: 2026-11-07T04:54:36
 tags: [出题, 考核, 派工单, 答案泄漏, 批改要点]
-keywords: [出题, 考核, 题目契约, 编号分段, 难度配比, 答案分离, 批改要点, 禁背诵, Worker派工, 情景题]
+keywords: [出题, 考核, 题目契约, 编号分段, 难度配比, 答案分离, 批改要点, 禁背诵, Worker派工, 情景题, 题干泄漏, 答案key]
 problem_patterns: ["需要为学习成果考核批量出题且要求可批改可引用", "出题任务需防止答案泄漏给受考者", "考核题需分层（理解/应用/综合）且禁纯背诵"]
 source_sessions: [ses_e4d699a41ffeZ3To4H5jDmGIJi]
 project: Date
 severity: medium
-quality_score: 83
+quality_score: 86
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
-tier: A
-related_experiences: [2026-11-06-learning-artifact-five-element-sedimentation]
+tier: S
+related_experiences: [2026-11-06-learning-artifact-five-element-sedimentation, agent-ops/2026-11-07-worker-grader-exam-gate-pattern]
 ---
 
 # 学习考核出题任务契约：维度分段编号+双文件分离+难度配比
@@ -51,6 +51,7 @@ related_experiences: [2026-11-06-learning-artifact-five-element-sedimentation]
 ## Applicability Boundaries
 - 适用：知识型/方法论型学习成果考核（笔试式、问答式），尤其出题与作答角色分离的多代理流水线。
 - 不适用：动手实操考核、自动化测评（应以可执行测试或沙箱任务为载体）；选择题机判场景（判定要点粒度可简化，但双文件分离仍应保留）。
+- 与相邻经验的分工：出题者与被考者的角色分离要求（禁自判、独立出题官/批改官）见 agent-ops/2026-11-07-worker-grader-exam-gate-pattern；本经验只约束出题任务的派工契约格式，不涉及考核者选任与门禁判定。
 
 ## Evidence or Examples
 - 本轮实例（kb_arch_foundation ST2）：5 角度 × 10 题 = 50 题，难度分布理解 20 / 应用 20 / 综合 10。

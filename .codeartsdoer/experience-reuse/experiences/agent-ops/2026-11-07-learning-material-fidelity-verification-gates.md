@@ -4,19 +4,19 @@ title: 外部材料清单纳入前的保真度四门验证：存在性→相关�
 category: agent-ops
 nature: methodology
 created_at: 2026-11-07T04:37:00
-updated_at: 2026-11-07T04:37:00
+updated_at: 2026-11-07T04:54:36
 tags: [material-vetting, anti-fabrication, verification-gates, citation-fidelity, learning-materials]
-keywords: [保真度验证, 材料清单, arXiv 实证, GitHub API, 编造拦截, 时间窗核对, 淘汰留痕, 超窗候选, 存在性验证, 质量门槛]
+keywords: [保真度验证, 材料清单, arXiv 实证, GitHub API, 编造拦截, 时间窗核对, 淘汰留痕, 超窗候选, 存在性验证, 质量门槛, ID 张冠李戴, 引证失真]
 problem_patterns: [候选论文/项目凭检索或记忆列入清单未经官方源逐条核实, 材料 ID 与真实内容张冠李戴造成引证失真, 真实但超出时间窗或质量门槛的材料如何处置]
 source_sessions: [ses_e4f5c5a83ffefUFnzHFvOEFJCW]
 project: Date
 severity: high
-quality_score: 87
+quality_score: 90
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-06-verify-claimed-prerequisites-before-research, 2026-11-06-multi-purpose-resource-threshold-separation, 2026-11-06-learning-artifact-five-element-sedimentation, 2026-11-06-independent-examiner-capability-gate]
+related_experiences: [2026-11-06-verify-claimed-prerequisites-before-research, 2026-11-06-multi-purpose-resource-threshold-separation, 2026-11-06-learning-artifact-five-element-sedimentation, agent-ops/2026-11-07-worker-grader-exam-gate-pattern]
 ---
 
 # 外部材料清单纳入前的保真度四门验证：存在性→相关性→时间窗→质量门槛，淘汰与降级必须留痕

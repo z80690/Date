@@ -4,7 +4,7 @@ title: "禁自判"能力门禁的角色分离设计：独立评审员代考
 category: agent-ops
 nature: methodology
 created_at: 2026-11-06T21:56:59
-updated_at: 2026-11-06T21:56:59
+updated_at: 2026-11-07T05:08:26
 tags: [agent-ops, capability-gate, role-separation, assessment, subagent]
 keywords: [禁自判, 旁人出题, 出题官, 批改官, 独立subagent, 能力考核, 门禁, 自信度阈值, 角色分离, 利益冲突]
 problem_patterns: [要求"旁人出题、禁自判学会"时单一Agent无法自证达标, 被考核者自出自判使考核门禁形同虚设, 考核标准不量化导致门禁不可判定]
@@ -16,10 +16,12 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: A
-related_experiences: [2026-11-06-constraint-dispatch-to-ears-gated-spec, 2026-11-06-dispatch-order-conflict-gating]
+related_experiences: [agent-ops/2026-11-07-worker-grader-exam-gate-pattern.md]
 ---
 
 # "禁自判"能力门禁的角色分离设计：独立评审员代考
+
+> **[已归档 2026-11-07]** 本篇已于 2026-11-07 的经验精炼中并入 **agent-ops/2026-11-07-worker-grader-exam-gate-pattern.md**（同一"考核门禁角色分离"模式的实测验证版：含本篇全部增量内容——出题官职责与维度拆题、双参数门禁、材料获取降级路径，另补实测证据与批改官派工细节）。引用本篇的文档请改引该主文件。本文件仅作历史溯源保留，不再参与默认检索。
 
 ## Scenario
 派工单要求"学不会禁止开工""旁人出题、出题官批改、禁自判学会"——Agent 必须通过能力考核才能进入下一阶段，但 Agent 自出自考存在利益冲突，门禁形同虚设。考核类门禁（知识认证、第三方评审、验收把关）普遍遇到此问题。

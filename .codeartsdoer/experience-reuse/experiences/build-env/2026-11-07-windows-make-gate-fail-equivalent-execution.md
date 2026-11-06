@@ -4,14 +4,14 @@ title: Windows 下 make 门禁目标失败：读 recipe 取实质断言，宿主
 category: build-env
 nature: technique
 created_at: 2026-11-07T04:37:00
-updated_at: 2026-11-07T04:37:00
+updated_at: 2026-11-07T04:54:36
 tags: [windows, gnu-make, build-verification, powershell, exe-suffix]
-keywords: [make check-invariants, unexpected EOF, sh -c 引号解析, 等价执行, 架构不变量, .exe 后缀缺失, mingw make, Go 构建, PowerShell 5.1, LASTEXITCODE]
+keywords: [make check-invariants, unexpected EOF, sh -c 引号解析, 等价执行, 架构不变量, .exe 后缀缺失, mingw make, Go 构建, PowerShell 5.1, LASTEXITCODE, CommandNotFoundException, make Error 2]
 problem_patterns: [第三方仓库 make all 在 Windows 构建成功但门禁目标报 sh 解析错误, 构建出的二进制无 .exe 后缀导致 PowerShell 无法直接执行, 不能改第三方源码又不能跳过架构检查时的两难]
 source_sessions: [ses_e4f5c5a83ffefUFnzHFvOEFJCW]
 project: Date
 severity: medium
-quality_score: 86
+quality_score: 88
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0

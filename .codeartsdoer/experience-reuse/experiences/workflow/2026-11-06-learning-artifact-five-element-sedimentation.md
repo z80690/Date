@@ -4,7 +4,7 @@ title: 学习成果沉淀闭环：五要素条目入知识库 + 按需复用 + �
 category: workflow
 nature: methodology
 created_at: 2026-11-06T23:17:00
-updated_at: 2026-11-06T23:17:00
+updated_at: 2026-11-07T04:57:22
 tags: [学习沉淀, 知识条目, 正反例, 按需加载, 考核互链]
 keywords: [五要素, 原文链接, 条目名, 浓缩版, 正例反例, 永久记住, 索引查重, 渐进加载, 材料保真度, 考核证据链]
 problem_patterns: [学习类任务完成后成果散落在会话里无沉淀下次重复学习, 学习材料只存链接不存浓缩版导致用时还要重读原文, 学习成果缺正反例无法支撑后续同类判断]
@@ -16,7 +16,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: A
-related_experiences: [2026-11-06-multi-purpose-resource-threshold-separation, 2026-11-06-knowledge-base-tiered-maintenance-design, 2026-11-06-independent-examiner-capability-gate]
+related_experiences: [2026-11-06-multi-purpose-resource-threshold-separation, 2026-11-06-knowledge-base-tiered-maintenance-design, agent-ops/2026-11-07-worker-grader-exam-gate-pattern, 2026-11-07-exam-question-authoring-contract]
 ---
 
 # 学习成果沉淀闭环：五要素条目入知识库 + 按需复用 + 考核证据互链
