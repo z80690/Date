@@ -1,0 +1,5 @@
+temp/
+.codebase/
+turbocontext.db/
+experience-reuse/.manager-history.jsonl
+experience-reuse/.session-traces.jsonl
