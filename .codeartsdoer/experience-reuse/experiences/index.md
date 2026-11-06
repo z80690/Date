@@ -1,9 +1,9 @@
 ---
-last_updated: 2026-11-07T04:52:00
+last_updated: 2026-11-07T04:54:34
 last_refined: 2026-11-07T01:31:53
-active_count: 60
+active_count: 61
 archived_count: 0
-count_from_last_refined: 2
+count_from_last_refined: 3
 ---
 
 # Experience Index
@@ -34,7 +34,7 @@ count_from_last_refined: 2
 - [间歇性可达链路下 git clone 超时：同源重试窗口与后台输出文件处置](debugging/2026-11-06-github-clone-timeout-intermittent-link.md) | quality_score: 90 | tier: S | keywords: Connection timed out, 300028, ls-remote 探针, 间歇性可达, 同源重试, 换源禁止, 后台任务, 输出文件, NativeCommandError, 工作树检出 | problem_patterns: ls-remote 成功但 clone 超时不知能否重试, git clone 超时被移后台后不知如何取结果, stderr 重定向吞掉克隆错误输出 | updated_at: 2026-11-06T22:56:51 | hit_count: 0 | low_quality_hit_count: 0
 - [网络直连失败分层诊断：先证配置层干净，再判出口链路](debugging/2026-11-06-network-direct-connect-diagnosis.md) | quality_score: 89 | tier: S | keywords: Connection was reset, Could not connect, rate limit, git proxy, 空proxy, 直连, 环境变量, NO_PROXY, hosts, ls-remote, 分层诊断 | problem_patterns: git clone / webfetch 报 Connection was reset 疑似代理问题, 不确定卡在代理配置还是出口链路, 空 proxy 配置被误当垃圾清理 | updated_at: 2026-11-06T18:45:59 | hit_count: 0 | low_quality_hit_count: 0
 
-## workflow (total: 20)
+## workflow (total: 21)
 - [既有已确认文档的增量修订：统一补充标注落位 + grep 计数闭环核验](workflow/2026-11-06-annotated-incremental-revision-grep-verify.md) | quality_score: 86 | tier: S | keywords: 已确认文档, 修订点清单, 统一标注, 用户补充标记, 派生位置, 验收条件, 数据约束, 计数核验, 分批edit, 完成度证据 | problem_patterns: 用户对已确认文档提增量修改但要求其余内容零改动，不知道如何保证改动范围显式可追溯, 一个修改点在条款/异常场景/验收/数据约束多处派生落笔，修订后无法确认是否遗漏, 增量修订完成后缺少低成本的完成度核验手段 | updated_at: 2026-11-06T22:21:31 | hit_count: 0 | low_quality_hit_count: 0
 - [强约束派工单的需求规格化：硬约束转 EARS 条款与编号门禁](workflow/2026-11-06-constraint-dispatch-to-ears-gated-spec.md) | quality_score: 84 | tier: A | keywords: 派工单, 硬约束, EARS, 门禁, 需求规格, 负分纠偏, 验收条款, 阶段确认, SDD, 红线 | problem_patterns: 强约束派工单直接照抄进规格导致后续阶段无法验收, 禁反问"与"阶段确认"两种要求冲突不知如何兼容, 顺序依赖要求散落在约束叙述中未成为显式门禁 | updated_at: 2026-11-06T21:56:59 | hit_count: 1 | low_quality_hit_count: 0
 - [禁反问裁决下设计阶段读盘判断闭环（结论落盘+未决显式化）](workflow/2026-11-06-design-stage-self-serve-evidence-decisions.md) | quality_score: 88 | tier: S | keywords: spec 到 design, 证据先行, 用户裁决下放, 结论前置, 不补造, 降级路径, design.md, 拉扯成本, 自主决策, 磁盘证据 | problem_patterns: 用户明确禁止反问要求自主读文件做设计判断, 存在无法从磁盘判定的缺失项需要显式上报而非编造 | updated_at: 2026-11-06T20:24:59 | hit_count: 0 | low_quality_hit_count: 0
@@ -54,6 +54,7 @@ count_from_last_refined: 2
 - [知识库生成规范文档先核实仓库实际状态再动笔（零编造法）](workflow/2026-11-06-verify-before-write-knowledge-docs.md) | quality_score: 85 | tier: S | keywords: project-knowledge, code-links, 行号溯源, glob 核实, 外部参考文档, 纯文档仓库, 反编造, 字数约束, wiki_section, code_refs | problem_patterns: 生成规范文档时派工单背景描述与仓库实际状态不符, 参考文档内容需要可溯源到源文件行号 | updated_at: 2026-11-06T19:45:16 | hit_count: 0 | low_quality_hit_count: 0
 - [派工单声称"已核实"的结构性前提，动手前仍用特征检索秒级复核](workflow/2026-11-06-verify-claimed-prerequisites-before-research.md) | quality_score: 88 | tier: S | keywords: 派工单, 已核实, 结构性前提, 特征检索, glob复核, 前提证伪, 暂停上报, 调研前置, 复核清单, 任务链 | problem_patterns: 派工单声称调研前提已核实但无文件级证据，后续多阶段建立在错误前提上, 借鉴某仓库的组织方式类前提未经验证直接进入设计与提炼阶段, 需要低成本证伪或证实目标仓库中某结构是否存在 | updated_at: 2026-11-06T19:52:23 | hit_count: 1 | low_quality_hit_count: 0
 - [语音转写口语化需求的规格化整理法（主题拆分编号+口径差异列未决）](workflow/2026-11-06-voice-dispatch-requirement-normalization.md) | quality_score: 85 | tier: S | keywords: 口语化需求, 语音派工, 主题拆分, 编号清单, 口径不一致, 禁补造, 未决事项, 推断标注, 现状实查, 结论前置 | problem_patterns: 用户语音输入多主题混杂的口语化需求，事实、诉求、历史教训交织难以直接执行, 用户口述的文档数量或现状与仓库实存不一致且原始佐证不可得, 需求规格中事实与推断混杂导致后续阶段无法区分置信度 | updated_at: 2026-11-06T19:48:43 | hit_count: 0 | low_quality_hit_count: 0
+- [学习考核出题任务契约：维度分段编号+双文件分离+难度配比](workflow/2026-11-07-exam-question-authoring-contract.md) | quality_score: 83 | tier: A | keywords: 出题, 考核, 题目契约, 编号分段, 难度配比, 答案分离, 批改要点, 禁背诵, Worker派工, 情景题 | problem_patterns: 需要为学习成果考核批量出题且要求可批改可引用, 出题任务需防止答案泄漏给受考者, 考核题需分层（理解/应用/综合）且禁纯背诵 | updated_at: 2026-11-07T04:52:00 | hit_count: 0 | low_quality_hit_count: 0
 - [SDD 规格拆解任务清单时用覆盖对照表与显式门禁防遗漏防跳阶段](workflow/2026-11-07-sdd-spec-to-tasks-coverage-mapping.md) | quality_score: 84 | tier: A | keywords: spec到tasks拆解, 覆盖对照表, 能力编号映射, 独立验收条件, 显式门禁任务化, 大文件分片阅读, 防拆解遗漏, 防跳阶段, 先查产物重名 | problem_patterns: 多能力点规格拆解任务清单时遗漏部分需求条目, 多阶段流程的任务清单只写流程说明未阻止执行代理跳过阶段 | updated_at: 2026-11-07T01:26:24 | hit_count: 0 | low_quality_hit_count: 0
 
 ## agent-ops (total: 24)
