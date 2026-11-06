@@ -4,7 +4,7 @@ title: 平台记忆层实查通道：无接口时降级为文件式记忆库盘�
 category: agent-ops
 nature: technique
 created_at: 2026-11-06T20:46:59
-updated_at: 2026-11-06T20:52:37
+updated_at: 2026-11-06T20:55:56
 tags: [平台记忆, 文件式记忆库, 记忆盘点, frontmatter, 降级路径]
 keywords: [memory目录, 工作目录哈希, MEMORY.md索引, type/from字段, 记忆接口缺失, 记忆权威源, 项目级记忆, 个人级记忆, 记忆条目结构, 一致性检查]
 problem_patterns: [派工单要求调接口拉取平台记忆列表但平台未提供记忆 API 工具, 需要盘点项目级与个人级记忆却不清楚记忆的真实存储结构, 记忆盘点结果需要权威源而非凭会话印象罗列]

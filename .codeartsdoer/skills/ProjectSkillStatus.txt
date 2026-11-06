@@ -3,3 +3,4 @@ skill-writer=true
 lazy-exec=true
 find-skills=true
 grill-me=true
+review-code=true
