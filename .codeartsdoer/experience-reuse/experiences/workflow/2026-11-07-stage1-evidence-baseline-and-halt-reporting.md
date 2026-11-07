@@ -12,8 +12,8 @@ source_sessions: [ses_e4d11ce50ffesKQFm6qpmDfFP0]
 project: Date
 severity: medium
 quality_score: 84
-hit_count: 0
-last_hit_at: null
+hit_count: 2
+last_hit_at: 2026-11-07T08:22:30
 low_quality_hit_count: 0
 tier: A
 related_experiences: [2026-11-06-verify-claimed-prerequisites-before-research, 2026-11-06-dispatch-order-conflict-gating, 2026-11-06-voice-dispatch-requirement-normalization, 2026-11-06-annotated-incremental-revision-grep-verify]

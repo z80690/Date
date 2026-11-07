@@ -6,3 +6,6 @@ grill-me=true
 review-code=true
 learn-gate=true
 register-feature=true
+codearts-platform-registration=true
+sdd-spec-pipeline=true
+windows-git-powershell-quirks=true
