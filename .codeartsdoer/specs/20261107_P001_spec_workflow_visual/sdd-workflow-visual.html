@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>SDD 干活机制可视化 · 派工单 P001（20261107）</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",system-ui,"Microsoft YaHei","PingFang SC",sans-serif;background:#f1f5f9;color:#1e293b}
+#topbar{background:#1e3a8a;color:#fff;padding:14px 20px}
+#topbar h1{font-size:20px}
+#topbar .meta{font-size:12px;opacity:.85;margin-top:4px}
+#compat{display:none;background:#fef3c7;color:#92400e;border:1px solid #f59e0b;padding:8px 16px;font-size:13px}
+#compat.show{display:block}
+#tabbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#fff;border-bottom:1px solid #e2e8f0;padding:8px 16px;position:sticky;top:0;z-index:10}
+.tab{border:1px solid #cbd5e1;background:#f8fafc;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:14px}
+.tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
+#zoombar{margin-left:auto;display:flex;gap:4px;align-items:center}
+#zoombar button{border:1px solid #cbd5e1;background:#f8fafc;border-radius:4px;padding:5px 10px;cursor:pointer;font-size:13px}
+#zoombar button:disabled{opacity:.4;cursor:not-allowed}
+#zoomval{font-size:12px;color:#475569;min-width:44px;text-align:center}
+main{padding:12px 16px 4px}
+.view{display:none}
+.view.active{display:block}
+.stage{background:#fff;border:1px solid #e2e8f0;border-radius:8px;overflow:auto;padding:8px}
+svg{display:block}
+text{font-family:"Segoe UI","Microsoft YaHei",sans-serif}
+.t-hl{font-size:16px;font-weight:700;fill:#1e3a8a}
+.node{cursor:pointer}
+.node rect{fill:#fff;stroke:#2563eb;stroke-width:2}
+.node.finish rect{fill:#16a34a;stroke:#15803d}
+.node.finish text{fill:#fff}
+.node.hl rect{stroke:#f59e0b;stroke-width:4;fill:#fffbeb}
+.edge{stroke:#64748b;stroke-width:2;fill:none}
+.edge.dash{stroke-dasharray:6 4}
+.edge.back{stroke:#dc2626;stroke-dasharray:6 4}
+.lbl{font-size:12px;fill:#334155;paint-order:stroke;stroke:#fff;stroke-width:4px;font-weight:600}
+.lbl-sm{font-size:10.5px;fill:#475569;paint-order:stroke;stroke:#fff;stroke-width:3px}
+.notebox rect{fill:#fef9c3;stroke:#ca8a04;stroke-width:1.5}
+.notebox text{font-size:11px;fill:#713f12}
+.lane{cursor:pointer}
+.lane rect{fill:#fff;stroke:#334155;stroke-width:1.8}
+.lane.master rect{fill:#dbeafe}
+.lane.agent rect{fill:#ccfbf1}
+.lane.review rect{fill:#ffedd5}
+.lane.hl rect{stroke:#f59e0b;stroke-width:3.5}
+.lifeline{stroke:#94a3b8;stroke-width:1.5;stroke-dasharray:5 4}
+.db{font-size:13.5px;line-height:1.7}
+.ds{font-size:11.5px;color:#64748b;margin-top:8px}
+.detail{max-width:1200px;margin:10px auto 24px;background:#fff;border:1px solid #e2e8f0;border-left:5px solid #f59e0b;border-radius:6px;padding:12px 18px;min-height:56px}
+.detail .dt{font-weight:700;font-size:15px;color:#1e3a8a;margin-bottom:6px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.card h3{font-size:15px;color:#1e3a8a;margin-bottom:8px}
+.card .src{font-size:11.5px;color:#64748b;margin-top:8px;border-top:1px dashed #e2e8f0;padding-top:6px}
+.card li{margin:4px 0 4px 20px;font-size:13.5px}
+.card p{font-size:13.5px;line-height:1.7;margin:4px 0}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;background:#dbeafe;color:#1e40af;margin-left:8px;vertical-align:2px}
+.badge.warn{background:#fef3c7;color:#92400e}
+.badge.ok{background:#dcfce7;color:#166534}
+h2.zone{font-size:16px;margin:18px 0 10px;color:#0f172a;border-left:4px solid #2563eb;padding-left:10px}
+.help p{font-size:13.5px;line-height:1.8}
+footer{text-align:center;font-size:11.5px;color:#94a3b8;padding:8px 0 20px}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <h1>SDD 干活机制可视化</h1>
+  <div class="meta">派工单 P001 · 20261107 · 模块 spec_workflow_visual ｜ 单文件自包含 · 零外部依赖 · 断网可用</div>
+</header>
+<div id="compat">⚠ 浏览器内核较旧，部分交互可能不可用。建议使用 Chrome / Edge 现代版本打开。</div>
+<nav id="tabbar">
+  <button class="tab active" data-tab="flow">流程图（SDD 步骤）</button>
+  <button class="tab" data-tab="sequence">时序图（交互流程）</button>
+  <button class="tab" data-tab="state">状态图（生命周期）</button>
+  <button class="tab" data-tab="assets">背景资产</button>
+  <button class="tab" data-tab="help">使用说明</button>
+  <div id="zoombar">
+    <button id="zoom-out" title="缩小">−</button>
+    <span id="zoomval">100%</span>
+    <button id="zoom-in" title="放大">＋</button>
+    <button id="zoom-reset" title="复位">复位</button>
+  </div>
+</nav>
+<main>
+
+<section id="view-flow" class="view active">
+  <div class="stage">
+  <svg id="svg-flow" viewBox="0 0 1160 620" width="1160" height="620" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arwF1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#64748b"/></marker>
+    </defs>
+    <text x="580" y="34" text-anchor="middle" class="t-hl">SDD 四阶段主链路（禁跳阶段 · 公约第 1 条）</text>
+    <g class="node" data-key="flow-spec"><rect x="16" y="64" width="196" height="100" rx="8"/><text x="114" y="96" text-anchor="middle" font-size="17" font-weight="700">需求规格</text><text x="114" y="122" text-anchor="middle" font-size="13">spec.md（EARS 格式）</text><text x="114" y="144" text-anchor="middle" font-size="11.5" fill="#64748b">spec-requirement-agent</text></g>
+    <g class="node" data-key="flow-design"><rect x="240" y="64" width="196" height="100" rx="8"/><text x="338" y="96" text-anchor="middle" font-size="17" font-weight="700">实现方案</text><text x="338" y="122" text-anchor="middle" font-size="13">design.md</text><text x="338" y="144" text-anchor="middle" font-size="11.5" fill="#64748b">spec-design-agent</text></g>
+    <g class="node" data-key="flow-task"><rect x="464" y="64" width="196" height="100" rx="8"/><text x="562" y="96" text-anchor="middle" font-size="17" font-weight="700">编码任务</text><text x="562" y="122" text-anchor="middle" font-size="13">tasks.md（验收对照表）</text><text x="562" y="144" text-anchor="middle" font-size="11.5" fill="#64748b">spec-task-agent</text></g>
+    <g class="node" data-key="flow-exec"><rect x="688" y="64" width="196" height="100" rx="8"/><text x="786" y="96" text-anchor="middle" font-size="17" font-weight="700">任务执行</text><text x="786" y="122" text-anchor="middle" font-size="13">按序实施 · 全程留痕</text><text x="786" y="144" text-anchor="middle" font-size="11.5" fill="#64748b">主控 + 2 持久角色</text></g>
+    <g class="node finish" data-key="flow-finish"><rect x="912" y="64" width="196" height="100" rx="8"/><text x="1010" y="96" text-anchor="middle" font-size="17" font-weight="700">核验收尾</text><text x="1010" y="122" text-anchor="middle" font-size="13">四查→提交链→交活</text><text x="1010" y="144" text-anchor="middle" font-size="11.5" fill="#dcfce7">未过返工 ≤3 次</text></g>
+    <line x1="214" y1="114" x2="236" y2="114" class="edge" marker-end="url(#arwF1)"/>
+    <line x1="438" y1="114" x2="460" y2="114" class="edge" marker-end="url(#arwF1)"/>
+    <line x1="662" y1="114" x2="684" y2="114" class="edge" marker-end="url(#arwF1)"/>
+    <line x1="886" y1="114" x2="908" y2="114" class="edge" marker-end="url(#arwF1)"/>
+    <g class="notebox" data-key="gate-mech" style="cursor:pointer"><rect x="16" y="188" width="1092" height="48" rx="6"/>
+      <text x="28" y="208" font-size="12.5" fill="#713f12">门禁机制：每阶段产物落盘 → 结论前置呈报摘要 + 询问是否修改；自信度 ≥80% 过 ST2→ST3→ST4→ST5 门禁；</text>
+      <text x="28" y="226" font-size="12.5" fill="#713f12">全权授权时执行方自行判定通过并留痕豁免依据。（来源：sdd-spec-pipeline SKILL.md:21-24）→ 点击本条看详情</text>
+    </g>
+    <text x="16" y="272" font-size="15" font-weight="700" fill="#0f172a">派工单命名规范（本单实例）</text>
+    <g class="node" data-key="name-rule"><rect x="16" y="284" width="1092" height="60" rx="8"/>
+      <text x="562" y="324" text-anchor="middle" font-size="23" font-family="Consolas,monospace" font-weight="700"><tspan fill="#2563eb">20261107</tspan><tspan fill="#94a3b8">_</tspan><tspan fill="#16a34a">P001</tspan><tspan fill="#94a3b8">_</tspan><tspan fill="#7c3aed">spec_workflow_visual</tspan></text>
+    </g>
+    <line x1="192" y1="344" x2="192" y2="360" class="edge"/>
+    <line x1="562" y1="344" x2="562" y2="360" class="edge"/>
+    <line x1="932" y1="344" x2="932" y2="360" class="edge"/>
+    <g class="node" data-key="name-date"><rect x="16" y="362" width="352" height="104" rx="8"/><rect x="16" y="362" width="352" height="26" rx="8" fill="#2563eb"/><rect x="16" y="376" width="352" height="12" fill="#2563eb"/><text x="192" y="381" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">日期段</text>
+      <text x="192" y="412" text-anchor="middle" font-size="12.5">8 位数字 YYYYMMDD，取派工当日</text>
+      <text x="192" y="434" text-anchor="middle" font-size="12" fill="#64748b">非 8 位数字 → 拒绝创建并提示修正</text>
+      <text x="192" y="454" text-anchor="middle" font-size="11" fill="#94a3b8">来源：spec.md §5.1.1-R2（官方文件）</text></g>
+    <g class="node" data-key="name-num"><rect x="386" y="362" width="352" height="104" rx="8"/><rect x="386" y="362" width="352" height="26" rx="8" fill="#16a34a"/><rect x="386" y="376" width="352" height="12" fill="#16a34a"/><text x="562" y="381" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">编号段</text>
+      <text x="562" y="412" text-anchor="middle" font-size="12.5">P + ≥3 位递增数字，全局递增</text>
+      <text x="562" y="434" text-anchor="middle" font-size="12" fill="#64748b">取历史最大+1；禁跳号/复用终态编号</text>
+      <text x="562" y="454" text-anchor="middle" font-size="11" fill="#94a3b8">来源：spec.md §5.5.1（官方文件）</text></g>
+    <g class="node" data-key="name-module"><rect x="756" y="362" width="352" height="104" rx="8"/><rect x="756" y="362" width="352" height="26" rx="8" fill="#7c3aed"/><rect x="756" y="376" width="352" height="12" fill="#7c3aed"/><text x="932" y="381" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">模块名段</text>
+      <text x="932" y="412" text-anchor="middle" font-size="12.5">小写字母 / 数字 / 下划线</text>
+      <text x="932" y="434" text-anchor="middle" font-size="12" fill="#64748b">非法字符→拒绝；同名冲突→报告不覆盖</text>
+      <text x="932" y="454" text-anchor="middle" font-size="11" fill="#94a3b8">来源：spec.md §5.1.1-R3/R4（官方文件）</text></g>
+    <g class="notebox"><rect x="16" y="486" width="1092" height="40" rx="6"/>
+      <text x="28" y="511" font-size="12.5" fill="#713f12">目录路径示意：.codeartsdoer/specs/20261107_P001_spec_workflow_visual/（全部派工产物仅存于此，禁输出到 specs/ 之外 · spec.md §5.1.1-R5）</text>
+    </g>
+    <g class="notebox"><rect x="16" y="546" width="1092" height="40" rx="6"/>
+      <text x="28" y="571" font-size="12.5" fill="#713f12">取号规则：扫描 specs/ 下既有命名规范目录 → 当前最大编号 P001（无空洞）→ 下一派工单取 P002（不随日期重置 · spec.md §5.5.1-R1/R2）</text>
+    </g>
+  </svg>
+  </div>
+</section>
+
+<section id="view-sequence" class="view">
+  <div class="stage">
+  <svg id="svg-sequence" viewBox="0 0 1160 1080" width="1160" height="1080" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arwF2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#64748b"/></marker>
+    </defs>
+    <text x="580" y="14" text-anchor="middle" font-size="13" fill="#475569">角色交互时序（按真实阶段次序；虚线=呈报/返回消息）</text>
+    <g class="lane" data-key="lane-user"><rect x="45" y="20" width="150" height="56" rx="6"/><text x="120" y="43" text-anchor="middle" font-size="14" font-weight="700">派工人</text><text x="120" y="62" text-anchor="middle" font-size="10.5" fill="#64748b">派工单事件源 · 终审</text></g>
+    <g class="lane master" data-key="lane-master"><rect x="255" y="20" width="150" height="56" rx="6"/><text x="330" y="43" text-anchor="middle" font-size="14" font-weight="700">主控</text><text x="330" y="62" text-anchor="middle" font-size="10.5" fill="#64748b">编队 · 1 主控</text></g>
+    <g class="lane agent" data-key="lane-spec"><rect x="445" y="20" width="150" height="56" rx="6"/><text x="520" y="43" text-anchor="middle" font-size="14" font-weight="700">spec 子代理</text><text x="520" y="62" text-anchor="middle" font-size="10.5" fill="#64748b">编队 · 4 运行时</text></g>
+    <g class="lane agent" data-key="lane-design"><rect x="595" y="20" width="150" height="56" rx="6"/><text x="670" y="43" text-anchor="middle" font-size="14" font-weight="700">design 子代理</text><text x="670" y="62" text-anchor="middle" font-size="10.5" fill="#64748b">编队 · 4 运行时</text></g>
+    <g class="lane agent" data-key="lane-task"><rect x="745" y="20" width="150" height="56" rx="6"/><text x="820" y="43" text-anchor="middle" font-size="14" font-weight="700">task 子代理</text><text x="820" y="62" text-anchor="middle" font-size="10.5" fill="#64748b">编队 · 4 运行时</text></g>
+    <g class="lane review" data-key="lane-review"><rect x="955" y="20" width="150" height="56" rx="6"/><text x="1030" y="43" text-anchor="middle" font-size="14" font-weight="700">审查 · 交付</text><text x="1030" y="62" text-anchor="middle" font-size="10.5" fill="#64748b">编码必审四查</text></g>
+    <line x1="120" y1="76" x2="120" y2="1008" class="lifeline"/>
+    <line x1="330" y1="76" x2="330" y2="1008" class="lifeline"/>
+    <line x1="520" y1="76" x2="520" y2="1008" class="lifeline"/>
+    <line x1="670" y1="76" x2="670" y2="1008" class="lifeline"/>
+    <line x1="820" y1="76" x2="820" y2="1008" class="lifeline"/>
+    <line x1="1030" y1="76" x2="1030" y2="1008" class="lifeline"/>
+    <g><line x1="120" y1="120" x2="326" y2="120" class="edge" marker-end="url(#arwF2)"/><text x="223" y="112" text-anchor="middle" class="lbl">下发派工单（日期/编号/模块名）</text></g>
+    <g><path d="M330,170 h56 a11,11 0 0 1 11,11 v10 a11,11 0 0 1 -11,11 h-56" class="edge" marker-end="url(#arwF2)"/><text x="412" y="186" class="lbl">创建派工目录 + TASK.md 存档</text></g>
+    <g><line x1="330" y1="232" x2="516" y2="232" class="edge" marker-end="url(#arwF2)"/><text x="425" y="224" text-anchor="middle" class="lbl">调需求规格（prompt 带 4 要素）</text></g>
+    <g><line x1="520" y1="288" x2="334" y2="288" class="edge dash" marker-end="url(#arwF2)"/><text x="425" y="280" text-anchor="middle" class="lbl">spec.md 落盘（EARS 格式）</text></g>
+    <g data-key="gate-report" style="cursor:pointer"><line x1="330" y1="344" x2="124" y2="344" class="edge dash" marker-end="url(#arwF2)"/><text x="227" y="336" text-anchor="middle" class="lbl" fill="#b45309">★ 门禁呈报（摘要 + 是否修改）</text></g>
+    <g class="notebox"><rect x="150" y="378" width="620" height="44" rx="6"/><text x="162" y="398" font-size="11.5" fill="#713f12">注：用户全权授权 → 门禁自行判定通过 + 豁免依据留痕（TASK.md 追加）；冻结版文档=确认基线</text><text x="162" y="414" font-size="11" fill="#a16207">（来源：sdd-spec-pipeline SKILL.md:24）</text></g>
+    <g><line x1="330" y1="456" x2="666" y2="456" class="edge" marker-end="url(#arwF2)"/><text x="500" y="448" text-anchor="middle" class="lbl">调实现方案（存量分析 + 增量设计）</text></g>
+    <g><line x1="670" y1="512" x2="334" y2="512" class="edge dash" marker-end="url(#arwF2)"/><text x="500" y="504" text-anchor="middle" class="lbl">design.md 落盘</text></g>
+    <g data-key="gate-report" style="cursor:pointer"><line x1="330" y1="568" x2="124" y2="568" class="edge dash" marker-end="url(#arwF2)"/><text x="227" y="560" text-anchor="middle" class="lbl" fill="#b45309">★ 门禁呈报（摘要 + 是否修改）</text></g>
+    <g><line x1="330" y1="624" x2="816" y2="624" class="edge" marker-end="url(#arwF2)"/><text x="575" y="616" text-anchor="middle" class="lbl">调任务规划（任务映射能力编号 + 验收对照表）</text></g>
+    <g><line x1="820" y1="680" x2="334" y2="680" class="edge dash" marker-end="url(#arwF2)"/><text x="575" y="672" text-anchor="middle" class="lbl">tasks.md 落盘（EARS 对照表）</text></g>
+    <g data-key="gate-report" style="cursor:pointer"><line x1="330" y1="736" x2="124" y2="736" class="edge dash" marker-end="url(#arwF2)"/><text x="227" y="728" text-anchor="middle" class="lbl" fill="#b45309">★ 门禁呈报（摘要 + 是否修改）</text></g>
+    <g><path d="M330,786 h56 a11,11 0 0 1 11,11 v10 a11,11 0 0 1 -11,11 h-56" class="edge" marker-end="url(#arwF2)"/><text x="412" y="802" class="lbl">按 tasks 顺序执行（2 持久角色维护状态/知识）</text></g>
+    <g><line x1="330" y1="848" x2="1026" y2="848" class="edge" marker-end="url(#arwF2)"/><text x="680" y="840" text-anchor="middle" class="lbl">编码必审四查（功能/断网/控制台/覆盖度）</text></g>
+    <g><line x1="1030" y1="904" x2="334" y2="904" class="edge dash" marker-end="url(#arwF2)"/><text x="680" y="896" text-anchor="middle" class="lbl">四查通过 → git 提交链</text></g>
+    <g><line x1="330" y1="960" x2="124" y2="960" class="edge dash" marker-end="url(#arwF2)"/><text x="227" y="952" text-anchor="middle" class="lbl">结论前置交活（不阻塞日常）</text></g>
+    <line x1="16" y1="1016" x2="1144" y2="1016" stroke="#e2e8f0" stroke-width="1.5"/>
+    <text x="16" y="1042" font-size="12" fill="#475569">泳道 = 编队角色：1 主控 + 2 持久（状态/知识维护，运行于主控内部）+ 4 运行时（spec/design/task 子代理与审查执行）。点击泳道头查看角色详情。</text>
+  </svg>
+  </div>
+</section>
+
+<section id="view-state" class="view">
+  <div class="stage">
+  <svg id="svg-state" viewBox="0 0 1240 660" width="1240" height="660" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arwF3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#64748b"/></marker>
+      <marker id="arwR3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#dc2626"/></marker>
+    </defs>
+    <text x="620" y="30" text-anchor="middle" class="t-hl">派工单生命周期状态机（门禁推进 + 返工回路）</text>
+    <circle cx="52" cy="128" r="16" fill="none" stroke="#334155" stroke-width="2.5"/><circle cx="52" cy="128" r="8" fill="#334155"/>
+    <text x="52" y="166" text-anchor="middle" font-size="10.5" fill="#64748b">开始</text>
+    <g class="node" data-key="st-issued"><rect x="124" y="98" width="120" height="60" rx="12"/><text x="184" y="124" text-anchor="middle" font-size="15" font-weight="700">下发</text><text x="184" y="144" text-anchor="middle" font-size="10.5" fill="#64748b">派工单事件源</text></g>
+    <g class="node" data-key="st-spec"><rect x="304" y="98" width="130" height="60" rx="12"/><text x="369" y="124" text-anchor="middle" font-size="15" font-weight="700">规格中</text><text x="369" y="144" text-anchor="middle" font-size="10.5" fill="#64748b">ST2</text></g>
+    <g class="node" data-key="st-design"><rect x="494" y="98" width="130" height="60" rx="12"/><text x="559" y="124" text-anchor="middle" font-size="15" font-weight="700">设计中</text><text x="559" y="144" text-anchor="middle" font-size="10.5" fill="#64748b">ST3</text></g>
+    <g class="node" data-key="st-task"><rect x="684" y="98" width="140" height="60" rx="12"/><text x="754" y="124" text-anchor="middle" font-size="15" font-weight="700">任务分解中</text><text x="754" y="144" text-anchor="middle" font-size="10.5" fill="#64748b">ST4</text></g>
+    <line x1="70" y1="128" x2="120" y2="128" class="edge" marker-end="url(#arwF3)"/>
+    <text x="95" y="82" text-anchor="middle" class="lbl-sm">派工人发出</text>
+    <text x="95" y="95" text-anchor="middle" class="lbl-sm">（取号：最大+1）</text>
+    <line x1="246" y1="128" x2="300" y2="128" class="edge" marker-end="url(#arwF3)"/>
+    <text x="273" y="66" text-anchor="middle" class="lbl-sm">spec.md 落盘</text><text x="273" y="80" text-anchor="middle" class="lbl-sm" font-weight="700">自信度 ≥80%</text>
+    <line x1="436" y1="128" x2="490" y2="128" class="edge" marker-end="url(#arwF3)"/>
+    <text x="463" y="66" text-anchor="middle" class="lbl-sm">spec 门禁通过</text><text x="463" y="80" text-anchor="middle" class="lbl-sm" font-weight="700">自信度 ≥80%</text>
+    <line x1="626" y1="128" x2="680" y2="128" class="edge" marker-end="url(#arwF3)"/>
+    <text x="653" y="66" text-anchor="middle" class="lbl-sm">design 门禁通过</text><text x="653" y="80" text-anchor="middle" class="lbl-sm" font-weight="700">自信度 ≥80%</text>
+    <line x1="754" y1="160" x2="754" y2="336" class="edge" marker-end="url(#arwF3)"/>
+    <text x="768" y="240" class="lbl-sm">tasks 门禁通过</text><text x="768" y="256" class="lbl-sm" font-weight="700">自信度 ≥80%</text>
+    <g class="node" data-key="st-exec"><rect x="684" y="340" width="140" height="60" rx="12"/><text x="754" y="366" text-anchor="middle" font-size="15" font-weight="700">执行中</text><text x="754" y="386" text-anchor="middle" font-size="10.5" fill="#64748b">ST5 编码实施</text></g>
+    <g class="node" data-key="st-review"><rect x="494" y="340" width="130" height="60" rx="12"/><text x="559" y="366" text-anchor="middle" font-size="15" font-weight="700">审查中</text><text x="559" y="386" text-anchor="middle" font-size="10.5" fill="#64748b">编码必审四查</text></g>
+    <g class="node" data-key="st-deliver"><rect x="304" y="340" width="130" height="60" rx="12"/><text x="369" y="366" text-anchor="middle" font-size="15" font-weight="700">交付</text><text x="369" y="386" text-anchor="middle" font-size="10.5" fill="#64748b">终态归档</text></g>
+    <circle cx="184" cy="370" r="16" fill="none" stroke="#334155" stroke-width="2.5"/><circle cx="184" cy="370" r="8" fill="#334155"/>
+    <text x="184" y="408" text-anchor="middle" font-size="10.5" fill="#64748b">关闭</text>
+    <line x1="682" y1="370" x2="628" y2="370" class="edge" marker-end="url(#arwF3)"/>
+    <text x="655" y="312" text-anchor="middle" class="lbl-sm">编码完成</text><text x="655" y="326" text-anchor="middle" class="lbl-sm">四查启动</text>
+    <line x1="492" y1="370" x2="438" y2="370" class="edge" marker-end="url(#arwF3)"/>
+    <text x="465" y="312" text-anchor="middle" class="lbl-sm">四查全过</text><text x="465" y="326" text-anchor="middle" class="lbl-sm">git 提交链留痕</text>
+    <line x1="302" y1="370" x2="248" y2="370" class="edge" marker-end="url(#arwF3)"/>
+    <text x="275" y="312" text-anchor="middle" class="lbl-sm">关闭归档</text><text x="275" y="326" text-anchor="middle" class="lbl-sm">终态 · 编号不复用</text>
+    <path d="M559,402 V448 H754 V404" class="edge back" marker-end="url(#arwR3)"/>
+    <text x="656" y="440" text-anchor="middle" font-size="11" fill="#dc2626" font-weight="700">四查未过 · 返工（重试 ≤3 次）</text>
+    <g class="notebox"><rect x="880" y="470" width="340" height="100" rx="6"/>
+      <text x="892" y="492" font-size="11" fill="#713f12" font-weight="700">侧栏备注：全权授权豁免</text>
+      <text x="892" y="510" font-size="10.5" fill="#713f12">用户全权授权（"一把到底/每个门禁自己卡"）时，</text>
+      <text x="892" y="526" font-size="10.5" fill="#713f12">各门禁由执行方自行判定通过，豁免依据+记录</text>
+      <text x="892" y="542" font-size="10.5" fill="#713f12">留痕（TASK.md 追加）；冻结版文档=确认基线。</text>
+      <text x="892" y="560" font-size="10" fill="#a16207">（来源：SKILL.md:24）</text>
+    </g>
+    <line x1="80" y1="610" x2="140" y2="610" class="edge"/><text x="150" y="614" font-size="11" fill="#475569">正常流转（门禁条件标注于箭头旁）</text>
+    <line x1="440" y1="610" x2="500" y2="610" class="edge back"/><text x="510" y="614" font-size="11" fill="#475569">返工回路（四查未过）</text>
+    <rect x="760" y="600" width="14" height="18" rx="3" fill="#fef9c3" stroke="#ca8a04"/><text x="782" y="614" font-size="11" fill="#475569">豁免/备注说明</text>
+  </svg>
+  </div>
+</section>
+
+<section id="view-assets" class="view">
+  <h2 class="zone">常驻资产区（全流程可引用 · 强制口径标注）</h2>
+  <div id="assets-resident"></div>
+  <h2 class="zone">已关闭特性区（终态 · 只读引用）</h2>
+  <div id="assets-closed"></div>
+</section>
+
+<section id="view-help" class="view help">
+  <div class="card">
+    <h3>如何查看</h3>
+    <p>双击本文件 <code>sdd-workflow-visual.html</code>，或用 Chrome / Edge 现代版本浏览器打开（file:// 协议直开）。无需服务器、无需构建、零网络依赖，断网环境全功能可用。默认展示"流程图（SDD 步骤）"标签。</p>
+  </div>
+  <div class="card">
+    <h3>交互操作</h3>
+    <ul>
+      <li><b>标签切换</b>：顶部 5 标签（流程图｜时序图｜状态图｜背景资产｜使用说明），点击即时切换、无需刷新页面。</li>
+      <li><b>节点详情</b>：点击图中任意节点 / 泳道头 / ★门禁呈报消息 / 命名规范要素框 → 底部详情面板展开（含事实源路径）；再次点击同一节点收起；同一时刻至多一个节点展开。</li>
+      <li><b>缩放</b>：右上角 ＋ / − / 复位，连续缩放（50%~200%），三类图各自独立记忆缩放比例。</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>背景说明</h3>
+    <p>常驻资产（公约 6 条、编队 1主+2持久+4运行时、注册表两口径、知识库三级加载）与已关闭特性（subagent-team-design 终态）集中呈现在"背景资产"标签；三类图中的机制细节均可点击节点展开查看，每条附事实源路径。</p>
+  </div>
+  <div class="card">
+    <h3>更新方式</h3>
+    <p>常驻资产内容变更时：编辑本 HTML 内 <code>DETAILS</code> 数据对象（单一文案源，背景资产页由其渲染），渲染逻辑不动；同步修订 README.md 机制摘要；在 TASK.md 追加进展留痕行（原文禁改）。</p>
+  </div>
+</section>
+
+</main>
+
+<div id="detail" class="detail">
+  <div class="dt" id="detail-title">节点详情</div>
+  <div class="db" id="detail-body">点击图中任意节点 / 泳道 / ★消息，在此展开详情（再次点击收起）。</div>
+  <div class="ds" id="detail-source"></div>
+</div>
+
+<footer>派工单 P001 · spec_workflow_visual ｜ SDD 四阶段：需求规格 → 实现方案 → 编码任务 → 任务执行（含核验收尾）｜ 公约 6 条生效 · 规矩层冻结</footer>
+
+<script>
+'use strict';
+var TAB_FLOW='flow',TAB_SEQ='sequence',TAB_STATE='state',TAB_ASSETS='assets',TAB_HELP='help';
+var ZOOMABLE=[TAB_FLOW,TAB_SEQ,TAB_STATE];
+var BASE={flow:{w:1160,h:620},sequence:{w:1160,h:1080},state:{w:1240,h:660}};
+var scale={flow:1,sequence:1,state:1};
+var ZOOM_MIN=0.5,ZOOM_MAX=2.0,ZOOM_STEP=0.1;
+var activeTab=TAB_FLOW;
+var expandedKey=null;
+
+var DETAILS={
+'flow-spec':{t:'阶段① 需求规格（ST2）',b:'调 spec-requirement-agent，产出 <b>spec.md</b>（EARS 格式：当[触发]时，系统应当[响应]），覆盖组件定位、领域术语、DFX 约束、核心能力、数据约束。落盘后触发门禁呈报。',s:'官方文件：.codeartsdoer/skills/sdd-spec-pipeline/SKILL.md:9'},
+'flow-design':{t:'阶段② 实现方案（ST3）',b:'调 spec-design-agent，产出 <b>design.md</b>：需求与存量功能对比（匹配度判定）、增量设计方案、接口设计、数据模型、门禁切分与文件清单。',s:'官方文件：SKILL.md:10 + 本派工单 design.md 实践'},
+'flow-task':{t:'阶段③ 编码任务（ST4）',b:'调 spec-task-agent，产出 <b>tasks.md</b>：任务逐项映射能力编号与 EARS 验收条款（对照总表），写明执行顺序、依赖与门禁放行条件。',s:'官方文件：SKILL.md:11'},
+'flow-exec':{t:'阶段④ 任务执行（ST5）',b:'按 tasks.md 顺序实施，全程留痕（TASK.md 只增不改）；编码完工前置必审四查——四查未过不完工（公约第 6 条）。',s:'官方文件：SKILL.md:12 + 项目协作公约第 6 条'},
+'flow-finish':{t:'收尾 · 核验收尾',b:'四查（交互功能 / 断网自包含 / 控制台无报错 / 内容覆盖度 + 性能）全过 → git 提交链留痕 → 结论前置交活，不阻塞日常；未过返工 ≤3 次，仍败降级并报告未决项。',s:'官方文件：spec.md §5.4 + 公约第 6 条'},
+'gate-mech':{t:'门禁机制',b:'每阶段产物落盘后：结论前置呈报摘要 + 询问"是否需要修改文档"（不调 question 工具）；阶段推进带自信度阈值（≥80% 才过 ST2→ST3→ST4→ST5）；用户全权授权（"一把到底/每个门禁自己卡"）时各门禁自行判定通过，豁免依据+记录留痕，冻结版文档=确认基线。唯一可中断呈报=事实性阻塞（工具链不可用/网络全断/磁盘满）。',s:'官方文件：SKILL.md:21-25'},
+'gate-report':{t:'门禁呈报消息（★ 虚线返回）',b:'图中 3 条 ★ 虚线"门禁呈报"=每阶段产物落盘后的呈报事件：摘要结论前置 + 询问是否修改。用户确认 → 进入下一阶段；要求修改 → 回当前阶段重做；全权授权 → 自行判定并留痕豁免依据。',s:'官方文件：SKILL.md:22-24'},
+'name-rule':{t:'派工单命名规范',b:'目录名 = <code>日期_派工编号_模块名</code>，仅存于 .codeartsdoer/specs/。日期 8 位 YYYYMMDD；编号 P+≥3 位全局递增（取历史最大+1，禁跳号/复用）；模块名限小写字母/数字/下划线。非法命名拒绝创建；目录同名冲突报告不覆盖。本单实例 20261107_P001_spec_workflow_visual → 下一单 P002。',s:'官方文件：派工单 P001 + spec.md §5.1/§5.5'},
+'name-date':{t:'命名三要素 · 日期段',b:'8 位数字 YYYYMMDD，取派工当日。当日期段非 8 位数字时 → 拒绝创建并提示修正。',s:'官方文件：spec.md §5.1.1-R2 / §6.1'},
+'name-num':{t:'命名三要素 · 编号段',b:'字母 P + 至少 3 位递增数字，全局唯一且严格递增；取历史最大编号+1、日期取派工当日；编号冲突时报告并继续向后取号；禁跳号、禁复用已关闭派工单编号。新编号必须严格大于全部既有编号。',s:'官方文件：spec.md §5.5.1 / §6.1'},
+'name-module':{t:'命名三要素 · 模块名段',b:'仅小写字母、数字、下划线（建议 ≤20 字符）。含非法字符 → 拒绝创建并提示修正；目录名已存在 → 报告冲突交派工人裁决，禁止静默覆盖或删除既有目录。',s:'官方文件：spec.md §5.1.1-R3/R4 / §6.1'},
+'st-issued':{t:'状态：下发',b:'派工人发出派工单（日期/编号/模块名三要素）。编号取历史最大+1；主控创建派工目录并将原文存档 TASK.md（只增不改）。',s:'官方文件：spec.md §5.3.1-R3 / design.md §2.1.4-A'},
+'st-spec':{t:'状态：规格中（ST2）',b:'spec-requirement-agent 产出 spec.md（EARS 格式）；落盘 → 门禁呈报；自信度 ≥80% 过门禁进入"设计中"。',s:'官方文件：SKILL.md:9'},
+'st-design':{t:'状态：设计中（ST3）',b:'spec-design-agent 产出 design.md（存量对比+增量方案）；落盘 → 门禁呈报；自信度 ≥80% 过门禁进入"任务分解中"。',s:'官方文件：SKILL.md:10'},
+'st-task':{t:'状态：任务分解中（ST4）',b:'spec-task-agent 产出 tasks.md（任务映射能力编号+验收对照表）；落盘 → 门禁呈报；自信度 ≥80% 过门禁进入"执行中"。',s:'官方文件：SKILL.md:11'},
+'st-exec':{t:'状态：执行中（ST5）',b:'按 tasks.md 顺序编码实施（本单产出 sdd-workflow-visual.html + README.md），全程留痕；完成后进入"审查中"启动四查。',s:'官方文件：SKILL.md:12 + tasks.md 任务 3~6'},
+'st-review':{t:'状态：审查中',b:'编码必审四查：交互功能 / 断网自包含 / 控制台无报错 / 内容覆盖度（另加性能实测：首屏 ≤2s、切换 ≤500ms）。未过 → 返工"执行中"（重试 ≤3 次，仍败降级并报告未决项）；全过 → git 提交链 → "交付"。',s:'官方文件：公约第 6 条 + tasks.md 任务 7'},
+'st-deliver':{t:'状态：交付（终态）',b:'四查全过、提交链完成、TASK.md 进展补齐、交活总结 ≤300 字结论前置。关闭归档后编号不复用（禁跳号/复用）。',s:'官方文件：tasks.md 任务 8 + spec.md §5.5.1-R4'},
+'lane-user':{t:'泳道：派工人（用户）',b:'事件源与终审者：下发派工单、审阅门禁呈报（确认/修改/全权授权）、裁决编号冲突、接收结论前置交活。',s:'官方文件：spec.md §3.1'},
+'lane-master':{t:'泳道：主控（编队 · 1）',b:'1 个主控编排角色：派工目录与留痕管理、三阶段子代理调度、门禁呈报、四查组织与提交链。2 个持久角色（状态维护、知识维护）运行于主控内部，常驻不退出。',s:'派工单口径（官方）；角色映射=推断'},
+'lane-spec':{t:'泳道：spec 子代理（编队 · 4 运行时）',b:'需求规格阶段运行时角色：接收带 4 要素的 prompt（上游路径+先读后写、用户裁决基线、硬约束清单、呈报格式），产出 spec.md 后即停，确认权在用户。',s:'官方文件：SKILL.md:14-19'},
+'lane-design':{t:'泳道：design 子代理（编队 · 4 运行时）',b:'实现方案阶段运行时角色：先完整读取 spec.md，产出 design.md（存量匹配度+增量设计+接口/数据模型+门禁切分）。',s:'官方文件：SKILL.md:10,14-19'},
+'lane-task':{t:'泳道：task 子代理（编队 · 4 运行时）',b:'任务规划阶段运行时角色：先完整读取 spec.md 与 design.md，产出 tasks.md（EARS 验收对照总表+门禁切分表）。',s:'官方文件：SKILL.md:11,14-19'},
+'lane-review':{t:'泳道：审查 · 交付',b:'执行编码必审四查（公约第 6 条：编码必审未过不完工）→ 通过后完成 git 提交链与结论前置交活（不阻塞日常）。',s:'官方文件：公约第 6 条 + spec.md §5.4'},
+'asset-rule':{t:'项目协作公约（6 条 · 规矩层冻结）',b:'① 全程 SDD：先规格后动作，禁跳阶段；新框架先学后干，学不会不干。<br>② 学习材料先评估后引用：项目限大厂高引用框架，论文限近 1 年智能体方向，保真要准。<br>③ 参考仓库只读隔离：存项目外目录，禁 submodule/嵌套/复制入内。<br>④ 规矩层冻结：本公约零改动；新流程一律分装技能（五步准入登记）。<br>⑤ 禁自建定时任务：一切触发走事件。<br>⑥ 单一事实源+仲裁：状态只存事实表一处；冲突按 规则&gt;知识库&gt;记忆&gt;推断 裁决并报告；编码必审未过不完工。',s:'官方文件（逐条原文）：.codeartsdoer/rule/项目协作公约.mdc:1-6'},
+'asset-team':{t:'编队：1 主控 + 2 持久 + 4 运行时',b:'<b>1 主控</b>=编排与门禁呈报；<b>2 持久</b>=状态维护、知识维护（常驻）；<b>4 运行时</b>=spec/design/task 子代理 + 审查执行（按阶段启用）。时序图六泳道即编队角色投影。',s:'官方口径：派工单"编队 1主+2持久+4运行时"；角色到泳道映射=推断'},
+'asset-registry':{t:'注册表（两口径并示）<span class="badge warn">口径冲突已仲裁</span>',b:'<b>派工单口径：19 项</b>。<br><b>事实源核对：11 项激活（全部 true）</b>：ruleinit、skill-writer、lazy-exec、find-skills、grill-me、review-code、learn-gate、register-feature、codearts-platform-registration、sdd-spec-pipeline、windows-git-powershell-quirks。<br>仲裁：按公约第 6 条（规则&gt;知识库&gt;记忆&gt;推断），事实源 ProjectSkillStatus.txt 优先于派工单口径；差异已在 README.md 登记说明。',s:'官方文件实测：.codeartsdoer/skills/ProjectSkillStatus.txt:1-11（11 行，全部 true）'},
+'asset-kb':{t:'知识库三级加载',b:'三级次序：<b>规则层</b>（.codeartsdoer/rule/）→ <b>知识库</b>（项目知识库统一检索，会话启动先读索引）→ <b>经验/记忆</b>（.codeartsdoer/experience-reuse/experiences/ 按领域分目录 + index.md 索引：agent-ops、architecture、workflow 等）。三级命中冲突时按公约第 6 条仲裁链裁决。',s:'官方文件：目录实查 + 项目事实表（三级次序为官方口径）'},
+'asset-closed':{t:'已关闭特性：subagent-team-design（终态）<span class="badge ok">已关闭</span>',b:'2026-11-07 特性正式关闭（T1–T8 完结+验收）。产物 <b>10 个文件</b>固化于 <code>.codeartsdoer/specs/subagent-team-design/</code>：spec.md、design.md、tasks.md、v4-final-proposal.md、implementation-log.md、security-policy-g3-report.md、community-cases.md、browser-unlock-experiment.md、knowledge-layer0-experiment.md、rule-skill-restructure-plan.md。<br>本页为只读引用，禁止改动该目录内容。',s:'官方文件：目录实查 10 文件（只读引用）'}
+};
+
+function $(id){return document.getElementById(id);}
+function showHint(){
+  $('detail-title').textContent='节点详情';
+  $('detail-body').textContent='点击图中任意节点 / 泳道 / ★消息，在此展开详情（再次点击收起）。';
+  $('detail-source').textContent='';
+}
+function paintHl(){
+  var nodes=document.querySelectorAll('[data-key]');
+  for(var i=0;i<nodes.length;i++){
+    var el=nodes[i];
+    try{el.classList.remove('hl');}catch(e){}
+  }
+  if(expandedKey){
+    var cur=document.querySelector('[data-key="'+expandedKey+'"]');
+    if(cur){try{cur.classList.add('hl');}catch(e){}}
+  }
+}
+function toggleNode(key){
+  if(expandedKey===key){expandedKey=null;paintHl();showHint();return;}
+  var d=DETAILS[key];
+  if(!d){showHint();return;}
+  expandedKey=key;paintHl();
+  $('detail-title').textContent=d.t;
+  $('detail-body').innerHTML=d.b;
+  $('detail-source').textContent='事实源：'+d.s;
+  try{$('detail').scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}
+}
+function switchTab(tabId){
+  activeTab=tabId;
+  var tabs=document.querySelectorAll('.tab');
+  for(var i=0;i<tabs.length;i++){
+    var on=tabs[i].getAttribute('data-tab')===tabId;
+    try{tabs[i].classList[on?'add':'remove']('active');}catch(e){}
+  }
+  var views=document.querySelectorAll('.view');
+  for(var j=0;j<views.length;j++){
+    views[j].style.display=(views[j].id==='view-'+tabId)?'block':'none';
+  }
+  var canZoom=ZOOMABLE.indexOf(tabId)>=0;
+  $('zoom-in').disabled=!canZoom;$('zoom-out').disabled=!canZoom;$('zoom-reset').disabled=!canZoom;
+  updateZoomVal();
+}
+function applyZoom(view){
+  var svg=$('svg-'+view);
+  if(!svg)return;
+  svg.setAttribute('width',Math.round(BASE[view].w*scale[view]));
+  svg.setAttribute('height',Math.round(BASE[view].h*scale[view]));
+}
+function updateZoomVal(){
+  var canZoom=ZOOMABLE.indexOf(activeTab)>=0;
+  $('zoomval').textContent=canZoom?Math.round(scale[activeTab]*100)+'%':'—';
+}
+function setZoom(delta){
+  if(ZOOMABLE.indexOf(activeTab)<0)return;
+  var s=+(scale[activeTab]+delta).toFixed(2);
+  if(s<ZOOM_MIN)s=ZOOM_MIN;
+  if(s>ZOOM_MAX)s=ZOOM_MAX;
+  scale[activeTab]=s;
+  applyZoom(activeTab);
+  updateZoomVal();
+}
+function resetZoom(){
+  if(ZOOMABLE.indexOf(activeTab)<0)return;
+  scale[activeTab]=1;
+  applyZoom(activeTab);
+  updateZoomVal();
+}
+function detectCompat(){
+  var ok=true;
+  try{
+    ok=(typeof document.addEventListener==='function')
+      &&(typeof CSS!=='undefined')&&CSS.supports&&CSS.supports('display','flex')
+      &&(typeof SVGElement!=='undefined')
+      &&(typeof DOMTokenList!=='undefined');
+  }catch(e){ok=false;}
+  if(!ok){$('compat').className='show';}
+  return ok;
+}
+function cardHtml(d){
+  return '<div class="card"><h3>'+d.t+'</h3><div class="db">'+d.b+'</div><div class="src">事实源：'+d.s+'</div></div>';
+}
+function renderAssets(){
+  var keys=['asset-rule','asset-team','asset-registry','asset-kb'];
+  var html='';
+  for(var i=0;i<keys.length;i++){html+=cardHtml(DETAILS[keys[i]]);}
+  $('assets-resident').innerHTML=html;
+  $('assets-closed').innerHTML=cardHtml(DETAILS['asset-closed']);
+}
+(function init(){
+  detectCompat();
+  var tabs=document.querySelectorAll('.tab');
+  for(var i=0;i<tabs.length;i++){
+    (function(btn){
+      if(typeof btn.addEventListener==='function'){
+        btn.addEventListener('click',function(){switchTab(btn.getAttribute('data-tab'));});
+      }
+    })(tabs[i]);
+  }
+  var nodes=document.querySelectorAll('[data-key]');
+  for(var j=0;j<nodes.length;j++){
+    (function(el){
+      if(typeof el.addEventListener==='function'){
+        el.addEventListener('click',function(){toggleNode(el.getAttribute('data-key'));});
+      }
+    })(nodes[j]);
+  }
+  $('zoom-in').addEventListener('click',function(){setZoom(+ZOOM_STEP);});
+  $('zoom-out').addEventListener('click',function(){setZoom(-ZOOM_STEP);});
+  $('zoom-reset').addEventListener('click',resetZoom);
+  renderAssets();
+  applyZoom(TAB_FLOW);
+  updateZoomVal();
+  showHint();
+})();
+</script>
+</body>
+</html>
