@@ -111,3 +111,9 @@
 - [x] 零删除核验：实施前后 diff 仅新增+冻结/别名标注（复用评估表原文零删除、H2/H3/H6/H7 别名保留、test_mini 留存）——无物理删除
 - [x] design 附录 B T1–T7 状态列全部更新（T7 既有闭环、T2 配置层完成/运行时待重载、T5 失败分支完结、其余已完成）
 - [x] 版本提交：全部留痕文档+配置文件+新技能/子智能体纳入版本管理（见提交记录）
+## 收尾链：三项裁决落盘+特性关闭（2026-11-07）
+
+- [x] **U15 裁决 A 定案**：接受降级——社区案例 0/5 以本地实证+官方权威来源 2 个为准（llms.txt 138KB+pd_0001，七字段在 community-cases.md）；机制完整性不受影响；保留恢复条件（前端检索到文章链接即按七字段补充）
+- [x] **U16 授权登记**：3 个经验系统自动生成技能（codearts-platform-registration/sdd-spec-pipeline/windows-git-powershell-quirks）登记注册表（平台注册实证 true×3+listSkills 56 技能实证 project/enabled）——注册表现 19 挂载项
+- [x] **特性关闭**：用户确认验收（三项倾向+最终裁决授权）→ subagent-team-design 正式关闭，后续变更走新派工
+- [x] 记忆修正：subagent-team-spec 记忆条目指针化（过时的"spec v1 待确认禁实施"状态作废，项目事归知识库）

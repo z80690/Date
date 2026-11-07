@@ -4,14 +4,14 @@ title: PowerShell 5.1 空集合 Count 语义导致的布尔校验假阴性复核
 category: debugging
 nature: pitfall
 created_at: 2026-11-07T08:51:58
-updated_at: 2026-11-07T08:58:16
+updated_at: 2026-11-07T09:04:15
 tags: [powershell-5-1, false-negative, count-semantics, verification-script, json-validation]
-keywords: [PSObject.Properties, Count null, 空对象, 布尔校验, 假阴性, ConvertFrom-Json, 度量复核, Measure-Object, 强制数组化, 校验脚本]
+keywords: [PSObject.Properties, Count null, empty collection, 空对象, 布尔校验, 假阴性, boolean validation, ConvertFrom-Json, 度量复核, Measure-Object, 强制数组化, 校验脚本]
 problem_patterns: [校验脚本输出 False 但事实为真, PowerShell 空对象计数返回 null, PS5.1 裸 .Count 在空集合/空对象上参与布尔判断产生假阴性]
 source_sessions: [ses_e4c8a78edffee772ytCDqwOSfb]
 project: Date
 severity: low
-quality_score: 85
+quality_score: 95
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
