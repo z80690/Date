@@ -4,7 +4,7 @@ title: 官方文档站点返回人机验证页（WAF 挑战）的识别信号与
 category: debugging
 nature: pitfall
 created_at: 2026-11-07T06:52:33
-updated_at: 2026-11-07T07:32:02
+updated_at: 2026-11-07T09:31:32
 tags: [WAF拦截, 人机验证, EdgeOne, 外源调研降级, 响应体识别]
 keywords: [Security Verification, EdgeOne挑战页, curl返回验证页, 文档站拦截, 拦截页与404区分, 外源调研受阻, 降级呈报, 原文留痕]
 problem_patterns: ["请求返回200但内容是挑战页被误判为内容为空", "外源调研受阻后反复重试空耗", "受阻塞任务未降级导致主流程卡死"]
@@ -16,7 +16,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: A
-related_experiences: [agent-ops/2026-11-07-minimal-instance-format-probing, debugging/2026-11-06-curl-empty-response-http-status-first]
+related_experiences: [agent-ops/2026-11-07-minimal-instance-format-probing, debugging/2026-11-06-curl-empty-response-http-status-first, debugging/2026-11-07-waf-ua-detection-repair-before-degradation]
 ---
 
 # 官方文档站点返回人机验证页（WAF 挑战）的识别信号与任务降级处置
@@ -41,6 +41,7 @@ related_experiences: [agent-ops/2026-11-07-minimal-instance-format-probing, debu
 
 ## Faster Next Time
 - 拿到异常响应先做**失败三分类**：挑战页（换渠道/降级）、404（链接问题）、超时/DNS 失败（网络问题）——三类处置路径完全不同。
+- 挑战页出现后先分型修复再降级（见 waf-ua-detection-repair-before-degradation）：UA 检测型换浏览器 UA 即可放行，SPA 型用内容实质校验判定有数据；降级是穷尽合法修复后的选择，不是第一反应。本条的"识别→留痕→降级"框架仍然有效，只是降级从默认动作改为兜底动作。
 - 首查响应体特征而非重试；"200 + 内容不符"是最先要怀疑的 WAF 拦截形态。
 - 外源调研受阻时立即降级呈报，不阻塞本地可完成部分；留痕原文以便日后回迁时证明受阻事实。
 

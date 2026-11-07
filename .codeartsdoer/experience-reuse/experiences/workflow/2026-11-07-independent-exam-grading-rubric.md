@@ -12,8 +12,8 @@ source_sessions: [ses_e4d629bd9ffeg4S4QWbYvDcgS0]
 project: Date
 severity: medium
 quality_score: 88
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-08T01:01:30
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-07-worker-grader-exam-gate-pattern]

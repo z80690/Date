@@ -1,0 +1,8 @@
+﻿P002-规范驱动接入与两智能体改造：全单交付（M1-M7 六门放行，U6 极简口径）
+
+- 两智能体改造：examiner/grader v2 六步 SOP+事件驱动触发时机
+- 能力迁移：C1 新建 sdd-ref-distill；C3 review-code 增补执行步审查门禁挂载；C4 sdd-spec-pipeline 增补编排范式
+- 旧逻辑剥离：cairn-mcp 条目移除；注册表退役归档至 notes/档案区；路由职能由四步直读约定表承载（U5 反绑死，无新变体）
+- 门禁链：M1-M4/M6 放行；M5 对比门取消（U6-4）；M7 终判=用户授权通过（本提交）
+- 文档链：spec v5/design v3/tasks v2 三文档对齐；gates/ 七证据文件+1 次终扫留档
+- 留档：.codeartsdoer/SPEC_OPTIMIZATION.md（U6-5 本文件即留档）

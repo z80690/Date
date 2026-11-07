@@ -4,7 +4,7 @@ title: 派工单声称"已核实"的结构性前提，动手前仍用特征检�
 category: workflow
 nature: decision
 created_at: 2026-11-06T19:42:39
-updated_at: 2026-11-06T19:52:23
+updated_at: 2026-11-07T22:28:41
 tags: [前提核实, 特征检索, 派工单, 结构性前提, 任务链]
 keywords: [派工单, 已核实, 结构性前提, 特征检索, glob复核, 前提证伪, 暂停上报, 调研前置, 复核清单, 任务链]
 problem_patterns: [派工单声称调研前提已核实但无文件级证据，后续多阶段建立在错误前提上, 借鉴某仓库的组织方式类前提未经验证直接进入设计与提炼阶段, 需要低成本证伪或证实目标仓库中某结构是否存在]
@@ -16,7 +16,7 @@ hit_count: 1
 last_hit_at: 2026-11-06T20:08:03
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-06-verify-before-write-knowledge-docs, 2026-11-06-glob-empty-result-read-verify]
+related_experiences: [2026-11-06-verify-before-write-knowledge-docs, 2026-11-06-glob-empty-result-read-verify, 2026-11-07-stage1-evidence-baseline-and-halt-reporting]
 ---
 
 # 派工单声称"已核实"的结构性前提，动手前仍用特征检索秒级复核

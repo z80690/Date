@@ -12,8 +12,8 @@ source_sessions: [ses_e4f3dbe70ffeQ2k0pNEQHUQilW]
 project: Date
 severity: low
 quality_score: 82
-hit_count: 3
-last_hit_at: 2026-11-07T08:22:30
+hit_count: 4
+last_hit_at: 2026-11-07T09:44:33
 low_quality_hit_count: 0
 tier: A
 related_experiences: ["2026-11-06-dispatch-order-conflict-gating", "2026-11-06-verify-claimed-prerequisites-before-research", "2026-11-06-terminal-gates-in-task-dependency-graph", "2026-11-07-sdd-spec-to-tasks-coverage-mapping"]

@@ -4,7 +4,7 @@ title: 平台托管配置文件控制台乱码≠文件损坏：以结构与功�
 category: debugging
 nature: pitfall
 created_at: 2026-11-06T19:42:39
-updated_at: 2026-11-06T19:45:16
+updated_at: 2026-11-08T01:47:04
 tags: [encoding, mojibake, config-verification, powershell, false-corruption]
 keywords: [乱码, GBK, UTF-8, metadata.properties, 中文乱码, 编码错配, 文件损坏, 控制台解码, 结构完整性, 功能验证]
 problem_patterns: [读取含中文的配置文件控制台输出乱码疑似文件损坏, 无法区分显示层编码错配与真实内容损坏, 差点因乱码重写平台托管文件]
@@ -16,7 +16,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: A
-related_experiences: [2026-11-06-codeartsdoer-rule-init]
+related_experiences: [2026-11-06-codeartsdoer-rule-init, build-env/2026-11-08-ps51-getcontent-selectstring-encoding-split]
 ---
 
 # 平台托管配置文件控制台乱码≠文件损坏：以结构与功能双证据判定
@@ -47,6 +47,7 @@ related_experiences: [2026-11-06-codeartsdoer-rule-init]
 - 适用于 Windows 控制台（GBK/CP936 代码页）读取 UTF-8 中文文件的场景；Linux/macOS 默认 UTF-8 终端通常不出现。
 - 仅适用于"显示乱码但系统功能正常"的场景；若平台功能同时异常（加载失败、解析报错），则是真损坏，本方法不适用。
 - 平台托管文件（平台自动生成/维护）一律不手改重写；判定损坏后上报，由平台侧修复或走界面重建。
+- 与相邻经验分工：PS5.1 工具级根因与本地产物验证手段见 build-env/2026-11-08-ps51-getcontent-selectstring-encoding-split——那条管本地产物文件无功能层反证时的工具级交叉验证（Select-String 交叉 + 字节数 + read 回读），本条给泛化的"结构+功能双证据"判定规则并约束平台托管文件不得手改；判定规则同源，验证手段按"有无功能层反证"选用。
 
 ## Evidence or Examples
 - 实测：控制台输出 `projectExpert=[{"filePath":"鍗忎綔鍘熷垯.mdc","name":"鍗忎綔鍘熷垯",...}]`（`协作原则.mdc` 的 GBK 错读形态）。

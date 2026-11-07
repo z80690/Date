@@ -9,3 +9,6 @@ register-feature=true
 codearts-platform-registration=true
 sdd-spec-pipeline=true
 windows-git-powershell-quirks=true
+self-contained-html-verify=true
+web-content-scraping=true
+sdd-ref-distill=true

@@ -4,7 +4,7 @@ title: 持久化子智能体格式契约实测：最小实例提取字段集 + l
 category: agent-ops
 nature: technique
 created_at: 2026-11-07T07:07:01
-updated_at: 2026-11-07T07:07:01
+updated_at: 2026-11-08T01:39:57
 tags: [平台实证, 子智能体, 格式契约, 自动注册, 批量生成]
 keywords: [agents目录, YAML frontmatter, 子智能体持久化注册, 最小实例反推, listSkills回读, tools白名单, permission.skill, 落盘即注册, 批量生成路径, mode字段]
 problem_patterns: ["拿到最小实例后不知哪些字段构成必要契约、哪些可省略", "配置文件落盘后不确定是否真正注册生效，凭文件存在推断", "需要批量生成同类配置实体时凭猜测写字段导致注册失败"]
@@ -16,7 +16,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-07-minimal-instance-format-probing, 2026-11-07-listskills-agents-field-agent-topology-evidence]
+related_experiences: [2026-11-07-minimal-instance-format-probing, 2026-11-07-listskills-agents-field-agent-topology-evidence, agent-ops/2026-11-08-listskills-enum-excludes-persistent-agents]
 ---
 
 # 持久化子智能体格式契约实测：最小实例提取字段集 + listSkills 回读验证注册
@@ -46,7 +46,7 @@ related_experiences: [2026-11-07-minimal-instance-format-probing, 2026-11-07-lis
 ## Faster Next Time
 
 - 一句话规程：**批量生成配置实体 = 读最小实例 → 提字段契约 → 清单工具回读验证 → 复制骨架批量落盘**；禁止凭猜测写字段、禁止凭文件存在判注册。
-- 警告信号：实例文件已落盘但清单工具关联字段无该名 → 注册未生效（检查 disable 开关、字段拼写、scope 归属），而非文件没写对位置。
+- 警告信号：实例文件已落盘但清单工具关联字段无该名 → 注册未生效（检查 disable 开关、字段拼写、scope 归属），而非文件没写对位置。**前提限定**：本判据仅适用于有技能挂载的智能体；permission.skill 全 deny 且无技能挂载的智能体，关联字段必然无其名（枚举边界外），属正常现象而非注册失败，注册验证应转运行时派工实证，见 agent-ops/2026-11-08-listskills-enum-excludes-persistent-agents。
 - 字段契约里优先关注授权字段（如 permission.skill 的 deny 通配 + allow 逐名模式）：它决定子智能体能力边界，批量生成时按"每个子智能体只授权其职责所需"收窄，避免全量放权。
 
 ## Applicability Boundaries

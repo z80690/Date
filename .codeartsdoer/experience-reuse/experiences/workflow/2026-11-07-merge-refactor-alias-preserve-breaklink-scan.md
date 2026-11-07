@@ -4,18 +4,18 @@ title: 治理组件合并重构的断链防护四件套：旧名别名保留、�
 category: workflow
 nature: technique
 created_at: 2026-11-07T09:11:58
-updated_at: 2026-11-07T09:11:58
+updated_at: 2026-11-07T09:38:26
 tags: [refactor, alias-preserve, break-link-scan, freeze-annotation, governance-simplification]
 keywords: [合并重构, 别名保留, 断链扫描, 指针化, 冻结标注, 零删除纪律, grep 核对, 引用解析, 旧名兼容, 治理栈简化]
 problem_patterns: [合并或改名治理组件后全库既有引用断链，旧文档里的"H3 留痕"式引用无法解析, 被并入的源文件直接删除导致历史证据与回滚路径丢失, 重构完成后缺少低成本的断链核查手段，断链在后续执行中才暴露]
 source_sessions: [ses_e4f5c5a83ffefUFnzHFvOEFJCW]
 project: Date
 severity: medium
-quality_score: 80
+quality_score: 88
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
-tier: A
+tier: S
 related_experiences: ["2026-11-07-governance-stack-three-state-simplification", "2026-11-06-multi-copy-authority-layering-pointerization", "2026-11-06-annotated-incremental-revision-grep-verify"]
 ---
 
@@ -52,6 +52,7 @@ related_experiences: ["2026-11-07-governance-stack-three-state-simplification", 
 - 合并类重构的验收问题固定为三句：旧引用还能解析吗？源文件证据还在吗？索引状态同步了吗？——对应四件套前三件。
 - 收口扫描成本极低（3 次 grep），但能拦住"潜伏断链"——不扫的代价是断链在后续会话才暴露，定位成本放大数倍。
 - 判定层与实施层分开沉淀：判哪些合并看 governance-stack-three-state-simplification，怎么落盘不断链看本条。
+- 扫描命中过多时回到重构前的引用清单基线逐条归因：只修"仍把已冻结/已合并对象标为现行"类真断链，不借扫描触发全量重写。
 
 ## Applicability Boundaries
 

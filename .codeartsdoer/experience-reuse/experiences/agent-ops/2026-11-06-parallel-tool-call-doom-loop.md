@@ -4,7 +4,7 @@ title: 批量并行调用纪律：验证类调用一次即止，防重复触发�
 category: agent-ops
 nature: pitfall
 created_at: 2026-11-06T18:41:59
-updated_at: 2026-11-06T18:45:59
+updated_at: 2026-11-07T09:49:33
 tags: [tool-calling, parallel-execution, doom-loop, verification-discipline]
 keywords: [并行调用, 工具循环, Doom Loop, listSkills, 重复调用, 工具禁用, 信息增量, 幂等验证, 批量执行]
 problem_patterns: [单轮批量并行调用中同一验证工具被放入多个槽位, 首次成功返回后仍重复调用同一工具, 工具调用被系统禁用后无法继续执行]
@@ -16,7 +16,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: A
-related_experiences: []
+related_experiences: [2026-11-07-doom-loop-triggered-recovery-protocol]
 ---
 
 # 批量并行调用纪律：验证类调用一次即止，防重复触发工具禁用

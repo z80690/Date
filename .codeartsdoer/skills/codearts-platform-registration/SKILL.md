@@ -15,6 +15,7 @@ description: CodeArts Agent（码道）平台的技能/子智能体/MCP 注册�
 - frontmatter 字段：`description`（触发条件+能力+不适用）、`mode: all`（子智能体形态语义由 description 承载）、`tools`（最小白名单，未列即禁用）、`permission.skill`（`'*': deny` 默认拒绝 + `<skill>: allow` 白名单，禁 '*' 授权）、`disable`（false 启用/true 禁用即退出挂载）、`scope: project`、`avatar`
 - **文件落盘即注册**：listSkills 的 skills[].agents 字段出现该智能体名（仅 permission.skill allow 的技能显示挂载；全 deny 的智能体无挂载记录=正常）
 - 验证方法：listSkills 观察挂载形态；派工调用方式首次使用时实测并回写登记
+- listSkills 枚举边界（2026-11-08 实测）：listSkills 返回清单仅枚举 SKILL.md 技能条目（实测 58 项全为技能），**不单列 agents/*.md 持久化子智能体**；全 deny 的智能体在所有技能的 agents 挂载字段均无痕迹——因此"listSkills 查不到子智能体"≠"未注册"。注册生效的权威验证=Task 派工实际运行（子代理按配置 SOP 执行并返回产物，行为指纹逐条对齐新版配置即证明现行配置已生效）；listSkills 枚举边界现象按会话边界登记，新会话重载后可复验
 - 运行时派工双通道：Task 工具临时 Worker（隔离会话，会话存档于 `C:\Users\Administrator\.codeartsdoer\agent-team\session\ses_*`）+ agents/*.md 持久化注册
 
 ## MCP 注册

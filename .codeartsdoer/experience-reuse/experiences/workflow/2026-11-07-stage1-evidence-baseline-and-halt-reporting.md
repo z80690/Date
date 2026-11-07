@@ -4,19 +4,20 @@ title: 多阶段流程第一阶段的产出纪律：实查基线固化 + 三段�
 category: workflow
 nature: methodology
 created_at: 2026-11-07T06:27:00
-updated_at: 2026-11-07T06:27:00
+updated_at: 2026-11-07T22:28:41
 tags: [SDD, 门禁, 呈报, 证据基线, 阶段停驻]
 keywords: [第一阶段, 证据基线, discovery基线, 停驻呈报, 结论前置, 已实查声明, 非编造, 多轮沟通, 阶段门禁, 派工单, 反编造, 单一事实源]
 problem_patterns: [第一阶段派工内嵌大量声称已核实的事实且禁反问，不知哪些能直接采信哪些必须实查, 产出第一阶段文档后"要不要顺手继续做下一阶段"的停驻点被忽略或处理成反问, 呈报只有产出摘要没有证据声明，用户无法判断结论是实查所得还是编造]
 source_sessions: [ses_e4d11ce50ffesKQFm6qpmDfFP0]
 project: Date
 severity: medium
-quality_score: 84
-hit_count: 2
-last_hit_at: 2026-11-07T08:22:30
+quality_score: 86
+utility_score: 97
+hit_count: 8
+last_hit_at: 2026-11-08T01:01:30
 low_quality_hit_count: 0
-tier: A
-related_experiences: [2026-11-06-verify-claimed-prerequisites-before-research, 2026-11-06-dispatch-order-conflict-gating, 2026-11-06-voice-dispatch-requirement-normalization, 2026-11-06-annotated-incremental-revision-grep-verify]
+tier: S
+related_experiences: [2026-11-06-verify-claimed-prerequisites-before-research, 2026-11-06-dispatch-order-conflict-gating, 2026-11-06-voice-dispatch-requirement-normalization, 2026-11-06-annotated-incremental-revision-grep-verify, 2026-11-07-stage-gate-split-table-rework-degrade, 2026-11-07-claimed-count-vs-fact-source-conflict]
 ---
 
 # 多阶段流程第一阶段的产出纪律：实查基线固化 + 三段式停驻呈报
@@ -38,7 +39,7 @@ related_experiences: [2026-11-06-verify-claimed-prerequisites-before-research, 2
 ## Approach
 
 1. 一轮批量并行实查：把派工单"已核实事实"逐条对应到本地锚点（单一事实源文件、配置文件、目录实存性、平台工具输出），一次并行调用完成，不逐条串行核对。
-2. 固化基线：实查通过项写入产出文档的显式小节（如"本轮已实查基线"），未核验项标"待查"，绝不混写。
+2. 固化基线：实查通过项写入产出文档的显式小节（如"本轮已实查基线"），未核验项标"待查"，绝不混写；实查结果与派工单声称冲突时不擅自采信任一侧，按口径冲突仲裁通道处置（见 related 2026-11-07-claimed-count-vs-fact-source-conflict）。
 3. 覆盖编号组织：把派工单需求点编成显式清单（①~⑥），产出文档逐项映射，防漏防编造；含硬性核查要求的（如"案例禁编造、不足即降级"）写成验收条款。
 4. 三段式呈报：a) 结论前置概要（≤300 字，逐项点出产出覆盖什么）；b) "本轮已实查基线（非编造）"清单（列证据来源：工具输出、文件实存）；c) 停驻声明（当前阶段 + 每轮意见→更新→再呈报的循环 + 确认后才放行下一阶段）。
 5. 停驻即收尾：呈报发出后不再执行任何下一阶段动作，等待用户确认事件。

@@ -12,8 +12,8 @@ source_sessions: [ses_e4ec5b313ffeKGWXQnKRNCYKDi]
 project: Date
 severity: medium
 quality_score: 88
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-08T01:59:34
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-event-driven-mechanism-liveness-single-fact-source, 2026-11-06-terminal-gates-in-task-dependency-graph]

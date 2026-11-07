@@ -12,8 +12,8 @@ source_sessions: [ses_e4ec5b313ffeKGWXQnKRNCYKDi]
 project: Date
 severity: low
 quality_score: 86
-hit_count: 0
-last_hit_at: null
+hit_count: 2
+last_hit_at: 2026-11-08T02:03:41
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-oss-reference-pattern-scan-method, 2026-11-06-voice-dispatch-requirement-normalization]

@@ -12,8 +12,8 @@ source_sessions: [ses_e4f472e57ffeK1eNXlpjLq4sys]
 project: Date
 severity: medium
 quality_score: 88
-hit_count: 0
-last_hit_at: null
+hit_count: 3
+last_hit_at: 2026-11-08T01:01:30
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-verify-before-write-knowledge-docs, 2026-11-06-verify-claimed-prerequisites-before-research, 2026-11-06-config-audit-tool-keep-or-remove-decision]
