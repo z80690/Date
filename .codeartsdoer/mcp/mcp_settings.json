@@ -1,9 +1,3 @@
 {
-  "mcpServers": {
-    "cairn-mcp": {
-      "command": "D:\\refs\\Cairn\\bin\\cairn-mcp.exe",
-      "args": [],
-      "env": {}
-    }
-  }
+  "mcpServers": {}
 }
