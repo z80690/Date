@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--
+  pd004-workflow-visual.html · 派工单 TASK-20261108-004 任务3 交付物
+  数据快照时点：2026-11-08（构建期内联单一数据层，运行期零文件读取 · file:// 直开 · 断网可用）
+  事实源：.codeartsdoer/rule/项目协作公约.mdc（公约 6 条）· 任务2 运维确认 2026-11-08（Wiki 定时 c122980a）
+  单文件自包含 · 零外部依赖 · Tab4 为结构扩展位未实现（spec 5.5 缺省规则）
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目协作公约与工作流图解 · TASK-20261108-004</title>
+<style>
+:root { --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb; --brand:#4f46e5; --brand-soft:#eef2ff; --hl-bg:#fff3bf; --hl-line:#eab308; --cur:#1d4ed8; }
+* { box-sizing:border-box; }
+body { margin:0; padding:20px 28px; font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif; color:var(--ink); background:#f7f8fb; line-height:1.65; }
+header, #tabbar, main, footer { max-width:1180px; margin-left:auto; margin-right:auto; }
+header { background:linear-gradient(135deg,#eef2ff 0%,#f7f8fb 70%); border:1px solid var(--line); border-radius:14px; padding:18px 24px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+header h1 { margin:0 0 6px; font-size:22px; }
+.meta { color:var(--muted); font-size:13px; }
+#tabbar { display:flex; gap:8px; border-bottom:2px solid var(--line); margin:20px auto; }
+#tabbar .tab { appearance:none; border:1px solid var(--line); border-bottom:none; background:#fff; padding:10px 22px; border-radius:9px 9px 0 0; cursor:pointer; font-size:15px; color:var(--muted); }
+#tabbar .tab.active { color:var(--brand); font-weight:700; background:var(--brand-soft); border-color:var(--brand); position:relative; top:2px; }
+.view { display:none; }
+.view.active { display:block; }
+.card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 20px; margin:0 0 14px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+.card-head { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.no { background:linear-gradient(135deg,var(--brand),#7c3aed); color:#fff; width:32px; height:32px; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; font-weight:700; flex:none; }
+h2 { font-size:17px; margin:22px 0 12px; }
+h3 { margin:0; font-size:17px; }
+mark.hl { background:var(--hl-bg); color:#854d0e; border:1px solid var(--hl-line); border-radius:4px; padding:0 5px; font-size:12.5px; font-weight:600; }
+.cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:14px; }
+.cards-grid .card { margin:0; border-left:4px solid var(--brand); display:flex; flex-direction:column; }
+.essence, .plain { margin:12px 0 0; font-size:14px; }
+.essence { background:#fafbff; border:1px dashed #d7dcf0; border-radius:8px; padding:10px 12px; }
+.plain { color:#374151; }
+.hl-row { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.hl-row .lbl { color:var(--muted); font-size:12px; flex:none; }
+.src { margin-top:12px; padding-top:8px; border-top:1px dashed var(--line); color:var(--muted); font-size:12px; }
+.flow { display:flex; align-items:stretch; gap:10px; flex-wrap:wrap; }
+.flow .stage { flex:1 1 250px; margin:0; border-top:4px solid var(--brand); }
+.stage.current { border-color:var(--cur); box-shadow:0 0 0 2px rgba(29,78,216,.15); border-top-color:var(--cur); }
+.stage h3 { border-bottom:1px solid var(--line); padding-bottom:8px; }
+.stage .duty { margin:10px 0 0; font-size:13px; color:#374151; }
+.badge-current { display:inline-block; margin-left:8px; background:#e7f0ff; border:1px solid #74a9ff; color:var(--cur); border-radius:999px; padding:1px 10px; font-size:12px; font-weight:600; }
+.stage ul { margin:10px 0 0; padding-left:4px; list-style:none; }
+.stage li { margin:7px 0; font-size:13.5px; }
+.arrow { align-self:center; color:var(--brand); font-size:30px; font-weight:700; flex:none; }
+.notice { background:#fef2f2; border:1px solid #fca5a5; border-left:5px solid #ef4444; color:#991b1b; border-radius:10px; padding:12px 16px; margin:16px 0; font-size:14px; font-weight:600; }
+.dual { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:10px; margin:14px 0; }
+.dual-item { background:#fff; border:1px solid var(--line); border-left:4px solid var(--brand); border-radius:10px; padding:12px 14px; font-size:14px; }
+.dual-src { color:var(--muted); font-size:12px; margin-bottom:6px; }
+.notes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; }
+.notes-grid .card { margin:0; border-top:4px solid var(--brand); }
+.notes-grid .card h3 { border-bottom:1px solid var(--line); padding-bottom:8px; }
+.content { margin:12px 0 0; font-size:14px; }
+.code { font-family:Consolas,"Courier New",monospace; background:#111827; color:#f9fafb; padding:1px 7px; border-radius:5px; font-size:12.5px; }
+footer { margin-top:26px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>项目协作公约与工作流图解</h1>
+  <div class="meta">派工编号：<span id="meta-dispatch"></span> · 数据快照 2026-11-08 · 单文件自包含 · 零外部依赖 · 断网可用</div>
+</header>
+<nav id="tabbar">
+  <button class="tab active" data-tab="convention" id="tab-convention">Tab1 公约六条</button>
+  <button class="tab" data-tab="sdd" id="tab-sdd">Tab2 SDD 流程</button>
+  <button class="tab" data-tab="wiki" id="tab-wiki">Tab3 Wiki 同步</button>
+  <!-- Tab4 结构扩展位（spec 5.5 缺省不实现）：增补派工单示例时，此处加一个 .tab[data-tab=pdcase] 按钮 + main 内加一个 #view-pdcase 视图块即可，切换控制器无需改动 -->
+</nav>
+<main>
+  <section class="view active" id="view-convention"></section>
+  <section class="view" id="view-sdd"></section>
+  <section class="view" id="view-wiki"></section>
+</main>
+<footer id="foot"></footer>
+<script>
+'use strict';
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function hlText(text, words) {
+  let out = esc(text);
+  words.forEach(function (w) { const e = esc(w); out = out.split(e).join('<mark class="hl">' + e + '</mark>'); });
+  return out;
+}
+
+/* 数据层：唯一文案源（构建期抄录，运行期零文件读取），每个对象携带事实源标注 */
+const DATA = {
+  dispatchId: 'TASK-20261108-004',
+  articles: [
+    { index: '1', title: '全程 SDD',
+      essence: '先规格后动作，禁跳阶段；能力动态补齐，遇阻即学，学不透不进下一步。',
+      plain: '先写清"要做什么"再动手；每个阶段都从上一步的门禁结果出发，卡住了就去学，学明白才准走下一步。',
+      highlights: ['禁跳阶段', '遇阻即学'],
+      source: '.codeartsdoer/rule/项目协作公约.mdc · 快照 2026-11-08' },
+    { index: '2', title: '学习材料',
+      essence: '优先大厂高引框架，论文限近1年智能体，保真准，禁盲目堆砌。',
+      plain: '学就学靠谱的：框架认大厂高引，论文限近一年智能体方向；材料要保真、准确，宁缺毋滥不堆砌。',
+      highlights: ['禁盲目堆砌'],
+      source: '.codeartsdoer/rule/项目协作公约.mdc · 快照 2026-11-08' },
+    { index: '3', title: '仓库只读隔离',
+      essence: '存项目外，禁submodule/嵌套/复制入内；写必落盘+事实表，读禁写自传，伪完成即违规。',
+      plain: '参考仓库放在项目外面，不往项目里塞；写动作必须真落盘并同步事实表，光嘴上说完成不算数（伪完成违规）。',
+      highlights: ['写必落盘+事实表', '伪完成即违规'],
+      source: '.codeartsdoer/rule/项目协作公约.mdc · 快照 2026-11-08' },
+    { index: '4', title: '规矩层冻结',
+      essence: '本公约零改动（本次特批走五步准入）；新流程分装技能；Wiki同步走外部事件，禁自建定时。',
+      plain: '公约本身不许随手改；要加新流程，就做成技能走五步准入登记；Wiki 更新靠外部事件驱动，不自己造定时器。',
+      highlights: ['五步准入', '禁自建定时'],
+      source: '.codeartsdoer/rule/项目协作公约.mdc · 快照 2026-11-08' },
+    { index: '5', title: '执行节制',
+      essence: '派工硬预算（默认≤20分钟），超线暂停出码；子步写检查点；用户中断优先立即停；禁轮询，走事件。',
+      plain: '每单默认 20 分钟预算，到点就停并报告原因码；子步骤留检查点；派工人喊停立刻停；不轮询，靠事件通知。',
+      highlights: ['≤20分钟', '中断优先', '禁轮询'],
+      source: '.codeartsdoer/rule/项目协作公约.mdc · 快照 2026-11-08' },
+    { index: '6', title: '单一事实源',
+      essence: '状态只存事实表一处；冲突按规则>知识库>记忆>推断裁决；编码必审未过不完工。',
+      plain: '项目状态只记在事实表一处；文档打架按 规则>知识库>记忆>推断 裁决；写完的代码没过审查就不算完工。',
+      highlights: ['规则>知识库>记忆>推断', '编码必审'],
+      source: '.codeartsdoer/rule/项目协作公约.mdc · 快照 2026-11-08' }
+  ],
+  stages: [
+    { name: '规格（spec）', rules: ['遇阻即学 · 公约1', '材料保真 · 公约2'], isCurrent: true },
+    { name: '动作（design / tasks / 执行）', rules: ['≤20分钟预算 · 公约5', '落盘判定 · 公约3', '子步检查点 · 公约5'], isCurrent: false },
+    { name: '验证（门禁 / 审查 / 落盘确认）', rules: ['编码必审 · 公约6', '冒烟验证 · 防伪完成'], isCurrent: false }
+  ],
+  wikiNotes: [
+    { topic: '触发方式',
+      content: 'CodebaseWiki 同步为每日 1 次定时任务：由平台系统级定时（外部事件机制）触发，cron 表达式 30 7 * * *（每日 07:30），任务 ID c122980a，recurring=true、durable=true；执行时优先调用 repo-wiki-update-execution 技能完成一次 Wiki 同步更新。',
+      source: '公约第 4 条 + 任务2 运维确认（对话 2026-11-08，任务 ID c122980a）' },
+    { topic: '红线',
+      content: '禁自建定时、禁轮询：Agent 不得自行创建定时器或轮询循环，同步一律由外部事件触发。',
+      source: '公约第 4 条 / 第 5 条' },
+    { topic: '任务2 边界',
+      content: '任务2 的定时配置由外部机制（系统级定时）承接；本页面仅呈现机制说明，不执行任何配置动作。',
+      source: 'spec 5.4.1-2 · 派工单 TASK-20261108-004 任务2' },
+    { topic: '不阻塞派工',
+      content: 'Wiki 定时同步与常规派工并行：事件驱动触发，不占用派工执行窗口，超线熔断同样适用。',
+      source: '公约第 5 条 · 派工单任务2 约束' }
+  ]
+};
+
+const DUTY = {
+  '规格': '产出 spec / design / tasks 文档：定清"做什么"与验收口径，遇阻即学',
+  '动作': '按文档执行编码与配置：写必落盘、留检查点、单步不超预算',
+  '验证': '冒烟验证 + 编码必审 + 落盘回读：未过不完工、防伪完成'
+};
+function richText(s) {
+  let out = esc(s);
+  ['30 7 * * *', 'c122980a', '07:30', 'repo-wiki-update-execution'].forEach(function (k) {
+    out = out.split(k).join('<span class="code">' + k + '</span>');
+  });
+  return out;
+}
+function articleHtml(a) {
+  const chips = a.highlights.map(function (w) { return '<mark class="hl">' + esc(w) + '</mark>'; }).join(' ');
+  return '<article class="card" data-idx="' + a.index + '">'
+    + '<div class="card-head"><span class="no">' + a.index + '</span><h3>' + esc(a.title) + '</h3></div>'
+    + '<p class="essence"><b>原文要点：</b>' + hlText(a.essence, a.highlights) + '</p>'
+    + '<p class="plain"><b>通俗解读：</b>' + esc(a.plain) + '</p>'
+    + '<div class="hl-row"><span class="lbl">新规强化点</span>' + chips + '</div>'
+    + '<div class="src">事实源：' + esc(a.source) + '</div>'
+    + '</article>';
+}
+function stageHtml(s) {
+  const badge = s.isCurrent ? '<span class="badge-current">本单起始阶段</span>' : '';
+  const lis = s.rules.map(function (r) { return '<li><mark class="hl">' + esc(r) + '</mark></li>'; }).join('');
+  const duty = DUTY[s.name.slice(0, 2)] ? '<p class="duty">' + esc(DUTY[s.name.slice(0, 2)]) + '</p>' : '';
+  return '<section class="card stage' + (s.isCurrent ? ' current' : '') + '">'
+    + '<h3>' + esc(s.name) + badge + '</h3>'
+    + duty
+    + '<ul>' + lis + '</ul>'
+    + '</section>';
+}
+function wikiHtml(n) {
+  return '<section class="card" data-topic="' + esc(n.topic) + '">'
+    + '<h3>' + esc(n.topic) + '</h3>'
+    + '<p class="content">' + richText(n.content) + '</p>'
+    + '<div class="src">口径来源：' + esc(n.source) + '</div>'
+    + '</section>';
+}
+function renderConvention() { $('view-convention').innerHTML = '<div class="cards-grid">' + DATA.articles.map(articleHtml).join('') + '</div>'; }
+function renderSdd() {
+  const flow = DATA.stages.map(stageHtml).join('<div class="arrow">→</div>');
+  $('view-sdd').innerHTML = '<h2>主链路（单向推进）</h2>'
+    + '<div class="flow">' + flow + '</div>'
+    + '<div class="notice">禁跳阶段：上一阶段门禁未过不得进入下一阶段；不存在绕过验证环节的捷径路径（公约第 1 条）。</div>'
+    + '<h2>本单实例（' + DATA.dispatchId + '）</h2>'
+    + '<div class="dual">'
+    + '<div class="dual-item"><div class="dual-src">口径一 · 派工单 / 规格（spec 5.3.1-3）</div>' + DATA.dispatchId + ' 当前处于规格阶段（流程起点，快照语义）</div>'
+    + '<div class="dual-item"><div class="dual-src">口径二 · 生成时点事实（2026-11-08）</div>本页生成于执行阶段（ST4 编码执行期）；阶段推进实况以 notes/项目事实表.md 为准</div>'
+    + '</div>'
+    + '<div class="src">口径冲突裁决：规则 > 知识库 > 记忆 > 推断（公约第 6 条）</div>';
+}
+function renderWiki() {
+  $('view-wiki').innerHTML = '<div class="notes-grid">' + DATA.wikiNotes.map(wikiHtml).join('') + '</div>'
+    + '<div class="notice">本页零定时产物：不创建定时、不含轮询脚本、无自动触发逻辑（公约第 4 / 5 条）。</div>';
+}
+
+/* 交互层：3 状态 6 迁移 + 重复点击幂等；切换 = 移除旧 active + 设置新 active，无页面刷新 */
+const TAB_IDS = ['convention', 'sdd', 'wiki'];
+function activateTab(name) {
+  if (TAB_IDS.indexOf(name) < 0) { return; }
+  TAB_IDS.forEach(function (n) {
+    const on = n === name;
+    const v = $('view-' + n);
+    const b = $('tab-' + n);
+    if (on) { v.classList.add('active'); b.classList.add('active'); }
+    else { v.classList.remove('active'); b.classList.remove('active'); }
+  });
+}
+function bindTabs() {
+  const bar = $('tabbar');
+  bar.addEventListener('click', function (e) {
+    const t = e.target.closest('[data-tab]');
+    if (t) { activateTab(t.getAttribute('data-tab')); }
+  });
+}
+
+renderConvention();
+renderSdd();
+renderWiki();
+$('foot').innerHTML = '派工编号 ' + DATA.dispatchId + ' · 本页为任务3 交付物 · 数据快照 2026-11-08 · 事实源：rule/项目协作公约.mdc（Tab1）· notes/项目事实表.md（Tab2 实况）· 任务2 运维确认 2026-11-08（Tab3）';
+$('meta-dispatch').textContent = DATA.dispatchId;
+bindTabs();
+</script>
+</body>
+</html>

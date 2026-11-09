@@ -12,3 +12,6 @@ windows-git-powershell-quirks=true
 self-contained-html-verify=true
 web-content-scraping=true
 sdd-ref-distill=true
+repo-wiki-update-execution=true
+cron-scheduled-task-config=true
+ruff-review=true

@@ -16,8 +16,8 @@ project: Date
 severity: medium
 quality_score: 86
 utility_score: 95
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-08T23:47:22
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-dispatch-order-conflict-gating, 2026-11-07-sdd-spec-stage-fact-verification-and-scope-bounding, 2026-11-07-stage1-evidence-baseline-and-halt-reporting]

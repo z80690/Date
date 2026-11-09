@@ -2,9 +2,11 @@
 name: windows-git-powershell-quirks
 description: >-
   本机 Windows+PowerShell 5.1 环境的 Git/编码/Edit 工具实战怪癖与修复模式：git
-  中文提交信息乱码的字节级验证、.gitignore BOM/CRLF 静默失效、PS5.1 语法陷阱、Edit 工具 mtime
-  冲突恢复、长任务超时、Doom Loop 双形态遵从协议。凡涉及 git 提交/验证、PowerShell
-  命令构造、文件编辑冲突、工具连续重复调用被禁/平台保护警告时使用。
+  中文提交信息乱码的字节级验证、.gitignore BOM/CRLF 静默失效、PS5.1 语法陷阱与 ParserError 整块不执行、外部 CLI
+  子进程 UTF-8 输出被 ANSI 解码致中文失真（[Console]::OutputEncoding 修复）、Edit 工具 mtime
+  冲突恢复、长任务超时、bash 命令文本内嵌敏感检测正则被平台拦截（报"解析目标路径失败"）、Doom Loop 双形态遵从协议、"文件是否被本会话改动"的
+  SHA256 指纹基线裁决口径。凡涉及 git 提交/验证、PowerShell
+  命令构造、文件编辑冲突、外部工具输出乱码、命令被平台拦截/解析目标路径失败、工具连续重复调用被禁/平台保护警告时使用。
 ---
 
 # Windows / PowerShell / Git 实战怪癖与修复
@@ -12,15 +14,29 @@ description: >-
 ## PowerShell 5.1 语法陷阱
 - 禁用 `&&`（不支持），用 `;` 顺序执行
 - 空 PSCustomObject 的 `.Count` 返回 null：判空用 `$x.PSObject.Properties.Name.Count`
-- `[Console]::OutputEncoding=UTF8` 会在持久会话中持续生效，污染后续命令输出——设置过一次后，后续乱码判断要考虑此因素
+- `[Console]::OutputEncoding=UTF8` 会在持久会话中持续生效，污染后续命令输出——设置过一次后，后续乱码判断要考虑此因素。**反向用途（2026-11-09 实证）**：外部 CLI 以 UTF-8 输出中文（如 Ruff 的 E902 诊断"系统找不到指定的文件"），PS 5.1 子进程默认按 ANSI 解码，落盘报告/日志中文失真为乱码——在被审脚本开头加 `[Console]::OutputEncoding=[System.Text.Encoding]::UTF8`（try/catch 包裹）即修复；修复后须复验原裁决场景不受影响（修复只动显示层，裁决逻辑不应变化）
 - 原生命令 stderr 会被包装成 NativeCommandError 显示（非真实失败）；长命令输出走 `| Select-Object -Last N` 会缓冲到结束才落盘
 - Get-Content 与 Select-String 编码行为不一致（2026-11-08 实测）：同一 UTF-8（无 BOM）中文文件，`Get-Content` 默认按系统 ANSI 解码→控制台显示乱码，但 `Select-String` 对同文件可正确匹配中文模式并计数。纪律：①验证/展示中文文件内容一律加 `-Encoding UTF8`；②不要因 Get-Content 乱码断定文件损坏——文件本体可能正常，先用 Select-String 关键词命中计数交叉确认再定性
+- PowerShell **ParserError=整块不执行**（2026-11-09 实证）：一条长命令中引号高嵌套（如双引号字符串数组内再嵌反引号转义）报解析错误时，**包括块内前段"创建文件"在内的所有语句都没跑**——后续步骤报"文件不存在"（如外部工具 E902）是假象，根因在上游解析失败。定位纪律：见"找不到文件"类报错，先怀疑前序命令是否整块未执行（把创建段拆成独立短命令重跑），勿直接去排查目标路径；复杂拼接拆为"创建段/验证段"两条命令，禁一锤子长命令
+- `bash` 工具通道**按会话实测判别，勿按记忆盲写语法**（2026-11-08 两次实测相反：一例 `bash --version` 返回 wsl 乱码=WSL 通道；一例 `ls -la` 报 Get-ChildItem 参数绑定错误=PowerShell 通道，同一会话内 `git status` 与 `Get-Item | Select-Object` 语法均正常）。探针判别法：跑一条低成本命令看报错形态——报错含 Get-ChildItem/参数绑定=PowerShell 通道（直接写 PS5.1 语法）；wsl 乱码=WSL 通道（盘符路径写 /mnt/c/）。WSL 通道下，凡外部流程约定"写 .sh 后 bash 执行"的步骤（如系统技能的 _wiki_cmd.sh 模式），直接改写为等价 .ps1 后 `powershell -ExecutionPolicy Bypass -File <脚本>` 执行，命令行保持短形式
+- `git diff -U 6`（-U 与数字间有空格）中 "6" 被 git 解析为 revision 报 `fatal: bad revision '6'`：短选项带值必须连写 `-U6`（或 `--unified=6`）
+- 原生命令（python/git 等）成败判定用 `$LASTEXITCODE -ne 0`，勿依赖 `$?`——stderr 有输出即把 `$?` 翻成 False 产生假失败（脚本报 traceback 时两者一致，但纯警告走 stderr 时 `$?` 会误判）
 
 ## git 中文提交信息乱码（数据级 vs 显示级先分清）
 - commit -m 中文经命令行传输会存成乱码字节；-F 文件也可能因读取编码出错
 - **验证真伪必须字节级**：用 .NET Process（StandardOutputEncoding=UTF8）直读 `git cat-file commit HEAD`，落文件后 Read 检查；控制台/Out-File/管道路径全是污染源，不可作依据
 - 修复：[IO.File]::WriteAllText 写提交信息文件，git commit --amend -F 该文件
 - 从 git 历史字节级检出旧版文件（对比测试/退役归档场景，2026-11-08 实证）：PowerShell 管道与 `>` 重定向会按编码转码污染内容，用 `cmd /c "git show HEAD:<repo路径> > <目标文件>"`（cmd 重定向=字节流）检出；检出后以字节数+行数与预期交叉核对，来源版本号（`git log -1 --format=%h`）记录在档
+
+## bash 命令文本内嵌敏感模式触发平台拦截（2026-11-09 实证，两次复现）
+- 现象：bash 命令**文本里**包含敏感模式字面量——即使只是引号内、用于扫描其他文件内容的检测正则（如 `while($true)`、`Start-Process`、`Invoke-WebRequest`、watch/轮询族）——命令不执行，报"从命令中解析目标路径失败"：平台命令安全检测把检测模式本身当成了可疑命令
+- 解法（职责分离）：执行类操作留 bash；**内容模式扫描一律改走专用 Grep 工具**（不经过命令通道）；扫描结论需回填 %TEMP% 留痕文件时用 Edit/write 工具补录，禁把敏感正则字面量塞回 bash 命令
+- 识别特征：命令含多支路正则字符串且报错为"解析目标路径失败"（非 PS 语法错误形态、非参数绑定错误）→ 优先怀疑平台拦截而非语法问题，勿盲目原样重试
+
+## "文件是否被本会话改动"的裁决口径（SHA256 指纹基线，2026-11-09 实证）
+- git status 的 M 状态可能是**历史遗留**（特性开始前已存在），git diff 相对 HEAD 的变更不能证明"是本会话改的"——直接拿 git status/diff 当零改动证据会被历史脏状态误导
+- 权威证据：任务起点固化关键文件指纹基线（Get-FileHash SHA256+字节数，落 %TEMP% 留痕）→ 收尾同哈希复验，一致=本会话零触碰；跨任务沿用此口径
+- 两者并用时在留痕中如实分工：指纹=本会话改动裁决；git diff=相对上次提交的仓库状态（历史遗留 M 注明"基线前已存在"）
 
 ## 提交范围裁剪与双向核对（特性收工提交，2026-11-08 实战）
 

@@ -4,19 +4,19 @@ title: 考教分离下作答方接触 key 的结构化自披露与独立性保�
 category: agent-ops
 nature: decision
 created_at: 2026-11-08T01:52:44
-updated_at: 2026-11-08T01:52:44
+updated_at: 2026-11-08T02:20:00
 tags: [考教分离, 独立性保全, 自披露, 考核流程, 审计留痕]
 keywords: [作答方接触key, 独立性声明, 接触范围披露, 盲评, 批改包自检, 泄露事件, 废卷重考, 材料原文依据, 批改官裁定, 题号对照抽验]
 problem_patterns: [作答方因前置核验任务（如题号-key对照抽验）在作答前接触了key的部分内容，作答后无法自证未依赖key, 批改方发现接触痕迹后无既定处置规则，容易引发整卷作废或被质疑放水, 派工清单中要求接触key的核验步骤未被识别为独立性风险，事后才暴露]
 source_sessions: [ses_e48ebbb57ffeJeA6mFP69qRHLs]
 project: Date
 severity: medium
-quality_score: 88
+quality_score: 91
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [agent-ops/2026-11-07-worker-grader-exam-gate-pattern.md, workflow/2026-11-07-independent-exam-grading-rubric.md, workflow/2026-11-07-exam-question-authoring-contract.md]
+related_experiences: [agent-ops/2026-11-07-worker-grader-exam-gate-pattern.md, workflow/2026-11-07-independent-exam-grading-rubric.md, workflow/2026-11-07-exam-question-authoring-contract.md, agent-ops/2026-11-08-examiner-precheck-evidence-parallel-audit.md]
 ---
 
 # 考教分离下作答方接触 key 的结构化自披露与独立性保全

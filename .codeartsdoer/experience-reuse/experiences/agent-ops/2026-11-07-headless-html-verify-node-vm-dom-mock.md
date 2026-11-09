@@ -4,10 +4,10 @@ title: 无 GUI 回读环境下验证 HTML 交付物：静态断言 + Node vm DOM
 category: agent-ops
 nature: technique
 created_at: 2026-11-07T10:31:53
-updated_at: 2026-11-07T17:40:33
+updated_at: 2026-11-08T09:52:05
 tags: [验证流水线, 自包含HTML, DOM mock, Node vm, 无头验证]
-keywords: [HTML 验证, browser 无回读, vm.runInNewContext, DOM mock 冒烟, 语法编译检查, 断网自包含断言, 覆盖度清单, 敏感词误报, mock 先修纪律, 交互断言]
-problem_patterns: [Agent 产出 HTML 页面后无法验证渲染与交互是否正常，内置 browser 只受理打开请求、读不到内容/控制台/DOM, 验证脚本冒烟报 null 异常时误判为页面代码缺陷，实为 mock 未预注册页面真实 id, 敏感信息正则扫描初报 FAIL 未回读命中上下文就返工，实为 API 标识符误报]
+keywords: [HTML 验证, browser 无回读, vm.runInNewContext, DOM mock 冒烟, 语法编译检查, 断网自包含断言, 覆盖度清单, 敏感词误报, mock 先修纪律, 交互断言, 冒烟假通过]
+problem_patterns: [Agent 产出 HTML 页面后无法验证渲染与交互是否正常，内置 browser 只受理打开请求、读不到内容/控制台/DOM, 验证脚本冒烟报 null 异常时误判为页面代码缺陷，实为 mock 未预注册页面真实 id, 敏感信息正则扫描初报 FAIL 未回读命中上下文就返工，实为 API 标识符误报, mock 表人工预注册且脚本动态拼接 id 时冒烟全绿但真实运行半态空白]
 source_sessions: [ses_e4c37b048ffeqGK3zYLwRrc6eC]
 project: Date
 severity: medium
@@ -17,7 +17,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-07-browser-tool-open-success-no-content-read, 2026-11-07-single-command-batch-assertion-inventory, 2026-11-07-sensitive-credential-file-commit-gate-env-block]
+related_experiences: [2026-11-07-browser-tool-open-success-no-content-read, 2026-11-07-single-command-batch-assertion-inventory, 2026-11-07-sensitive-credential-file-commit-gate-env-block, 2026-11-08-dom-mock-id-set-drift-false-pass, 2026-11-08-edge-headless-screenshot-real-render-verify]
 ---
 
 # 无 GUI 回读环境下验证 HTML 交付物：静态断言 + Node vm DOM mock 冒烟替代真浏览器
@@ -48,7 +48,7 @@ Agent 需要产出自包含 HTML 页面（流程图/可视化看板/说明页）
 
 配套纪律：
 
-- **mock FAIL 先修 mock**：冒烟报 null 异常时，第一怀疑对象是 mock 未预注册页面真实 id，补齐后重跑；只有 mock 齐备后仍失败才判定为页面缺陷。
+- **mock FAIL 先修 mock（边界修订 2026-11-08）**：仅适用于"页面有而 mock 漏注册"的显式 null 异常方向——冒烟报 null 异常时，第一怀疑对象是 mock 未预注册页面真实 id，补齐后重跑；只有 mock 齐备后仍失败才判定为页面缺陷。反方向漂移（mock 人工预注册了页面实际不存在的 id，如动态拼接 `$('tab-'+n)`）不报错而是静默假通过，须先做页面真实 id 集合与 mock 预注册集合的双向比对分流，见 related `2026-11-08-dom-mock-id-set-drift-false-pass`。
 - 临时验证脚本（`_*.js`）跑完即删，不入库不提交。
 - 验证结论以"只增不改"方式追加写入任务的留痕文件，形成可审计证据链。
 

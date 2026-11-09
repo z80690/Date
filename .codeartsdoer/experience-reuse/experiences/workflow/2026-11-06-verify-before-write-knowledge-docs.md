@@ -12,8 +12,8 @@ source_sessions: [ses_e4f704706ffe9zCUbnmwlEAtH8]
 project: Date
 severity: medium
 quality_score: 85
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-08T02:17:44
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-verify-claimed-prerequisites-before-research, 2026-11-06-project-knowledge-provenance-format, 2026-11-06-doc-repo-zero-extraction-knowledge-gen]

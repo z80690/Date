@@ -4,19 +4,19 @@ title: 考核链路事件流水纪律：六字段+按轮次隔离+先记行后�
 category: workflow
 nature: methodology
 created_at: 2026-11-08T01:52:44
-updated_at: 2026-11-08T02:05:50
+updated_at: 2026-11-08T02:20:00
 tags: [事件流水, 考核链路, 留痕纪律, 过程层判定层, 多角色协作]
 keywords: [事件流水, 六字段表格, 轮次隔离, 先记行后派工, 完成事件, 执行方追加, 四事件链, 投递序, 过程层, 门禁证据, 代记标注, 放行条件]
 problem_patterns: [考核链路跨主智能体与多个子智能体协作，事件留痕散落在会话叙述中，门禁判定时无证据链可复核, 所有事件由主智能体一手包办，完成事件失去执行方自证价值，无法证明执行方真实完成, 门禁结论与过程事实混写一处，复核时既难找事实又难找判定依据]
 source_sessions: [ses_e48ebbb57ffeJeA6mFP69qRHLs]
 project: Date
 severity: medium
-quality_score: 88
+quality_score: 90
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [agent-ops/2026-11-08-event-row-append-concat-false-missing.md, workflow/2026-11-07-sop-event-nesting-sequence-diagram-hard-order.md, agent-ops/2026-11-07-event-trigger-timing-clause-pattern.md]
+related_experiences: [agent-ops/2026-11-08-event-row-append-concat-false-missing.md, workflow/2026-11-07-sop-event-nesting-sequence-diagram-hard-order.md, agent-ops/2026-11-07-event-trigger-timing-clause-pattern.md, agent-ops/2026-11-08-examiner-precheck-evidence-parallel-audit.md]
 ---
 
 # 考核链路事件流水纪律：六字段+按轮次隔离+先记行后派工+完成事件由执行方追加

@@ -4,14 +4,14 @@ title: 配置/SOP 改造生效验收：首跑返回摘要按新 SOP 步骤逐条
 category: agent-ops
 nature: methodology
 created_at: 2026-11-08T01:52:44
-updated_at: 2026-11-08T01:52:44
+updated_at: 2026-11-08T02:20:00
 tags: [改造验收, 行为指纹, SOP升级, 可运行验证, 子智能体]
 keywords: [配置改造验收, 首跑实测, SOP步骤对齐, 行为指纹比对, 新旧行为差异, 返回摘要自述, 落盘不等于生效, 可运行验证轮, 持久化子智能体, 改造门禁]
 problem_patterns: [改造子智能体SOP后仅核对文件落盘与静态清单即宣布完成，运行时实际仍按旧SOP执行无人察觉, 验收只验"能跑"不区分新旧行为，新增步骤未发生、旧形态未消失都发现不了, listSkills 等静态清单查不到改造对象，找不到可行的生效验证手段]
 source_sessions: [ses_e48ebbb57ffeJeA6mFP69qRHLs]
 project: Date
 severity: medium
-quality_score: 85
+quality_score: 89
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0

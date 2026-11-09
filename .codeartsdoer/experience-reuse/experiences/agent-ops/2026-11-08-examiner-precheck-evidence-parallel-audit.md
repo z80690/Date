@@ -4,19 +4,19 @@ title: 子智能体SOP前置自检证据化：门禁语义直读+旧轮事件链
 category: agent-ops
 nature: methodology
 created_at: 2026-11-08T02:01:55
-updated_at: 2026-11-08T02:05:50
+updated_at: 2026-11-08T02:20:00
 tags: [SOP自检, 子智能体, 证据清单, 考核出题, 并行实查]
 keywords: [前置自检, 门禁放行, 结论语义, 事件链完整, 旧轮闭环, 材料实读, 素材范围锁定, 证据清单, 并行读取, 存在性语义分层, 执行方, 派工声称态]
 problem_patterns: ["SOP 含前置自检步骤时若只凭派工单声称或只做文件存在性检查即动笔，可能带着未验证前置执行", "子智能体隔离会话无法访问主智能体会话状态，前置状态必须用磁盘证据自行重建", "门禁文件存在但结论为驳回/中间态时，存在性检查被误判为前置已满足"]
 source_sessions: [ses_e492b172cffeS0u6qRrZ50JFT6]
 project: Date
 severity: medium
-quality_score: 86
+quality_score: 90
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [workflow/2026-11-07-exam-question-authoring-contract.md, workflow/2026-11-08-exam-event-ledger-structure-ordering-discipline.md, workflow/2026-11-06-design-stage-self-serve-evidence-decisions.md, workflow/2026-11-07-stage1-evidence-baseline-and-halt-reporting.md, agent-ops/2026-11-07-worker-grader-exam-gate-pattern.md]
+related_experiences: [workflow/2026-11-07-exam-question-authoring-contract.md, workflow/2026-11-08-exam-event-ledger-structure-ordering-discipline.md, workflow/2026-11-06-design-stage-self-serve-evidence-decisions.md, workflow/2026-11-07-stage1-evidence-baseline-and-halt-reporting.md, agent-ops/2026-11-07-worker-grader-exam-gate-pattern.md, agent-ops/2026-11-08-examinee-key-contact-disclosure-independence.md]
 ---
 
 # 子智能体SOP前置自检证据化：门禁语义直读+旧轮事件链核对+材料实读，一轮并行实查
@@ -57,7 +57,7 @@ related_experiences: [workflow/2026-11-07-exam-question-authoring-contract.md, w
 - 不适用：主智能体自身（其即门禁判定义务人，判定与执行一体）；无门禁、无前置的轻量派工（自检开销大于价值）。
 - 边界：自检只证前置成立，不保证产出质量（产出质量由产物自检与下游验收环节保证）；执行方前置证据重建不替代门禁判定——门禁结论仍由判定义务方落盘。
 - 平台：实证于 CodeArts（码道）平台主子智能体 Task 派工机制（子代理隔离会话）；模式为通用 Agent 模式，可迁移。
-- 相邻经验分工：出题派工契约格式（派工方视角五要素）见 workflow/2026-11-07-exam-question-authoring-contract；事件链完整性速查与流水纪律见 workflow/2026-11-08-exam-event-ledger-structure-ordering-discipline；证据清单并行实查的通用模式见 workflow/2026-11-06-design-stage-self-serve-evidence-decisions——本条是其出题场景实例化，独有点是三分类前置检查单与"存在性/语义"分层判定。
+- 相邻经验分工：出题派工契约格式（派工方视角五要素）见 workflow/2026-11-07-exam-question-authoring-contract；事件链完整性速查与流水纪律见 workflow/2026-11-08-exam-event-ledger-structure-ordering-discipline；证据清单并行实查的通用模式见 workflow/2026-11-06-design-stage-self-serve-evidence-decisions——本条是其出题场景实例化，独有点是三分类前置检查单与"存在性/语义"分层判定；考教分离下作答方接触评分 key 的自披露与独立性处置见 agent-ops/2026-11-08-examinee-key-contact-disclosure-independence，其与本条角色边界互补：执行方实读已三查学习材料属职责内无需披露，作答方接触评分 key 内容须走披露路径。
 
 ## Evidence or Examples
 

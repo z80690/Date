@@ -4,18 +4,18 @@ title: 子代理发现职责范围外缺陷：上报+附建议处置，禁越权
 category: agent-ops
 nature: technique
 created_at: 2026-11-08T01:52:44
-updated_at: 2026-11-08T01:52:44
+updated_at: 2026-11-08T02:20:00
 tags: [职责边界, 多智能体协作, 缺陷上报, 并发写防护, 子代理纪律]
 keywords: [上报事项, 越权代改, 职责分离, 缺陷归属, 并发写冲突, 处置建议, 先例修复, 复验, 升级路径, 返回摘要模板]
 problem_patterns: [子代理发现共享产物或他人产物的缺陷后顺手修复，与他人并发写冲突或破坏职责边界的审计责任划分, 发现了职责外缺陷但返回摘要没有表达出口，缺陷漂移到下游阶段才暴露, 主智能体收到缺陷上报后不亲验直接转述，修复动作缺少事实核对]
 source_sessions: [ses_e48ebbb57ffeJeA6mFP69qRHLs]
 project: Date
 severity: low
-quality_score: 82
+quality_score: 87
 hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
-tier: A
+tier: S
 related_experiences: [agent-ops/2026-11-08-event-row-append-concat-false-missing.md, agent-ops/2026-11-07-worker-grader-exam-gate-pattern.md, workflow/2026-11-06-execution-trace-three-questions-protocol.md]
 ---
 
