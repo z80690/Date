@@ -4,7 +4,7 @@ title: WSL bash 子进程中 Windows 盘符路径被按相对路径拼接报 Fil
 category: agent-ops
 nature: pitfall
 created_at: 2026-11-09T13:56:12
-updated_at: 2026-11-09T13:56:12
+updated_at: 2026-11-10T00:39:14
 tags: [路径改写, WSL, bash子进程, FileNotFoundError, 环境适配]
 keywords: [/mnt/c, 盘符路径, WSL bash, 相对路径拼接, extract_symbols, reverse_lookup, 脚本命令文件, 路径格式转换, can't open file, 环境探测]
 problem_patterns:
@@ -19,7 +19,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-08-wiki-update-script-behavior-contract-blindspots, 2026-11-06-powershell-inline-json-escaping-python-fallback, 2026-11-07-powershell-command-construction-limits-script-fallback]
+related_experiences: [2026-11-08-wsl-bash-mount-c-path-contract, 2026-11-08-wiki-update-script-behavior-contract-blindspots, 2026-11-06-powershell-inline-json-escaping-python-fallback, 2026-11-07-powershell-command-construction-limits-script-fallback]
 ---
 
 # WSL bash 子进程中 Windows 盘符路径被按相对路径拼接：命令文件内绝对路径统一改写 /mnt/c/ 前缀
@@ -57,6 +57,7 @@ WSL 不会自动把命令参数中的 Windows 盘符路径（`C:/...`）映射�
 
 - 适用：bash 子进程运行在 WSL、命令参数或脚本内容中含 Windows 盘符路径的任何场景（Python 脚本调用、git 命令、文件操作类 CLI 通用）；同一命令模板跨 PowerShell/WSL 运行时复用的场景。
 - 不适用：bash 本身运行在 Windows 原生环境（盘符路径本就是正确格式，改写反而破坏）；路径以 `/mnt/c/` 或 `/` 开头的原生 POSIX 形态；WSL 内部启动的进程间传递已映射路径的场景。
+- 与相邻经验分工：2026-11-08-wsl-bash-mount-c-path-contract 管通道形态判别（吞命令 vs 已执行）与 ps1 降级规避，报错形态为 cd 行级错误（`line N: cd: C:/...`）；本条管参数路径拼接指纹与命令文件全量改写纪律，报错形态为 FileNotFoundError 拼接串（`can't open file '/mnt/c/<工作目录>/C:/...'`）——同一根因（WSL 不映射盘符路径）的两种症状面，按报错形态选条目。
 - 平台边界：实证载体为 Windows 11 + WSL bash 子进程 + CodeArts Agent 沙箱"写命令文件再执行"模式；`/mnt/<盘符>/` 映射规则为 WSL 通用约定，不依赖特定 Agent 平台。
 - 运行时差异：主 Agent 写文件与子进程执行分属两层——写文件工具按 Windows 路径写盘不受影响，仅 bash 子进程内的路径解释受本坑约束。
 

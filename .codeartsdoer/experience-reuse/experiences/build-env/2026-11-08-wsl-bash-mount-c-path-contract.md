@@ -4,7 +4,7 @@ title: WSL bash 通道的可执行分支：Windows 盘符路径改写 /mnt/c/ �
 category: build-env
 nature: technique
 created_at: 2026-11-08T03:26:16
-updated_at: 2026-11-08T03:33:09
+updated_at: 2026-11-10T00:39:14
 tags: [WSL, bash通道, 路径契约, 环境怪癖, 脚本执行]
 keywords: [WSL bash, /mnt/c, 盘符路径, _wiki_cmd.sh, cd No such file, 通道形态判别, wsl 前缀乱码, UTF-16 泄漏, 路径改写, .sh 流程保留]
 problem_patterns:
@@ -19,7 +19,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-08-wsl-bash-channel-mismatch-ps1-fallback, 2026-11-06-shell-session-state-not-persistent]
+related_experiences: [2026-11-08-wsl-bash-channel-mismatch-ps1-fallback, 2026-11-09-wsl-bash-drive-letter-path-relativized, 2026-11-06-shell-session-state-not-persistent]
 ---
 
 # WSL bash 通道的可执行分支：Windows 盘符路径改写 /mnt/c/ 即可保留 .sh 约定流程
@@ -57,6 +57,7 @@ Windows 环境下执行系统 skill 的既定流程：把多条长命令写入 `
 
 - 适用：Windows 机器、bash 解析到 WSL 的 Agent 环境，且脚本命令在 WSL 内有 POSIX 等价语义（cd/python/git 等通用命令）的场景；路径契约对脚本中任意 Windows 绝对路径通用。
 - 不适用：吞命令形态的通道（见 2026-11-08-wsl-bash-channel-mismatch-ps1-fallback 的 ps1 降级路径）；bash 实为 git-bash 的机器（盘符路径原样可用，无需改写）；命令依赖 Windows 原生二进制且无 WSL 等价物时。
+- 与相邻经验分工：2026-11-09-wsl-bash-drive-letter-path-relativized 管参数路径拼接指纹（`python: can't open file '/mnt/c/<工作目录>/C:/...'`）与命令文件全量改写纪律；本条管通道形态判别与 .sh 流程保留，报错形态为 cd 行级错误（`line N: cd: C:/...`）——同一根因（WSL 不映射盘符路径）的两种症状面，按报错形态选条目。
 - 平台边界：以 CodeArts Agent 沙箱 bash 工具为实证载体；WSL 的盘符挂载约定（/mnt/<盘符>）为 WSL 通用行为，非本机专属。
 
 ## Evidence or Examples
