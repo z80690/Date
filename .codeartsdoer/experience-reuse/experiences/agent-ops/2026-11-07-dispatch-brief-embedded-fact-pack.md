@@ -12,8 +12,8 @@ source_sessions: [ses_e4cb3b6f5ffeItlrKDOwdybcjW]
 project: Date
 severity: medium
 quality_score: 88
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-12T20:16:43
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-07-agents-md-persistent-subagent-format-contract, 2026-11-07-design-inferred-value-writeback-loop, 2026-11-07-minimal-instance-format-probing]

@@ -1,0 +1,97 @@
+{
+ "g2": {
+  "decision": "嵌入式 5 项全用；攻防 4 项全用现成",
+  "gate_status": "已同意",
+  "selection": {
+   "embedded": [
+    "78/xiaozhi-esp32",
+    "xinnan-tech/xiaozhi-esp32-server",
+    "renode/renode",
+    "espressif/esp-idf",
+    "qemu/qemu"
+   ],
+   "security": [
+    "digininja/DVWA",
+    "WebGoat/WebGoat",
+    "zaproxy/zaproxy",
+    "docmirror/dev-sidecar"
+   ]
+  }
+ },
+ "g6": {
+  "simulator_up": {
+   "pass": true,
+   "detail": "模拟器宿主 Windows 本机进程启动；协议对等方式；不改开源源码"
+  },
+  "register_online": {
+   "pass": true,
+   "detail": "注册（能力声明三要素齐备）+ 上线声明 + 心跳；底座核心零改动"
+  },
+  "loop_closed": {
+   "pass": true,
+   "detail": "注册+下发完整任务+收到结果事件=跑通闭环（5.3.1 规则 2）；事件按序回传（规则 9）"
+  },
+  "crash_5s_interrupt": {
+   "pass": true,
+   "detail": "崩溃后心跳超时→中断标记+通知；中断任务=['ca09f19c8cb344de8e0dbae72647dede']（5.3.3 异常 2/4.2.2）"
+  },
+  "isolation_after_crash": {
+   "pass": true,
+   "detail": "单实例异常不影响底座其他功能（4.2.1）"
+  },
+  "recheck_not_dangling": {
+   "pass": true,
+   "detail": "重查无结果→提示回执缺失、状态保持执行中、重查痕迹记录（4.2.3/5.3.3 异常 3）"
+  },
+  "translate_fail_contained": {
+   "pass": true,
+   "detail": "未知动作被能力校验拒绝（含能力清单）；底座持续可用（5.3.3 异常 4）"
+  },
+  "base_alive_after_fail": {
+   "pass": true,
+   "detail": "失败任务后底座受理链正常"
+  }
+ },
+ "g7": {
+  "defense_pairs_written": {
+   "pass": true,
+   "detail": "四个维度防御配对研究产出落盘（仅特征归纳与检测思路，无可照搬攻击步骤，4.3.4/4.3.5）"
+  },
+  "prepare_pipeline": {
+   "pass": true,
+   "detail": "四步流水线执行（仅获取/安装/配置/就绪校验四类动作）；Tor 就绪=未就绪，边车就绪=就绪，靶场获取=成功（5.2.3 异常 4 口径）"
+  },
+  "four_dimensions_defined": {
+   "pass": true,
+   "detail": "四维度各≥1 场景，七项数据约束齐备（6.5）；维度越界请求被拒已由单测覆盖（5.5.3 异常 4）"
+  },
+  "four_dimension_execution": {
+   "pass": true,
+   "detail": "全链路执行记录：[{\"scenario_id\": \"s_comm_01\", \"dimension\": \"通讯隐匿\", \"status\": \"REJECTED\", \"code\": \"PREPARE_NOT_READY\", \"message\": \"第一道防线联动：环境准备项『tor』就绪自检未通过，对应任务一律拒绝启动（5.2.1 规则 10）\", \"rejection_valid\": true}, {\"scenario_id\": \"s_server_01\", \"dimension\": \"服务器隐匿\", \"status\": \"成功\", \"completed\": true, \"defense_ref\": \"defense_02\"}, {\"scenario_id\": \"s_fund_01\", \"dimension\": \"资金安全\", \"status\": \"成功\", \"completed\": true, \"defense_ref\": \"defense_03\"}, {\"scenario_id\": \"s_tor_01\", \"dimension\": \"Tor浏览器测试\", \"status\": \"REJECTED\", \"code\": \"PREPARE_NOT_READY\", \"message\": \"第一道防线联动：环境准备项『tor』就绪自检未通过，对应任务一律拒绝启动（5.2.1 规则 10）\", \"rejection_valid\": true}]；闭环场景与拒绝路径验证（Tor/靶场官方渠道不可达→就绪未过→拒绝启动=红线正确行为，5.2.1 规则 10、5.2.3 异常 4）；待渠道可达后补跑拒绝场景即补闭环"
+  },
+  "independent_catalog": {
+   "pass": true,
+   "detail": "攻防为独立主类目、与嵌入式平级（5.5.1 规则 9）"
+  },
+  "intercept_log_present": {
+   "pass": true,
+   "detail": "拦截日志样本 18 条（含历史绕过尝试）"
+  }
+ },
+ "g8": {
+  "dfx_perf_and_stub": {
+   "pass": true,
+   "detail": "挂载 0.0ms（≤1s）树查询 0.0ms（≤500ms）；测试桩类目挂载前后 core 目录文件快照一致=零改核心（4.1/4.4.3/4.5.1/4.5.2）"
+  },
+  "deliverable_synced": {
+   "pass": true,
+   "detail": "功能说明与实现一致核对在案；恢复边界明示（8.5）"
+  },
+  "gate_g4": {
+   "stage": "acceptance",
+   "status": "等待确认",
+   "artifact_ref": "04_测试验证/final_summary.json"
+  }
+ },
+ "all_pass": true
+}

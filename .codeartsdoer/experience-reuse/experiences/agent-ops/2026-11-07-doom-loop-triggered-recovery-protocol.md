@@ -4,7 +4,7 @@ title: 验证工具触发 Doom Loop 禁用后的处置协议：零工具调用�
 category: agent-ops
 nature: technique
 created_at: 2026-11-07T09:38:26
-updated_at: 2026-11-07T09:38:26
+updated_at: 2026-11-11T02:39:00
 tags: [Doom Loop, 工具禁用, 验证采信, 处置协议, 验证焦虑]
 keywords: [工具禁用恢复, listSkills, 冗余确认, 首次成功结果, 权威源采信, 零工具依赖, 检测声明, 用户拒绝授权, 跨轮串行重复, 收尾验证]
 problem_patterns: [首次调用已成功返回全部所需信息，却不信任结果而跨轮反复调用同一验证工具直至被平台禁用, 工具被禁用后继续发起调用，既被系统拒绝又消耗用户多次手动授权拒绝, 禁用发生时剩余收尾工作被误判为无法继续，实际首次结果已足以支撑全部落盘动作]
@@ -16,7 +16,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-06-parallel-tool-call-doom-loop, 2026-11-06-tool-language-filter-false-empty-result]
+related_experiences: [2026-11-06-parallel-tool-call-doom-loop, 2026-11-06-tool-language-filter-false-empty-result, agent-ops/2026-11-11-user-interrupt-loop-rollback-rechannel-protocol]
 ---
 
 # 验证工具触发 Doom Loop 禁用后的处置协议：零工具调用声明+首成功结果采信+零依赖下一步规划

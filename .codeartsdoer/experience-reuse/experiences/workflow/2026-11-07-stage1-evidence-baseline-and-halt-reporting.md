@@ -13,8 +13,8 @@ project: Date
 severity: medium
 quality_score: 86
 utility_score: 97
-hit_count: 8
-last_hit_at: 2026-11-08T01:01:30
+hit_count: 10
+last_hit_at: 2026-11-13T12:39:21
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-verify-claimed-prerequisites-before-research, 2026-11-06-dispatch-order-conflict-gating, 2026-11-06-voice-dispatch-requirement-normalization, 2026-11-06-annotated-incremental-revision-grep-verify, 2026-11-07-stage-gate-split-table-rework-degrade, 2026-11-07-claimed-count-vs-fact-source-conflict]

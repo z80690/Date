@@ -1,0 +1,292 @@
+{
+ "format_version": "v1",
+ "payload": [
+  {
+   "task_id": "11721c0ff5dd45f4960bb81b0f523d69",
+   "conclusion": "成功",
+   "detail": "echo: 你好，底座",
+   "terminal": true,
+   "received_at": "2026-11-10 23:15:52"
+  },
+  {
+   "task_id": "7d1bf450b28d4836bf6269cdd1161568",
+   "conclusion": "成功",
+   "detail": "echo: 你好，底座",
+   "terminal": true,
+   "received_at": "2026-11-10 23:17:57"
+  },
+  {
+   "task_id": "cf655e8b60e14b1bb8be4e04c83d1490",
+   "conclusion": "失败",
+   "detail": "未知指令类型: None",
+   "terminal": true,
+   "received_at": "2026-11-11 00:05:31"
+  },
+  {
+   "task_id": "07df7e07d8f04c8f947a3fcfb3275bd3",
+   "conclusion": "成功",
+   "detail": "补收回执",
+   "terminal": true,
+   "received_at": "2026-11-11 00:05:31"
+  },
+  {
+   "task_id": "e8c915a150dc4a86ac4d5bc9478576de",
+   "conclusion": "成功",
+   "detail": "底座仍可用",
+   "terminal": true,
+   "received_at": "2026-11-11 00:05:31"
+  },
+  {
+   "task_id": "f7aceefcaf2048c0a71862c0b79dc832",
+   "conclusion": "失败",
+   "detail": "未知指令类型: None",
+   "terminal": true,
+   "received_at": "2026-11-11 00:06:39"
+  },
+  {
+   "task_id": "735019ba6cce48e19fb91956a18273ba",
+   "conclusion": "成功",
+   "detail": "补收回执",
+   "terminal": true,
+   "received_at": "2026-11-11 00:06:39"
+  },
+  {
+   "task_id": "4df5a91f50fe43798401201eac5d16ee",
+   "conclusion": "成功",
+   "detail": "底座仍可用",
+   "terminal": true,
+   "received_at": "2026-11-11 00:06:39"
+  },
+  {
+   "task_id": "b1924fd19b1a43eca45d41ba182119c5",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:07:40"
+  },
+  {
+   "task_id": "216508fd08cb478db58b78e83d8b3a8f",
+   "conclusion": "失败",
+   "detail": "未知指令类型: None",
+   "terminal": true,
+   "received_at": "2026-11-11 00:08:04"
+  },
+  {
+   "task_id": "aede7f9cafe440bba9b9483419880912",
+   "conclusion": "成功",
+   "detail": "补收回执",
+   "terminal": true,
+   "received_at": "2026-11-11 00:08:04"
+  },
+  {
+   "task_id": "1dfae1189dbe47b1a69e8553e3885802",
+   "conclusion": "成功",
+   "detail": "底座仍可用",
+   "terminal": true,
+   "received_at": "2026-11-11 00:08:04"
+  },
+  {
+   "task_id": "78140c86ee9144a39ce0349a6355140d",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:08:45"
+  },
+  {
+   "task_id": "7d046eaa1aa544cc9551525de830a4d0",
+   "conclusion": "失败",
+   "detail": "未知指令类型: None",
+   "terminal": true,
+   "received_at": "2026-11-11 00:09:05"
+  },
+  {
+   "task_id": "e5caabaf89c64fb59cc805dd8fb47b7b",
+   "conclusion": "成功",
+   "detail": "补收回执",
+   "terminal": true,
+   "received_at": "2026-11-11 00:09:05"
+  },
+  {
+   "task_id": "c521bb1b808a42218a36615b7768784c",
+   "conclusion": "成功",
+   "detail": "底座仍可用",
+   "terminal": true,
+   "received_at": "2026-11-11 00:09:05"
+  },
+  {
+   "task_id": "7d0a9509c78a44b78f38df5450dfcdcd",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:09:46"
+  },
+  {
+   "task_id": "abf1a9afc076422c959e12b473ecd5f6",
+   "conclusion": "失败",
+   "detail": "未知指令类型: None",
+   "terminal": true,
+   "received_at": "2026-11-11 00:10:19"
+  },
+  {
+   "task_id": "a5e177ee3a484281bff5a6b115490293",
+   "conclusion": "成功",
+   "detail": "补收回执",
+   "terminal": true,
+   "received_at": "2026-11-11 00:10:19"
+  },
+  {
+   "task_id": "ad87c15bee294d048786840d5165d088",
+   "conclusion": "成功",
+   "detail": "底座仍可用",
+   "terminal": true,
+   "received_at": "2026-11-11 00:10:19"
+  },
+  {
+   "task_id": "f936731e32ac4ef197fa090f8705ae2e",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_server_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:10:43"
+  },
+  {
+   "task_id": "b6d4b769ef9b4eb594d59eeb96228e59",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:10:43"
+  },
+  {
+   "task_id": "77ea55ac1c094962a01988f380c5d766",
+   "conclusion": "成功",
+   "detail": "echo: 你好，底座",
+   "terminal": true,
+   "received_at": "2026-11-11 00:12:49"
+  },
+  {
+   "task_id": "10553a81624f44f8be66f744492d22c9",
+   "conclusion": "成功",
+   "detail": "[xiaozhi-sim] 已响应: 底座闭环验收",
+   "terminal": true,
+   "received_at": "2026-11-11 00:12:50"
+  },
+  {
+   "task_id": "829a6d4130374909a3ed53be5b222679",
+   "conclusion": "成功",
+   "detail": "补收回执",
+   "terminal": true,
+   "received_at": "2026-11-11 00:12:50"
+  },
+  {
+   "task_id": "b11e7ceeea7747f0802885c39a5bc195",
+   "conclusion": "成功",
+   "detail": "底座仍可用",
+   "terminal": true,
+   "received_at": "2026-11-11 00:12:50"
+  },
+  {
+   "task_id": "1b7ef3059547415e864476bfdd3e4ce6",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:13:10"
+  },
+  {
+   "task_id": "cd8893ba51ed47dc887e8bcd861d8503",
+   "conclusion": "成功",
+   "detail": "[xiaozhi-sim] 已响应: 底座闭环验收",
+   "terminal": true,
+   "received_at": "2026-11-11 00:15:53"
+  },
+  {
+   "task_id": "0844dfc7556a48a4bcbef8ddfaa4b9b2",
+   "conclusion": "成功",
+   "detail": "补收回执",
+   "terminal": true,
+   "received_at": "2026-11-11 00:15:53"
+  },
+  {
+   "task_id": "c18751a80640465f9cac9ea0d681c6dd",
+   "conclusion": "成功",
+   "detail": "底座仍可用",
+   "terminal": true,
+   "received_at": "2026-11-11 00:15:53"
+  },
+  {
+   "task_id": "27c6f5b9f3764d559e7b38b486ff2e27",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_server_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:16:13"
+  },
+  {
+   "task_id": "ea3ffa78b1294259be72b92bad567e1b",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:16:13"
+  },
+  {
+   "task_id": "1569480ee8104eb5bdc4acea36412608",
+   "conclusion": "成功",
+   "detail": "echo: 你好，底座",
+   "terminal": true,
+   "received_at": "2026-11-11 00:16:25"
+  },
+  {
+   "task_id": "b0a72fb63a9b467cadcaafa01f82f084",
+   "conclusion": "成功",
+   "detail": "echo: 你好，底座",
+   "terminal": true,
+   "received_at": "2026-11-11 00:38:18"
+  },
+  {
+   "task_id": "409a8a3190c04ce79877bf123d3ec24d",
+   "conclusion": "成功",
+   "detail": "echo: 你好，底座",
+   "terminal": true,
+   "received_at": "2026-11-11 00:38:38"
+  },
+  {
+   "task_id": "6fa6a6bbabf64a2e856a5532c231cc31",
+   "conclusion": "成功",
+   "detail": "echo: 你好，底座",
+   "terminal": true,
+   "received_at": "2026-11-11 00:40:21"
+  },
+  {
+   "task_id": "f22205d683e7487ca87a6f59f70a7f71",
+   "conclusion": "成功",
+   "detail": "[xiaozhi-sim] 已响应: 底座闭环验收",
+   "terminal": true,
+   "received_at": "2026-11-11 00:40:22"
+  },
+  {
+   "task_id": "1d3b8925cd0940bfa6a46cf89cf287e2",
+   "conclusion": "成功",
+   "detail": "补收回执",
+   "terminal": true,
+   "received_at": "2026-11-11 00:40:22"
+  },
+  {
+   "task_id": "0b1d57482d434d8fabe77cb31a890e72",
+   "conclusion": "成功",
+   "detail": "底座仍可用",
+   "terminal": true,
+   "received_at": "2026-11-11 00:40:22"
+  },
+  {
+   "task_id": "48ef5bf9da354d0b9f967e2d1ce1de3f",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_server_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:40:42"
+  },
+  {
+   "task_id": "8ae8a8efadd4439f8d6a316f233182ed",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
+   "terminal": true,
+   "received_at": "2026-11-11 00:40:42"
+  }
+ ]
+}

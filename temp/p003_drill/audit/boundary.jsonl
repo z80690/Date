@@ -1,0 +1,6 @@
+{"record_id": "0c1b8d02cf4a4a0bab00fb0a40f6ab3e", "recorded_at": "2026-11-12T16:55:30.890876+00:00", "source_step": 1, "target": "8.8.8.8", "captured_at": "now", "outbound_blocked": true, "escalated": false}
+{"record_id": "0ab38d61bddd454fa2c809fc86f93091", "recorded_at": "2026-11-12T16:55:30.894875+00:00", "source_step": 2, "target": "8.8.8.8", "captured_at": "now", "outbound_blocked": false, "escalated": true}
+{"record_id": "989694cf2346416c8ace6d3a69236b11", "recorded_at": "2026-11-12T16:55:48.623888+00:00", "source_step": 1, "target": "8.8.8.8", "captured_at": "now", "outbound_blocked": true, "escalated": false}
+{"record_id": "603db48fdb0644f981f7d7e42c9becd0", "recorded_at": "2026-11-12T16:55:48.627888+00:00", "source_step": 2, "target": "8.8.8.8", "captured_at": "now", "outbound_blocked": false, "escalated": true}
+{"record_id": "4a4365322c6740ac9b56f2d60b9b5d00", "recorded_at": "2026-11-13T03:06:06.739983+00:00", "source_step": 1, "target": "8.8.8.8", "captured_at": "now", "outbound_blocked": true, "escalated": false}
+{"record_id": "1a5578a332fe4ba287681c07c1bf1279", "recorded_at": "2026-11-13T03:06:06.747985+00:00", "source_step": 2, "target": "8.8.8.8", "captured_at": "now", "outbound_blocked": false, "escalated": true}

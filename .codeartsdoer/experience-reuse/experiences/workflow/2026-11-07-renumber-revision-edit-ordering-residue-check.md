@@ -4,7 +4,7 @@ title: 章节编号顺延修订：从后往前替换保 oldString 唯一 + 残�
 category: workflow
 nature: technique
 created_at: 2026-11-07T22:36:55
-updated_at: 2026-11-07T22:36:55
+updated_at: 2026-11-12T17:45:34
 tags: [文档修订, 编号顺延, 批量编辑, 一致性核验, SDD规格]
 keywords: [编号顺延, 从后往前替换, oldString 唯一, 同名标题消歧, 交叉引用清单, grep 零残留, 分批 edit, 结构完整核验, 重号冲突, 版本修订]
 problem_patterns: [中间插入新章节导致后续章节编号整体顺延，从前到后替换会产生临时重号使 oldString 命中多处, 同名或相似小节标题遍布全文，按标题替换定位到错误位置, 编号顺延修订完成后无法证明旧编号引用已清零、新编号结构完整]
@@ -16,7 +16,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-06-annotated-incremental-revision-grep-verify, 2026-11-07-long-design-doc-chunked-write-structure-verify, 2026-11-07-merge-refactor-alias-preserve-breaklink-scan]
+related_experiences: [2026-11-06-annotated-incremental-revision-grep-verify, 2026-11-07-long-design-doc-chunked-write-structure-verify, 2026-11-07-merge-refactor-alias-preserve-breaklink-scan, 2026-11-12-sequential-edit-chain-one-per-turn-insert-last]
 ---
 
 # 章节编号顺延修订：从后往前替换保 oldString 唯一 + 残留 grep 双向核验
@@ -42,7 +42,7 @@ related_experiences: [2026-11-06-annotated-incremental-revision-grep-verify, 202
 1. 动笔前全文梳理交叉引用清单：正文互引、附录映射行、门禁联动项、交付物编号，列出所有受顺延影响的引用点，作为后续批次的任务底单。
 2. 章节编号顺延严格按从大到小执行（5.9→5.10 先于 5.4→5.5），内部小节标题（5.7.x→5.8.x）同样从后往前，与父级顺延保持同一纪律。
 3. 同名/相似标题用"标题行 + 紧随其后的首个内容句"组成 oldString 上下文消歧。
-4. 分批执行（每批 5–6 个 Edit），批内全部成功再进下一批；一次 turn 只做语义相邻的编辑，降低冲突面。
+4. 分批执行（每批 5–6 个 Edit），批内全部成功再进下一批；【2026-11-12 实证修正】同轮多 Edit 为并行执行、完成顺序不保证——顺序依赖链（顺延相邻两步）必须一步一轮，"分批"仅指同轮内互不相邻的编辑打包；插入式 Edit 因 newString 引入同名标题行会污染 oldString 唯一性，须放整批改号后的最后一轮。见 2026-11-12-sequential-edit-chain-one-per-turn-insert-last。
 5. 完成后 grep 双向核验：a) grep 旧编号/旧标题 → 期望零残留；b) grep 新编号 → 期望命中数与交叉引用清单吻合（本次实测 39 处新引用匹配，零旧残留）。
 6. 输出修订摘要时把"零残留校验结果"作为完成度证据写入。
 

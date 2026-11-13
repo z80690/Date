@@ -15,8 +15,8 @@ source_sessions: [ses_e498fb6acffeusKF6twKrkxt6n]
 project: Date
 severity: medium
 quality_score: 87
-hit_count: 2
-last_hit_at: 2026-11-08T02:03:41
+hit_count: 3
+last_hit_at: 2026-11-12T17:23:10
 low_quality_hit_count: 0
 tier: S
 related_experiences: [workflow/2026-11-07-overturned-closure-decision-revision-pattern, workflow/2026-11-07-full-authorization-self-gated-execution, workflow/2026-11-07-rule-slimming-four-state-triage, workflow/2026-11-06-annotated-incremental-revision-grep-verify]

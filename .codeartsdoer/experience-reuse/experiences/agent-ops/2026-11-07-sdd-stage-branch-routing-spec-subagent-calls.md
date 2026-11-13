@@ -12,8 +12,8 @@ source_sessions: [ses_e4c5b74edffe0IiEtF5QgP4dBs]
 project: Date
 severity: medium
 quality_score: 80
-hit_count: 2
-last_hit_at: 2026-11-08T03:15:50
+hit_count: 10
+last_hit_at: 2026-11-13T12:39:21
 low_quality_hit_count: 0
 tier: A
 related_experiences: [2026-11-07-claimed-count-vs-fact-source-conflict, 2026-11-06-spec-to-tasks-decomposition-pipeline, 2026-11-07-full-authorization-self-gated-execution]

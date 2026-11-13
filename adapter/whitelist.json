@@ -1,0 +1,11 @@
+{
+  "version": "v1-user-approved-20261112",
+  "rules": [
+    {"name": "W1_loopback_v4", "networks": ["127.0.0.0/8"]},
+    {"name": "W2_loopback_v6", "networks": ["::1/128"]},
+    {"name": "W3_kali_nat_segment", "networks": ["192.168.16.0/20"]},
+    {"name": "W4_user_assets", "networks": []},
+    {"name": "W5_official_range", "networks": []}
+  ],
+  "notes": "W3=WSL NAT segment (env-ready-trace.md 3.1, Kali eth0=192.168.25.128/20). W4 default empty set, auto-discovery forbidden (spec 6.1-4). W5 pending DVWA GitHub-source deployment registration (spec 6.1-5). Any change requires user sign-off (spec 6.1-6)."
+}

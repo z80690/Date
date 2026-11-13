@@ -16,8 +16,8 @@ source_sessions: [ses_e4d629bd9ffeg4S4QWbYvDcgS0, ses_e4ee545ecffetg5iXD9Tdm4vgS
 project: Date
 severity: medium
 quality_score: 88
-hit_count: 1
-last_hit_at: 2026-11-07T21:42:29
+hit_count: 3
+last_hit_at: 2026-11-12T20:25:27
 low_quality_hit_count: 0
 tier: S
 related_experiences: [workflow/2026-11-07-independent-exam-grading-rubric.md, workflow/2026-11-07-exam-question-authoring-contract.md, workflow/2026-11-07-full-authorization-self-gated-execution.md, workflow/2026-11-06-constraint-dispatch-to-ears-gated-spec.md, workflow/2026-11-06-dispatch-order-conflict-gating.md]

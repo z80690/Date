@@ -1,0 +1,54 @@
+{
+ "gid": "7703728309355413545",
+ "groupSource": 19,
+ "playAuthTokenV2": "eyJHZXRQbGF5SW5mb1Rva2VuIjoiQWN0aW9uPUdldFBsYXlJbmZvXHUwMDI2VmVyc2lvbj0yMDE5LTAzLTE1XHUwMDI2WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTZcdTAwMjZYLUFtei1DcmVkZW50aWFsPUFLTFROalpqTmpNNFlXSmpZbUU0TkdZMU9Ea3dabVk1TkRZMU1UbGtaamRrTm1NJTJGMjAyNjExMTAlMkZjbi1ub3J0aC0xJTJGdm9kJTJGYXdzNF9yZXF1ZXN0XHUwMDI2WC1BbXotRGF0ZT0yMDI2MTExMFQxNDEwNDJaXHUwMDI2WC1BbXotRXhwaXJlcz04Nzg0MFx1MDAyNlgtQW16LU5vdFNpZ25Cb2R5PVx1MDAyNlgtQW16LVNpZ25hdHVyZT0xNWMyNDM1ZDUwOTNiNzRhNTRiMDIzODY3Zjc4ZTE3M2EwYTc3MDI4OGRkYWZiYTk2OTQ0NzJmYjg4YjU0MjEyXHUwMDI2WC1BbXotU2lnbmVkSGVhZGVycz1cdTAwMjZYLUFtei1TaWduZWRRdWVyaWVzPUFjdGlvbiUzQlZlcnNpb24lM0JYLUFtei1BbGdvcml0aG0lM0JYLUFtei1DcmVkZW50aWFsJTNCWC1BbXotRGF0ZSUzQlgtQW16LUV4cGlyZXMlM0JYLUFtei1Ob3RTaWduQm9keSUzQlgtQW16LVNpZ25lZEhlYWRlcnMlM0JYLUFtei1TaWduZWRRdWVyaWVzJTNCYWlkJTNCZGVmaW5pdGlvbiUzQmZvcm1hdF90eXBlJTNCc3RyZWFtX3R5cGUlM0J2aWRlb19pZCUzQndhdGVybWFya1x1MDAyNmFpZD0xM1x1MDAyNmRlZmluaXRpb249XHUwMDI2Zm9ybWF0X3R5cGU9XHUwMDI2c3RyZWFtX3R5cGU9dmlkZW9cdTAwMjZ2aWRlb19pZD12MGRmMzZnMTAwMDBkYmtpODF2b2c2NXMxZzRzcDJhMFx1MDAyNndhdGVybWFyaz0iLCJWZXJzaW9uIjoidjEifQ==",
+ "playUrlList": null,
+ "diversionControlV2": {
+  "disableDiversion": false,
+  "singleRiskControl": false
+ },
+ "longImageShortShareUrl": "",
+ "isToutiaoTopPick": false,
+ "isToutiaoHot": false,
+ "bizTag": "小视频",
+ "publishTime": "1793664021",
+ "title": "6个单片机项目，代码开发从两三个月缩短到一两周 #单片机  #嵌入式开发  #AI编程  #开发效率  #AI辅助单片机",
+ "content": "<p><div class=\"tt-video-box\" tt-videoid='v0df36g10000dbki81vog65s1g4sp2a0' data-token='eyJHZXRQbGF5SW5mb1Rva2VuIjoiQWN0aW9uPUdldFBsYXlJbmZvXHUwMDI2VmVyc2lvbj0yMDE5LTAzLTE1XHUwMDI2WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTZcdTAwMjZYLUFtei1DcmVkZW50aWFsPUFLTFROalpqTmpNNFlXSmpZbUU0TkdZMU9Ea3dabVk1TkRZMU1UbGtaamRrTm1NJTJGMjAyNjExMTAlMkZjbi1ub3J0aC0xJTJGdm9kJTJGYXdzNF9yZXF1ZXN0XHUwMDI2WC1BbXotRGF0ZT0yMDI2MTExMFQxNDEwNDJaXHUwMDI2WC1BbXotRXhwaXJlcz04Nzg0MFx1MDAyNlgtQW16LU5vdFNpZ25Cb2R5PVx1MDAyNlgtQW16LVNpZ25hdHVyZT0xNWMyNDM1ZDUwOTNiNzRhNTRiMDIzODY3Zjc4ZTE3M2EwYTc3MDI4OGRkYWZiYTk2OTQ0NzJmYjg4YjU0MjEyXHUwMDI2WC1BbXotU2lnbmVkSGVhZGVycz1cdTAwMjZYLUFtei1TaWduZWRRdWVyaWVzPUFjdGlvbiUzQlZlcnNpb24lM0JYLUFtei1BbGdvcml0aG0lM0JYLUFtei1DcmVkZW50aWFsJTNCWC1BbXotRGF0ZSUzQlgtQW16LUV4cGlyZXMlM0JYLUFtei1Ob3RTaWduQm9keSUzQlgtQW16LVNpZ25lZEhlYWRlcnMlM0JYLUFtei1TaWduZWRRdWVyaWVzJTNCYWlkJTNCZGVmaW5pdGlvbiUzQmZvcm1hdF90eXBlJTNCc3RyZWFtX3R5cGUlM0J2aWRlb19pZCUzQndhdGVybWFya1x1MDAyNmFpZD0xM1x1MDAyNmRlZmluaXRpb249XHUwMDI2Zm9ybWF0X3R5cGU9XHUwMDI2c3RyZWFtX3R5cGU9dmlkZW9cdTAwMjZ2aWRlb19pZD12MGRmMzZnMTAwMDBkYmtpODF2b2c2NXMxZzRzcDJhMFx1MDAyNndhdGVybWFyaz0iLCJWZXJzaW9uIjoidjEifQ==' tt-poster='https://p3-sign.toutiaoimg.com/tos-cn-i-dy/373b65e1e8014bc2971bbf5307aed85e~tplv-tt-large.image?_iz=30575&amp;lk3s=06827d14&amp;x-expires=1794924642&amp;x-signature=tB3TuAp3JlovcP%2F8ceF0NyJUFM8%3D'>视频加载中...</div><script src=\"https://s0.pstatp.com/tt_player/tt.player.js?v=20160723\"></script></p>",
+ "creatorUid": 3736609008662828,
+ "mediaId": "1862101474743306",
+ "detailSource": "欧工Ai",
+ "mediaUser": {
+  "screenName": "欧工Ai",
+  "noDisplayPgcIcon": false,
+  "avatarUrl": "https://sf1-cdn-tos.toutiaostatic.com/img/user-avatar/2c592409f1f9dbf529324d921b28ecbb~300x300.image",
+  "id": 3736609008662828,
+  "followerCount": "11271",
+  "videoCount": "0"
+ },
+ "url": "http://toutiao.com/item/7703728309355413545/",
+ "highQualityFlag": "0",
+ "impressionCount": "581",
+ "isOriginal": false,
+ "isPgcArticle": false,
+ "isRumor": false,
+ "source": "欧工Ai",
+ "commentCount": 9,
+ "diggCount": 8,
+ "repostCount": 0,
+ "repinCount": 20,
+ "logoShowStrategy": "normal",
+ "musicInfo": {
+  "title": "@欧工| All in中创作的原声",
+  "authorName": "欧工| All in中"
+ },
+ "followerCount": "11271",
+ "videoPlayCount": 581,
+ "posterUrl": "https://p3-sign.toutiaoimg.com/tos-cn-i-dy/373b65e1e8014bc2971bbf5307aed85e~tplv-tt-large.image?_iz=30575&lk3s=06827d14&x-expires=1794924642&x-signature=tB3TuAp3JlovcP%2F8ceF0NyJUFM8%3D",
+ "inProcess": false,
+ "videoId": "v0df36g10000dbki81vog65s1g4sp2a0",
+ "isLiveEnd": false,
+ "videoDuration": 210,
+ "videoDurationMap": {
+  "v0df36g10000dbki81vog65s1g4sp2a0": 210
+ }
+}

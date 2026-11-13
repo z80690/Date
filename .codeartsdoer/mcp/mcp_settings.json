@@ -1,3 +1,9 @@
-{
-  "mcpServers": {}
+﻿{
+  "mcpServers": {
+    "cairn-mcp": {
+      "command": "D:\\refs\\Cairn-build\\bin\\cairn-mcp.exe",
+      "args": ["--config", "C:\\Users\\Administrator\\Desktop\\Date\\temp\\mcp-local.yaml"],
+      "env": {}
+    }
+  }
 }

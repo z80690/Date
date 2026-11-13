@@ -1,0 +1,96 @@
+{
+ "ResponseMetadata": {
+  "RequestId": "2026111022165413D679BC71613A5CF490",
+  "Action": "GetPlayInfo",
+  "Version": "2019-03-15",
+  "Service": "vod",
+  "Region": "cn-north-1"
+ },
+ "Result": {
+  "EncryptKey": "",
+  "CipherText": "",
+  "Data": {
+   "Status": 10,
+   "VideoID": "v0df36g10000dbki81vog65s1g4sp2a0",
+   "CoverUrl": "https://p6-tt-video-play-sign.byteimg.com/tos-cn-p-0015/o8JAQArvAEGfwIQVv0LeBCACpDgZu2Qe7VGYBh~tplv-noop.image?dy_q=1794320214&l=2026111022165413D679BC71613A5CF490&x-expires=1794493224&x-signature=ePlui6XMQvlazMrPO0XYtcO3wF8%3D",
+   "Duration": 210.347,
+   "MediaType": "video",
+   "EnableAdaptive": false,
+   "BigThumbs": [
+    {
+     "ImgNum": 210,
+     "Uri": "tos-cn-v-66a6b9/ogJ5AdQzDiMUBAmWn18DsjQBIiISfgiBIpJQql",
+     "Uris": [
+      "tos-cn-v-66a6b9/ogJ5AdQzDiMUBAmWn18DsjQBIiISfgiBIpJQql"
+     ],
+     "ImgUrl": "https://p3-tt-video-sprite-sign.byteimg.com/tos-cn-v-66a6b9/ogJ5AdQzDiMUBAmWn18DsjQBIiISfgiBIpJQql~tplv-noop.image?dy_q=1794320214&l=2026111022165413D679BC71613A5CF490&x-expires=1794493224&x-signature=HyW1ldz6Bhg%2FqJZNN%2FdZ7DwnhAY%3D",
+     "ImgUrls": [
+      "https://p3-tt-video-sprite-sign.byteimg.com/tos-cn-v-66a6b9/ogJ5AdQzDiMUBAmWn18DsjQBIiISfgiBIpJQql~tplv-noop.image?dy_q=1794320214&l=2026111022165413D679BC71613A5CF490&x-expires=1794493224&x-signature=HyW1ldz6Bhg%2FqJZNN%2FdZ7DwnhAY%3D"
+     ],
+     "ImgXSize": 136,
+     "ImgYSize": 240,
+     "ImgXLen": 10,
+     "ImgYLen": 21,
+     "Duration": 210.33333,
+     "Interval": 1,
+     "Fext": "jpg"
+    }
+   ],
+   "PlayInfoList": [
+    {
+     "Bitrate": 615199,
+     "FileHash": "7034f109b210175306658891740f9aed",
+     "Size": 16175680,
+     "Height": 1024,
+     "Width": 576,
+     "Format": "mp4",
+     "Codec": "h264",
+     "Logo": "",
+     "Definition": "540p",
+     "Quality": "low",
+     "Duration": 210.347,
+     "EncryptionMethod": "",
+     "PlayAuth": "",
+     "PlayAuthID": "",
+     "MainPlayUrl": "https://n98-v-ncdnon.toutiaovod.com/27a4e5c75ef9709b9fbba6ba698aef87/6af5cb28/video/tos/cn/tos-cn-ve-15/o80IZVaPbp0NTiiPQFKQu2EB7g40P7IiPEAAg/?a=13&ch=0&cr=0&dr=0&er=0&cd=0%7C0%7C0%7C0&cv=1&br=600&bt=600&cs=0&ds=6&ft=V7ingK-DRR0sD6C1SDj2Nc.xBiGNbL2bwRRU_4LiUM.SNv7TGW&mime_type=video_mp4&qs=1&rc=ZDY6NmU5aDM2aGZmODZlZkBpMzV2anY5cjRsZTMzNDlpM0AxMGBgMDE0XjUxYDVjMGJeYSNebTEuMmRzNWhhLS1kMGFzcw%3D%3D&btag=c0000e000a8030&dy_q=1794320214&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=2026111022165413D679BC71613A5CF490",
+     "BackupPlayUrl": "https://v81-x.toutiaovod.com/5c97c6818d250d2575e3c2460bb2b259/6af5cb28/video/tos/cn/tos-cn-ve-15/o80IZVaPbp0NTiiPQFKQu2EB7g40P7IiPEAAg/?a=13&ch=0&cr=0&dr=0&er=0&cd=0%7C0%7C0%7C0&cv=1&br=600&bt=600&cs=0&ds=6&ft=V7ingK-DRR0sD6C1SDj2Nc.xBiGNbL2bwRRU_4LiUM.SNv7TGW&mime_type=video_mp4&qs=1&rc=ZDY6NmU5aDM2aGZmODZlZkBpMzV2anY5cjRsZTMzNDlpM0AxMGBgMDE0XjUxYDVjMGJeYSNebTEuMmRzNWhhLS1kMGFzcw%3D%3D&btag=c0000e000a8030&dy_q=1794320214&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=2026111022165413D679BC71613A5CF490",
+     "UrlExpire": 1794493224,
+     "FileID": "aceb33f58ccc4e83a07e463bc3c7334a",
+     "P2pVerifyURL": "",
+     "PreloadInterval": 60,
+     "PreloadMaxStep": 10,
+     "PreloadMinStep": 5,
+     "PreloadSize": 327680,
+     "CheckInfo": "c:0-174155-c3c9|a:v0200fg10000dbk0bk7og65m7h71bktg"
+    },
+    {
+     "Bitrate": 778639,
+     "FileHash": "40d7e695d37471e9bf3919316f1118a9",
+     "Size": 20473064,
+     "Height": 1280,
+     "Width": 720,
+     "Format": "mp4",
+     "Codec": "h264",
+     "Logo": "",
+     "Definition": "720p",
+     "Quality": "normal",
+     "Duration": 210.347,
+     "EncryptionMethod": "",
+     "PlayAuth": "",
+     "PlayAuthID": "",
+     "MainPlayUrl": "https://v11-x.toutiaovod.com/ace3a1ae7da053a98ddbb4dc29409e96/6af5cb28/video/tos/cn/tos-cn-ve-15/oscMnwQiABAVhw08nTWEg4euZfuCfBA4MCA7Cx/?a=13&ch=0&cr=0&dr=0&er=0&cd=0%7C0%7C0%7C0&cv=1&br=760&bt=760&cs=0&ds=3&ft=V7ingK-DRR0sD6C1SDj2Nc.xBiGNbL2bwRRU_4LiUM.SNv7TGW&mime_type=video_mp4&qs=0&rc=N2ZmO2g4PDtlOzplZjVmaEBpMzV2anY5cjRsZTMzNDlpM0BiXjEzYmNjNWIxXl8zXzA2YSNebTEuMmRzNWhhLS1kMGFzcw%3D%3D&btag=c0000e000a8030&dy_q=1794320214&feature_id=f5241e7604dff1d9d6c943fd20bd51a2&l=2026111022165413D679BC71613A5CF490",
+     "BackupPlayUrl": "https://v81-x.toutiaovod.com/267a3c8303a12e4105eb4c09d7d1ec41/6af5cb28/video/tos/cn/tos-cn-ve-15/oscMnwQiABAVhw08nTWEg4euZfuCfBA4MCA7Cx/?a=13&ch=0&cr=0&dr=0&er=0&cd=0%7C0%7C0%7C0&cv=1&br=760&bt=760&cs=0&ds=3&ft=V7ingK-DRR0sD6C1SDj2Nc.xBiGNbL2bwRRU_4LiUM.SNv7TGW&mime_type=video_mp4&qs=0&rc=N2ZmO2g4PDtlOzplZjVmaEBpMzV2anY5cjRsZTMzNDlpM0BiXjEzYmNjNWIxXl8zXzA2YSNebTEuMmRzNWhhLS1kMGFzcw%3D%3D&btag=c0000e000a8030&dy_q=1794320214&feature_id=f5241e7604dff1d9d6c943fd20bd51a2&l=2026111022165413D679BC71613A5CF490",
+     "UrlExpire": 1794493224,
+     "FileID": "9e3cb26cbba748eb88f9f5ee684cace4",
+     "P2pVerifyURL": "",
+     "PreloadInterval": 60,
+     "PreloadMaxStep": 10,
+     "PreloadMinStep": 5,
+     "PreloadSize": 327680,
+     "CheckInfo": "c:0-229620-4a55|a:v0200fg10000dbk0bk7og65m7h71bktg"
+    }
+   ],
+   "TotalCount": 2
+  }
+ }
+}

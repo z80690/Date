@@ -1,0 +1,14 @@
+{
+ "steps": [
+  {
+   "step": "launch",
+   "ok": false,
+   "detail": "pid=4108 alive=False tasklist_count=0"
+  },
+  {
+   "step": "listen",
+   "ok": false,
+   "detail": "candidates=[] total_local_listening=5"
+  }
+ ]
+}

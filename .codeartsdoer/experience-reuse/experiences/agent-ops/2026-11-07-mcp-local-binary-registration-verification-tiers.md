@@ -12,8 +12,8 @@ source_sessions: [ses_e4c8a78edffee772ytCDqwOSfb]
 project: Date
 severity: medium
 quality_score: 89
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-12T20:12:22
 low_quality_hit_count: 0
 tier: S
 related_experiences: ["2026-11-06-shell-session-state-not-persistent", "2026-11-06-codeartsdoer-skill-market-registry", "2026-11-07-minimal-instance-format-probing"]

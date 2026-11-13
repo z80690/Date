@@ -1,0 +1,17 @@
+{
+ "format_version": "v1",
+ "payload": {
+  "embedded": {
+   "catalog_id": "embedded",
+   "primary": "windows",
+   "fallback": "kali",
+   "declared_at": "2026-11-11 00:40:22"
+  },
+  "security_research": {
+   "catalog_id": "security_research",
+   "primary": "kali",
+   "fallback": "",
+   "declared_at": "2026-11-10 23:15:52"
+  }
+ }
+}

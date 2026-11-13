@@ -1,0 +1,172 @@
+{
+ "sections": [
+  {
+   "section": "mount_and_tree",
+   "mounted": [],
+   "tree": {
+    "catalogs": [
+     {
+      "catalog_id": "embedded",
+      "name": "嵌入式开发",
+      "implementation_status": "implemented",
+      "env_requirements": "windows_or_kali",
+      "extension_note": "后续阶段：机械臂、水下机器人经同一统一挂载接口接入（扩展接入点预留）",
+      "children": [
+       {
+        "catalog_id": "appliance_repair",
+        "name": "家电维修",
+        "implementation_status": "reserved",
+        "env_requirements": "windows_or_kali"
+       }
+      ]
+     },
+     {
+      "catalog_id": "security_research",
+      "name": "黑客与白客攻防（研究模拟）",
+      "implementation_status": "implemented",
+      "env_requirements": "kali"
+     },
+     {
+      "catalog_id": "stub_test_cat",
+      "name": "stub",
+      "implementation_status": "reserved",
+      "env_requirements": "windows_or_kali"
+     }
+    ]
+   }
+  },
+  {
+   "section": "reserved_start_rejected",
+   "result": {
+    "pass": true,
+    "error_code": "RESERVED",
+    "message": "本阶段仅预留接口，未实现"
+   }
+  },
+  {
+   "section": "xiaozhi_loop",
+   "object": {
+    "object_id": "xiaozhi_sim_01",
+    "catalog_id": "embedded",
+    "capability": {
+     "actions": [
+      {
+       "name": "send_text",
+       "params_scope": "text: 非空字符串"
+      },
+      {
+       "name": "report_status",
+       "params_scope": "无参数"
+      }
+     ],
+     "result_types": [
+      "chat_reply",
+      "status"
+     ]
+    },
+    "status": "online",
+    "env_declaration": {
+     "env_id": "windows_local_sim",
+     "target_scope": "本机自建资产"
+    }
+   },
+   "route": {
+    "chosen": "windows",
+    "reason": "Windows 优先，本机直接启动"
+   },
+   "task_id": "6fa6a6bbabf64a2e856a5532c231cc31",
+   "dispatch": {
+    "object_id": "xiaozhi_sim_01",
+    "device_command": {
+     "type": "chat",
+     "payload": "你好，底座",
+     "transport": "loopback"
+    },
+    "submit_result": null
+   },
+   "receipt": {
+    "task_id": "6fa6a6bbabf64a2e856a5532c231cc31",
+    "conclusion": "成功",
+    "detail": "echo: 你好，底座",
+    "terminal": true,
+    "received_at": "2026-11-11 00:40:21"
+   },
+   "final_status": "成功",
+   "events": [
+    {
+     "seq": 1,
+     "receipt": {
+      "task_id": "6fa6a6bbabf64a2e856a5532c231cc31",
+      "conclusion": "成功",
+      "detail": "echo: 你好，底座",
+      "terminal": true,
+      "received_at": "2026-11-11 00:40:21"
+     }
+    }
+   ]
+  },
+  {
+   "section": "selfcheck",
+   "report": {
+    "checks": [
+     {
+      "item": "Python 版本",
+      "value": "3.11.9",
+      "pass": true
+     },
+     {
+      "item": "环境类型",
+      "value": "windows_local",
+      "pass": true
+     },
+     {
+      "item": "已挂载类目清单",
+      "value": [
+       "appliance_repair",
+       "embedded",
+       "security_research",
+       "stub_test_cat"
+      ],
+      "pass": true
+     },
+     {
+      "item": "运行环境类型与就绪状态",
+      "value": {
+       "type": "windows_local",
+       "ready": true
+      },
+      "pass": true
+     }
+    ],
+    "extra_checks": [
+     {
+      "item": "附加-工具链可编译",
+      "pass": true
+     },
+     {
+      "item": "附加-仿真器可加载",
+      "pass": true
+     },
+     {
+      "item": "附加-日志可落盘",
+      "pass": true
+     }
+    ],
+    "all_pass": true
+   }
+  },
+  {
+   "section": "loopback_bind",
+   "bind": {
+    "bind_host": "127.0.0.1",
+    "note": "仅绑定本机回环地址；外部网卡地址访问不可达（4.3.6）"
+   }
+  },
+  {
+   "section": "core_domain_word_check",
+   "violations": [],
+   "pass": true
+  }
+ ],
+ "all_pass": true
+}

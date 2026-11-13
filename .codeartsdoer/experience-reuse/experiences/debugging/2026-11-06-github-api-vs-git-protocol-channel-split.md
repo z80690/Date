@@ -4,7 +4,7 @@ title: GitHub 双通道分化实证：git 协议全灭时 REST API 通道承担�
 category: debugging
 nature: technique
 created_at: 2026-11-06T23:37:00
-updated_at: 2026-11-06T23:37:00
+updated_at: 2026-11-12T17:56:49
 tags: [github, git-clone, api-fallback, channel-split, degrade]
 keywords: [Connection was reset, Could not connect, api.github.com, 双通道分化, 元数据实证, 降级登记, 换源禁止, pushed_at, updated_at, 活跃度评估]
 problem_patterns: [git clone 反复失败但不知 API 通道是否可用, 调研任务因 clone 失败整体卡死, 仓库活跃度误用 updated_at 评估]
@@ -16,7 +16,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-06-github-clone-timeout-intermittent-link, 2026-11-06-network-direct-connect-diagnosis]
+related_experiences: [2026-11-06-github-clone-timeout-intermittent-link, 2026-11-06-network-direct-connect-diagnosis, 2026-11-12-github-pull-feasibility-abc-community-fork-first]
 ---
 
 # GitHub 双通道分化实证：git 协议全灭时 REST API 通道承担元数据实证

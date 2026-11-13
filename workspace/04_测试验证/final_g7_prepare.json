@@ -1,0 +1,61 @@
+{
+ "range": {
+  "dvwa": {
+   "fetched": true,
+   "note": "官方开源渠道本地离线副本已就位（github.com/digininja/DVWA，幂等跳过重复获取）"
+  },
+  "webgoat": {
+   "fetched": true,
+   "note": "官方开源渠道可达（github.com/WebGoat/WebGoat）；本地部署需 Java 运行时，本机无 Java 环境——如实登记为『已获取、部署受限』，不装私有运行时"
+  }
+ },
+ "tor": {
+  "item": "tor",
+  "at": "2026-11-11 00:40:42",
+  "result": "未就绪",
+  "steps": [
+   {
+    "step": "来源校验",
+    "pass": false,
+    "reason": "官方渠道获取失败（URLError: <urlopen error timed out>）：官方开源项目渠道 https://www.torproject.org（官方发行包）；如实记录，禁改用非官方渠道（5.2.3 异常 4）"
+   }
+  ]
+ },
+ "dev_sidecar": {
+  "item": "dev_sidecar",
+  "label": "开发者边车",
+  "at": "2026-11-11 00:40:42",
+  "result": "就绪",
+  "steps": [
+   {
+    "step": "来源校验",
+    "pass": true,
+    "source": "https://github.com/docmirror/dev-sidecar（官方仓库 clone）"
+   },
+   {
+    "step": "本机安装",
+    "pass": true,
+    "dir": "C:\\Users\\Administrator\\Desktop\\Date\\workspace\\06_开发工具\\prepared\\dev_sidecar"
+   },
+   {
+    "step": "配置锁定",
+    "pass": true,
+    "limited_use": "本地代理前置条件（代理范围锁定本机用途，禁真实公网穿透）"
+   },
+   {
+    "step": "就绪校验",
+    "pass": true,
+    "checklist": {
+     "安装来源": "GitHub 官方仓库",
+     "所在环境": "Windows 本机直跑（本机仿真环境）",
+     "限定用途": "本地代理前置条件（代理范围锁定本机用途，禁真实公网穿透）"
+    }
+   }
+  ],
+  "readiness_checklist": {
+   "安装来源": "GitHub 官方仓库",
+   "所在环境": "Windows 本机直跑（本机仿真环境）",
+   "限定用途": "本地代理前置条件（代理范围锁定本机用途，禁真实公网穿透）"
+  }
+ }
+}

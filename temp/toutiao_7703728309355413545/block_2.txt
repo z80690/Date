@@ -1,0 +1,1 @@
+window.Slardar&&window.Slardar("init",{bid:"mobile_share",pid:"short_video",release:"1.0.0.4153",sample:{sample_rate:1},plugins:{jsError:{ignoreErrors:["postMessage","已取消","Failed to fetch","errorimg","keywords"]},pageview:{routeMode:"manual"},blankScreen:{rootSelector:"#root"}}}),window.Slardar("start")

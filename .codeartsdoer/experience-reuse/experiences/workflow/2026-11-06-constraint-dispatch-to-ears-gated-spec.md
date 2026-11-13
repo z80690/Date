@@ -12,8 +12,8 @@ source_sessions: [ses_e4ee545ecffetg5iXD9Tdm4vgS]
 project: Date
 severity: medium
 quality_score: 84
-hit_count: 10
-last_hit_at: 2026-11-08T23:47:22
+hit_count: 13
+last_hit_at: 2026-11-12T20:16:43
 low_quality_hit_count: 0
 tier: A
 related_experiences: [2026-11-06-voice-dispatch-requirement-normalization, 2026-11-06-dispatch-order-conflict-gating, 2026-11-06-terminal-gates-in-task-dependency-graph]

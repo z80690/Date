@@ -15,8 +15,8 @@ source_sessions: [ses_e48be4b84ffepvfkcHuGMEfP5w]
 project: Date
 severity: medium
 quality_score: 87
-hit_count: 3
-last_hit_at: 2026-11-09T13:33:37
+hit_count: 13
+last_hit_at: 2026-11-13T11:27:57
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-verify-before-write-knowledge-docs, 2026-11-06-multi-copy-authority-layering-pointerization, 2026-11-06-project-knowledge-provenance-format, 2026-11-06-annotated-incremental-revision-grep-verify]

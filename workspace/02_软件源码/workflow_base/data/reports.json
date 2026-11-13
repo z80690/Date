@@ -1,0 +1,363 @@
+{
+ "format_version": "v1",
+ "payload": {
+  "embedded": {
+   "catalog_id": "embedded",
+   "catalog_label": "嵌入式开发",
+   "decision_status": "待用户决策",
+   "snapshot_date": "2026-11-10",
+   "dimensions": [
+    "对象抽象与适配模式成熟度",
+    "Python生态契合度",
+    "社区活跃度",
+    "向机械臂水下机器人扩展可行性",
+    "许可证与商用限制"
+   ],
+   "entries": [
+    {
+     "name": "xiaozhi-esp32（小智 ESP32 端）",
+     "meta": {
+      "full_name": "78/xiaozhi-esp32",
+      "stars": 33000,
+      "pushed_at": "2026-11-07T04:14:09Z",
+      "open_issues": 698,
+      "license": "MIT",
+      "html_url": "https://github.com/78/xiaozhi-esp32",
+      "fetched_at": "2026-11-10 23:21:33"
+     },
+     "scores": {
+      "对象抽象与适配模式成熟度": {
+       "score": 4,
+       "basis": "设备端固件采用模块化协议对接（WebSocket/MQTT 会话协议），抽象层成熟；可核对其公开源码结构"
+      },
+      "Python生态契合度": {
+       "score": 2,
+       "basis": "设备端为 C++/ESP-IDF 生态，非 Python；Python 契合点在服务端项目（见 xiaozhi-esp32-server 条目）"
+      },
+      "社区活跃度": {
+       "score": 5,
+       "basis": "API 实测 stars=33000，最近推送=2026-11-07T04:14:09Z，open_issues=698（快照 2026-11-10）"
+      },
+      "向机械臂水下机器人扩展可行性": {
+       "score": 3,
+       "basis": "其会话协议为通用文本/音频指令通道，可作为指令通道复用；但无运动控制抽象，扩展需新增适配层"
+      },
+      "许可证与商用限制": {
+       "score": 5,
+       "basis": "API 实测 license=MIT"
+      }
+     },
+     "relevance_note": "用户指定首个接入实例（小智语音终端）的设备端主项目",
+     "readiness_conclusion": ""
+    },
+    {
+     "name": "xiaozhi-esp32-server（小智服务端）",
+     "meta": {
+      "full_name": "xinnan-tech/xiaozhi-esp32-server",
+      "stars": 11233,
+      "pushed_at": "2026-11-09T06:43:39Z",
+      "open_issues": 749,
+      "license": "MIT",
+      "html_url": "https://github.com/xinnan-tech/xiaozhi-esp32-server",
+      "fetched_at": "2026-11-10 23:21:34"
+     },
+     "scores": {
+      "对象抽象与适配模式成熟度": {
+       "score": 4,
+       "basis": "服务端将设备接入/意图处理/TTS-ASR-LLM 分层，具备可复用接入抽象"
+      },
+      "Python生态契合度": {
+       "score": 5,
+       "basis": "Python 实现为主，与本底座 Python 主栈直接契合"
+      },
+      "社区活跃度": {
+       "score": 4,
+       "basis": "API 实测 stars=11233，最近推送=2026-11-09T06:43:39Z，open_issues=749（快照 2026-11-10）"
+      },
+      "向机械臂水下机器人扩展可行性": {
+       "score": 3,
+       "basis": "接入层抽象可平移到其他指令型设备；运动控制/遥测语义需扩展"
+      },
+      "许可证与商用限制": {
+       "score": 5,
+       "basis": "API 实测 license=MIT"
+      }
+     },
+     "relevance_note": "小智生态服务端（Python 主栈），为底座与设备之间的协议枢纽候选",
+     "readiness_conclusion": ""
+    },
+    {
+     "name": "Renode（开源 MCU 仿真器）",
+     "meta": {
+      "full_name": "renode/renode",
+      "stars": 3118,
+      "pushed_at": "2026-11-10T08:43:14Z",
+      "open_issues": 503,
+      "license": "NOASSERTION",
+      "html_url": "https://github.com/renode/renode",
+      "fetched_at": "2026-11-10 23:21:34"
+     },
+     "scores": {
+      "对象抽象与适配模式成熟度": {
+       "score": 5,
+       "basis": "平台描述文件+外设模型体系为业界成熟仿真抽象，支持脚本驱动与 UART 日志重定向"
+      },
+      "Python生态契合度": {
+       "score": 4,
+       "basis": "内置 Python（IronPython）脚本控制与 Robot 框架集成，可与本底座闭环联动"
+      },
+      "社区活跃度": {
+       "score": 3,
+       "basis": "API 实测 stars=3118，最近推送=2026-11-10T08:43:14Z，open_issues=503（快照 2026-11-10）"
+      },
+      "向机械臂水下机器人扩展可行性": {
+       "score": 4,
+       "basis": "仿真对象=MCU 固件行为，与具体机器人形态解耦，天然可扩展"
+      },
+      "许可证与商用限制": {
+       "score": 5,
+       "basis": "API 实测 license=NOASSERTION"
+      }
+     },
+     "relevance_note": "本机仿真环境主候选（Windows 原生运行，支持 STM32/ESP32/RISC-V 无真机仿真）",
+     "readiness_conclusion": ""
+    },
+    {
+     "name": "ESP-IDF（ESP32 官方工具链）",
+     "meta": {
+      "full_name": "espressif/esp-idf",
+      "stars": 19476,
+      "pushed_at": "2026-11-10T02:02:49Z",
+      "open_issues": 1826,
+      "license": "Apache-2.0",
+      "html_url": "https://github.com/espressif/esp-idf",
+      "fetched_at": "2026-11-10 23:21:35"
+     },
+     "scores": {
+      "对象抽象与适配模式成熟度": {
+       "score": 5,
+       "basis": "厂商官方 SDK，构建/组件/驱动抽象完整"
+      },
+      "Python生态契合度": {
+       "score": 4,
+       "basis": "构建工具 idf.py 即 Python 实现，Windows 安装器官方支持"
+      },
+      "社区活跃度": {
+       "score": 4,
+       "basis": "API 实测 stars=19476，最近推送=2026-11-10T02:02:49Z，open_issues=1826（快照 2026-11-10）"
+      },
+      "向机械臂水下机器人扩展可行性": {
+       "score": 3,
+       "basis": "仅覆盖乐鑫芯片系；其他芯片需换工具链（工具链维度非通用）"
+      },
+      "许可证与商用限制": {
+       "score": 5,
+       "basis": "API 实测 license=Apache-2.0"
+      }
+     },
+     "relevance_note": "小智 ESP32 固件的编译构建基础（编译环节必需，Windows 官方支持）",
+     "readiness_conclusion": ""
+    },
+    {
+     "name": "QEMU（通用仿真器）",
+     "meta": {
+      "full_name": "qemu/qemu",
+      "stars": 14008,
+      "pushed_at": "2026-11-09T20:54:34Z",
+      "open_issues": 0,
+      "license": "NOASSERTION",
+      "html_url": "https://github.com/qemu/qemu",
+      "fetched_at": "2026-11-10 23:21:36"
+     },
+     "scores": {
+      "对象抽象与适配模式成熟度": {
+       "score": 5,
+       "basis": "业界标准仿真器，机器模型/半虚拟化抽象成熟"
+      },
+      "Python生态契合度": {
+       "score": 3,
+       "basis": "主体为 C 实现，Python 仅作外部驱动（QMP/命令行），需自建封装层"
+      },
+      "社区活跃度": {
+       "score": 4,
+       "basis": "API 实测 stars=14008，最近推送=2026-11-09T20:54:34Z，open_issues=0（快照 2026-11-10）"
+      },
+      "向机械臂水下机器人扩展可行性": {
+       "score": 4,
+       "basis": "仿真对象与形态解耦；但 MCU 外设保真度弱于 Renode"
+      },
+      "许可证与商用限制": {
+       "score": 5,
+       "basis": "API 实测 license=NOASSERTION"
+      }
+     },
+     "relevance_note": "本机仿真环境备选（machine 模型可跑部分 ARM 固件，通用性最强）",
+     "readiness_conclusion": ""
+    }
+   ]
+  },
+  "security_research": {
+   "catalog_id": "security_research",
+   "catalog_label": "黑客与白客攻防（研究模拟）",
+   "decision_status": "待用户决策",
+   "snapshot_date": "2026-11-10",
+   "dimensions": [
+    "Kali生态契合度",
+    "本地离线可部署性",
+    "社区活跃度",
+    "防御工具覆盖度",
+    "许可证"
+   ],
+   "entries": [
+    {
+     "name": "DVWA（ Damn Vulnerable Web Application）",
+     "meta": {
+      "full_name": "digininja/DVWA",
+      "stars": 14004,
+      "pushed_at": "2026-10-18T17:11:33Z",
+      "open_issues": 4,
+      "license": "GPL-3.0",
+      "html_url": "https://github.com/digininja/DVWA",
+      "fetched_at": "2026-11-10 23:21:37"
+     },
+     "scores": {
+      "Kali生态契合度": {
+       "score": 5,
+       "basis": "Kali 官方文档含 DVWA 部署指引，生态内事实标准靶场"
+      },
+      "本地离线可部署性": {
+       "score": 5,
+       "basis": "本机 Apache+MySQL 即可离线部署，无外部依赖"
+      },
+      "社区活跃度": {
+       "score": 4,
+       "basis": "API 实测 stars=14004，最近推送=2026-10-18T17:11:33Z，open_issues=4（快照 2026-11-10）"
+      },
+      "防御工具覆盖度": {
+       "score": 4,
+       "basis": "漏洞类型覆盖 OWASP 主流类别，可逐类配对防御检测点"
+      },
+      "许可证": {
+       "score": 5,
+       "basis": "API 实测 license=GPL-3.0"
+      }
+     },
+     "relevance_note": "官方开源合法靶场典型示例（spec 术语举例），本地离线部署为研究模拟本机自建资产",
+     "readiness_conclusion": "建议用现成",
+     "readiness_basis": "官方开源、PHP+MySQL 本机离线部署成熟文档齐备，正/反例研究场景直接可用"
+    },
+    {
+     "name": "WebGoat（OWASP 官方靶场）",
+     "meta": {
+      "full_name": "WebGoat/WebGoat",
+      "stars": 9474,
+      "pushed_at": "2026-11-09T09:56:22Z",
+      "open_issues": 38,
+      "license": "NOASSERTION",
+      "html_url": "https://github.com/WebGoat/WebGoat",
+      "fetched_at": "2026-11-10 23:21:37"
+     },
+     "scores": {
+      "Kali生态契合度": {
+       "score": 4,
+       "basis": "Kali 可运行（Java 环境），但非 Kali 预装默认项"
+      },
+      "本地离线可部署性": {
+       "score": 5,
+       "basis": "官方 jar 本机离线运行，依赖最少"
+      },
+      "社区活跃度": {
+       "score": 4,
+       "basis": "API 实测 stars=9474，最近推送=2026-11-09T09:56:22Z，open_issues=38（快照 2026-11-10）"
+      },
+      "防御工具覆盖度": {
+       "score": 5,
+       "basis": "每课自带防御讲解，攻防配对产出最直接"
+      },
+      "许可证": {
+       "score": 5,
+       "basis": "API 实测 license=NOASSERTION"
+      }
+     },
+     "relevance_note": "官方开源合法靶场典型示例（Java 系），与 DVWA 互补覆盖不同技术栈",
+     "readiness_conclusion": "建议用现成",
+     "readiness_basis": "OWASP 官方维护，jar 单包本机离线运行，课程化场景即取即用"
+    },
+    {
+     "name": "OWASP ZAP",
+     "meta": {
+      "full_name": "zaproxy/zaproxy",
+      "stars": 16156,
+      "pushed_at": "2026-11-06T16:01:57Z",
+      "open_issues": 885,
+      "license": "Apache-2.0",
+      "html_url": "https://github.com/zaproxy/zaproxy",
+      "fetched_at": "2026-11-10 23:21:38"
+     },
+     "scores": {
+      "Kali生态契合度": {
+       "score": 5,
+       "basis": "Kali 预装工具之一"
+      },
+      "本地离线可部署性": {
+       "score": 5,
+       "basis": "本机安装即可离线使用（目标仅限本机自建资产）"
+      },
+      "社区活跃度": {
+       "score": 4,
+       "basis": "API 实测 stars=16156，最近推送=2026-11-06T16:01:57Z，open_issues=885（快照 2026-11-10）"
+      },
+      "防御工具覆盖度": {
+       "score": 5,
+       "basis": "以检测/防御视角为核心定位，覆盖度高"
+      },
+      "许可证": {
+       "score": 5,
+       "basis": "API 实测 license=Apache-2.0"
+      }
+     },
+     "relevance_note": "白客防御侧主工具候选（扫描/代理/检测），与本底座防御配对产出直接相关",
+     "readiness_conclusion": "建议用现成",
+     "readiness_basis": "开源成熟、本机运行、防御检测场景即用"
+    },
+    {
+     "name": "开发者边车（dev-sidecar）",
+     "meta": {
+      "full_name": "docmirror/dev-sidecar",
+      "stars": 25017,
+      "pushed_at": "2026-11-08T10:40:14Z",
+      "open_issues": 15,
+      "license": "MPL-2.0",
+      "html_url": "https://github.com/docmirror/dev-sidecar",
+      "fetched_at": "2026-11-10 23:21:39"
+     },
+     "scores": {
+      "Kali生态契合度": {
+       "score": 3,
+       "basis": "Windows/Linux 桌面工具，Kali 桌面环境可用但非预装"
+      },
+      "本地离线可部署性": {
+       "score": 4,
+       "basis": "本机安装即可；代理范围锁定本机用途"
+      },
+      "社区活跃度": {
+       "score": 5,
+       "basis": "API 实测 stars=25017，最近推送=2026-11-08T10:40:14Z，open_issues=15（快照 2026-11-10）"
+      },
+      "防御工具覆盖度": {
+       "score": 2,
+       "basis": "定位为代理前置条件，非检测/防御工具"
+      },
+      "许可证": {
+       "score": 5,
+       "basis": "API 实测 license=MPL-2.0"
+      }
+     },
+     "relevance_note": "用户指定准备对象（攻防类目本地代理前置条件），GitHub 官方仓库获取",
+     "readiness_conclusion": "建议用现成",
+     "readiness_basis": "官方仓库开源可直接获取；限定用途=本地代理前置条件，禁真实公网穿透"
+    }
+   ]
+  }
+ }
+}

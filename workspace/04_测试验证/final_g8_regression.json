@@ -1,0 +1,58 @@
+{
+ "regression": {
+  "business_rules_47": {
+   "evidence": "tests 50/50 PASS + verify_base all_pass=true + 本脚本组 6/7 判据",
+   "status": "PASS"
+  },
+  "exceptions_24": {
+   "evidence": "单测异常路径（重复挂载/父缺失/信息不全/越界/离线/孤儿回执/空结论/条目数/越权剥离/越阶段…）+ 本脚本异常演练",
+   "status": "PASS"
+  },
+  "redlines_10": {
+   "evidence": "10 条红线由 security.py 三道防线集中实现；拦截日志含真实目标/用途越界/未就绪样本（8.3 绕过尝试：伪造外部目标=TARGET_OUT_OF_SCOPE 拦截、缺防御配对=DEFENSE_PAIR_MISSING 拒绝、缺四不=FOUR_NO_MISSING 拒绝，均在单测验证）",
+   "status": "PASS"
+  },
+  "loopback_bind": {
+   "evidence": "server.py 仅绑 127.0.0.1；verify_base §loopback_bind",
+   "status": "PASS"
+  }
+ },
+ "dfx": {
+  "dfx_perf_and_stub": {
+   "pass": true,
+   "detail": "挂载 0.0ms（≤1s）树查询 0.0ms（≤500ms）；测试桩类目挂载前后 core 目录文件快照一致=零改核心（4.1/4.4.3/4.5.1/4.5.2）"
+  }
+ },
+ "g7_exec": [
+  {
+   "scenario_id": "s_comm_01",
+   "dimension": "通讯隐匿",
+   "status": "REJECTED",
+   "code": "PREPARE_NOT_READY",
+   "message": "第一道防线联动：环境准备项『tor』就绪自检未通过，对应任务一律拒绝启动（5.2.1 规则 10）",
+   "rejection_valid": true
+  },
+  {
+   "scenario_id": "s_server_01",
+   "dimension": "服务器隐匿",
+   "status": "成功",
+   "completed": true,
+   "defense_ref": "defense_02"
+  },
+  {
+   "scenario_id": "s_fund_01",
+   "dimension": "资金安全",
+   "status": "成功",
+   "completed": true,
+   "defense_ref": "defense_03"
+  },
+  {
+   "scenario_id": "s_tor_01",
+   "dimension": "Tor浏览器测试",
+   "status": "REJECTED",
+   "code": "PREPARE_NOT_READY",
+   "message": "第一道防线联动：环境准备项『tor』就绪自检未通过，对应任务一律拒绝启动（5.2.1 规则 10）",
+   "rejection_valid": true
+  }
+ ]
+}

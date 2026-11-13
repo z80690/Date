@@ -1,0 +1,34 @@
+{
+ "steps": [
+  {
+   "step": "version",
+   "ok": true,
+   "detail": "Tor version 0.4.9.15 (git-4d8efff53a86670b)."
+  },
+  {
+   "step": "start",
+   "ok": true,
+   "detail": "pid=16048 alive=True"
+  },
+  {
+   "step": "socks5_handshake_9050",
+   "ok": true,
+   "detail": "reply=0500"
+  },
+  {
+   "step": "control_9051",
+   "ok": true,
+   "detail": "250-PROTOCOLINFO 1"
+  },
+  {
+   "step": "bootstrap",
+   "ok": false,
+   "detail": "Nov 11 01:34:00.000 [notice] Bootstrapped 5% (conn): Connecting to a relay"
+  }
+ ],
+ "tor_version": "Tor version 0.4.9.15 (git-4d8efff53a86670b).",
+ "socks5_ok": true,
+ "control_ok": true,
+ "bootstrap": "Nov 11 01:34:00.000 [notice] Bootstrapped 5% (conn): Connecting to a relay",
+ "bootstrap_pct": 5
+}

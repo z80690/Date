@@ -1,0 +1,5 @@
+﻿mcp:
+  knowledge_bases:
+    - name: p003-drill
+      path: C:/Users/Administrator/Desktop/Date/temp/cairn-p003.db
+      description: "P003 local drill knowledge graph (Cairn MCP, loopback stdio)"

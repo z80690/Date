@@ -12,8 +12,8 @@ source_sessions: [ses_e4ed592d9ffeu29Oe4ZncoftgR]
 project: Date
 severity: medium
 quality_score: 87
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-12T17:02:00
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-voice-dispatch-requirement-normalization, 2026-11-06-constraint-dispatch-to-ears-gated-spec, 2026-11-06-mid-execution-append-subtask-freeze-commit]

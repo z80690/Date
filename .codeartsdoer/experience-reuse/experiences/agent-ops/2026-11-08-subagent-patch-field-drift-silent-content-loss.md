@@ -15,8 +15,8 @@ source_sessions: [ses_e488e3ea4ffeibxmS5KxTmxPRl]
 project: Date
 severity: medium
 quality_score: 93
-hit_count: 0
-last_hit_at: null
+hit_count: 2
+last_hit_at: 2026-11-13T13:03:01
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-08-wiki-update-script-behavior-contract-blindspots, 2026-11-08-wiki-section-revision-patch-json-mode, 2026-11-07-subagent-delivery-spot-check-acceptance]

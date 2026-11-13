@@ -15,8 +15,8 @@ source_sessions: [ses_e48b8e01dffeFrd2wwOBkoqJtt]
 project: Date
 severity: medium
 quality_score: 87
-hit_count: 3
-last_hit_at: 2026-11-09T13:33:37
+hit_count: 6
+last_hit_at: 2026-11-11T09:35:17
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-08-wiki-section-revision-patch-json-mode, 2026-11-08-wiki-update-script-behavior-contract-blindspots, 2026-11-06-verify-before-write-knowledge-docs, 2026-11-06-doc-repo-zero-extraction-knowledge-gen, 2026-11-08-ghost-reference-path-precheck]

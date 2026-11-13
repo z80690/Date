@@ -1,0 +1,53 @@
+{
+ "format_version": "v1",
+ "payload": {
+  "embedded": {
+   "catalog_id": "embedded",
+   "name": "嵌入式开发",
+   "parent_id": "ROOT",
+   "implementation_status": "implemented",
+   "env_requirements": "windows_or_kali",
+   "adapter_kind": "catalog_adapter",
+   "receipt_semantics": "设备侧原始上报经反向归一为 成功/失败 结论的标准回执；结论只认回执",
+   "env_declaration": {
+    "primary": "windows",
+    "fallback": "kali"
+   },
+   "extension_note": "后续阶段：机械臂、水下机器人经同一统一挂载接口接入（扩展接入点预留）"
+  },
+  "security_research": {
+   "catalog_id": "security_research",
+   "name": "黑客与白客攻防（研究模拟）",
+   "parent_id": "ROOT",
+   "implementation_status": "implemented",
+   "env_requirements": "kali",
+   "adapter_kind": "catalog_adapter",
+   "receipt_semantics": "模拟场景执行回执=特征归纳与检测思路研究任务的完成结论；攻击侧只到特征归纳层面，配对防御产出必须存在",
+   "env_declaration": {
+    "primary": "kali",
+    "fallback": ""
+   },
+   "extension_note": ""
+  },
+  "appliance_repair": {
+   "catalog_id": "appliance_repair",
+   "name": "家电维修",
+   "parent_id": "embedded",
+   "implementation_status": "reserved",
+   "env_requirements": "windows_or_kali",
+   "adapter_kind": "catalog_adapter",
+   "receipt_semantics": "预留：待实现后定义",
+   "extension_note": ""
+  },
+  "stub_test_cat": {
+   "catalog_id": "stub_test_cat",
+   "name": "stub",
+   "parent_id": "ROOT",
+   "implementation_status": "reserved",
+   "env_requirements": "windows_or_kali",
+   "adapter_kind": "catalog_adapter",
+   "receipt_semantics": "stub",
+   "extension_note": ""
+  }
+ }
+}

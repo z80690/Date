@@ -1,0 +1,18 @@
+{
+ "steps": [
+  {
+   "step": "mirror_index",
+   "ok": false,
+   "detail": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+   "step": "find_bundle",
+   "ok": false,
+   "detail": "no expert bundle under 0 versions"
+  }
+ ],
+ "tor_version": "",
+ "socks5_ok": false,
+ "control_ok": false,
+ "bootstrap": ""
+}

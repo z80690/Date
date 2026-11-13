@@ -1,0 +1,6 @@
+SOCKSPort 127.0.0.1:9050
+ControlPort 127.0.0.1:9051
+DataDirectory C:\Users\Administrator\Desktop\Date\workspace\workspace\06_开发工具\prepared\tor\data
+Log notice file C:\Users\Administrator\Desktop\Date\workspace\workspace\06_开发工具\prepared\tor\tor.log
+SocksPolicy accept 127.0.0.1
+SocksPolicy reject *

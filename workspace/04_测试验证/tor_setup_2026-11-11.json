@@ -1,0 +1,34 @@
+{
+ "steps": [
+  {
+   "step": "mirror_probe",
+   "ok": false,
+   "detail": "https://mirrors.tuna.tsinghua.edu.cn/torproject.org -> HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+   "step": "mirror_probe",
+   "ok": false,
+   "detail": "https://mirrors.tuna.tsinghua.edu.cn/torproject -> HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+   "step": "mirror_probe",
+   "ok": false,
+   "detail": "https://mirrors.ustc.edu.cn/torproject -> HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+   "step": "mirror_probe",
+   "ok": false,
+   "detail": "https://mirror.netcologne.de/torproject -> HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+   "step": "find_bundle",
+   "ok": false,
+   "detail": "all mirrors failed"
+  }
+ ],
+ "tor_version": "",
+ "socks5_ok": false,
+ "control_ok": false,
+ "bootstrap": "",
+ "mirror_used": ""
+}

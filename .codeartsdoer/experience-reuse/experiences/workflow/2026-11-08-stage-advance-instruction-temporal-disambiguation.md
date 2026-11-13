@@ -14,8 +14,8 @@ source_sessions: [ses_e48cafc3effeTPRi3rutvWPKyY]
 project: Date
 severity: medium
 quality_score: 85
-hit_count: 1
-last_hit_at: 2026-11-08T03:15:50
+hit_count: 4
+last_hit_at: 2026-11-13T00:09:15
 low_quality_hit_count: 0
 tier: S
 related_experiences: [workflow/2026-11-08-minimal-revision-effective-time-slicing, workflow/2026-11-08-task-list-alignment-revision-terminal-state-annotation, workflow/2026-11-07-full-authorization-self-gated-execution, agent-ops/2026-11-07-sdd-stage-branch-routing-spec-subagent-calls]

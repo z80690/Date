@@ -13,8 +13,8 @@ project: Date
 severity: low
 quality_score: 88
 utility_score: 90
-hit_count: 2
-last_hit_at: 2026-11-08T00:26:09
+hit_count: 4
+last_hit_at: 2026-11-12T17:23:10
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-terminal-gates-in-task-dependency-graph, 2026-11-07-sdd-spec-to-tasks-coverage-mapping, 2026-11-06-spec-to-tasks-decomposition-pipeline, 2026-11-07-full-authorization-self-gated-execution, 2026-11-06-constraint-dispatch-to-ears-gated-spec]

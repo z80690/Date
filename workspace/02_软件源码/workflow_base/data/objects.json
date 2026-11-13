@@ -1,0 +1,50 @@
+{
+ "format_version": "v1",
+ "payload": {
+  "xiaozhi_sim_01": {
+   "object_id": "xiaozhi_sim_01",
+   "catalog_id": "embedded",
+   "capability": {
+    "actions": [
+     {
+      "name": "send_text",
+      "params_scope": "text: 非空字符串"
+     },
+     {
+      "name": "report_status",
+      "params_scope": "无参数"
+     }
+    ],
+    "result_types": [
+     "chat_reply",
+     "status"
+    ]
+   },
+   "status": "online",
+   "env_declaration": {
+    "env_id": "windows_local_sim",
+    "target_scope": "本机自建资产"
+   }
+  },
+  "sec_research_executor_01": {
+   "object_id": "sec_research_executor_01",
+   "catalog_id": "security_research",
+   "capability": {
+    "actions": [
+     {
+      "name": "run_scenario_research",
+      "params_scope": "scenario_id: 已定义场景标识"
+     }
+    ],
+    "result_types": [
+     "research_report"
+    ]
+   },
+   "status": "online",
+   "env_declaration": {
+    "env_id": "kali_local_sim_windows_equiv",
+    "target_scope": "本机自建资产"
+   }
+  }
+ }
+}

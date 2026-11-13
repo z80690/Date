@@ -1,0 +1,19 @@
+{
+ "decision": "嵌入式 5 项全用；攻防 4 项全用现成",
+ "gate_status": "已同意",
+ "selection": {
+  "embedded": [
+   "78/xiaozhi-esp32",
+   "xinnan-tech/xiaozhi-esp32-server",
+   "renode/renode",
+   "espressif/esp-idf",
+   "qemu/qemu"
+  ],
+  "security": [
+   "digininja/DVWA",
+   "WebGoat/WebGoat",
+   "zaproxy/zaproxy",
+   "docmirror/dev-sidecar"
+  ]
+ }
+}

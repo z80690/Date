@@ -1,0 +1,62 @@
+{
+ "snapshot_date": "2026-11-10",
+ "embedded_entries": [
+  [
+   "xiaozhi-esp32（小智 ESP32 端）",
+   33000,
+   "MIT"
+  ],
+  [
+   "xiaozhi-esp32-server（小智服务端）",
+   11233,
+   "MIT"
+  ],
+  [
+   "Renode（开源 MCU 仿真器）",
+   3118,
+   "NOASSERTION"
+  ],
+  [
+   "ESP-IDF（ESP32 官方工具链）",
+   19476,
+   "Apache-2.0"
+  ],
+  [
+   "QEMU（通用仿真器）",
+   14008,
+   "NOASSERTION"
+  ]
+ ],
+ "security_entries": [
+  [
+   "DVWA（ Damn Vulnerable Web Application）",
+   14004,
+   "GPL-3.0"
+  ],
+  [
+   "WebGoat（OWASP 官方靶场）",
+   9474,
+   "NOASSERTION"
+  ],
+  [
+   "OWASP ZAP",
+   16156,
+   "Apache-2.0"
+  ],
+  [
+   "开发者边车（dev-sidecar）",
+   25017,
+   "MPL-2.0"
+  ]
+ ],
+ "decision_status": "待用户决策",
+ "gate": {
+  "stage": "eval_reports",
+  "status": "等待确认",
+  "artifact_ref": "07_参考资料/评估报告/"
+ },
+ "archive": [
+  "C:\\Users\\Administrator\\Desktop\\Date\\07_参考资料\\评估报告\\嵌入式评估报告.md",
+  "C:\\Users\\Administrator\\Desktop\\Date\\07_参考资料\\评估报告\\攻防评估报告.md"
+ ]
+}

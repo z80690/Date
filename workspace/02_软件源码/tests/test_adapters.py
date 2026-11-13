@@ -1,0 +1,205 @@
+"""适配层测试：契约/对象注册/嵌入式翻译归一/攻防场景校验/环境准备流水线（任务 3.1–3.5、4.4）。"""
+
+from __future__ import annotations
+
+import shutil
+import tempfile
+import unittest
+
+from workflow_base.core.store import Store
+from workflow_base.core.catalog import CatalogRegistry
+from workflow_base.core.security import SecurityValidator
+from workflow_base.adapters.contract import (
+    validate_catalog_contract,
+    validate_object_contract,
+    ContractError,
+    CONTRACT_VERSION,
+)
+from workflow_base.adapters.objects import ObjectRegistry, ObjectError
+from workflow_base.adapters import embedded, security_research
+from workflow_base.tools.prepare import PreparePipeline, PrepareError, PREP_OBJECTS
+
+
+def noop(info):
+    pass
+
+
+def make_cat(catalog_id="cat_a", status="implemented", env="windows"):
+    return {
+        "catalog_id": catalog_id,
+        "name": catalog_id,
+        "parent_id": "ROOT",
+        "implementation_status": status,
+        "env_requirements": env,
+        "adapter_kind": "catalog_adapter",
+        "receipt_semantics": "s",
+    }
+
+
+class TempDirTest(unittest.TestCase):
+    def setUp(self):
+        self.dir = tempfile.mkdtemp()
+        self.store = Store(self.dir)
+
+    def tearDown(self):
+        shutil.rmtree(self.dir, ignore_errors=True)
+
+
+class TestContract(TempDirTest):
+    def test_version_is_v1(self):
+        self.assertEqual(CONTRACT_VERSION, "v1")
+
+    def test_catalog_contract_fields(self):
+        with self.assertRaises(ContractError) as ctx:
+            validate_catalog_contract({"catalog_id": "x"})
+        self.assertIn("缺失", ctx.exception.message)
+
+    def test_capability_missing_rejected(self):
+        obj = {"object_id": "o1", "catalog_id": "cat_a", "status": "offline"}
+        with self.assertRaises(ContractError) as ctx:
+            validate_object_contract(obj)
+        self.assertIn("capability", ctx.exception.message)
+        self.assertIn("缺失", ctx.exception.message)
+
+    def test_action_decl_bad(self):
+        obj = {
+            "object_id": "o1",
+            "catalog_id": "cat_a",
+            "capability": {"actions": [{"name": "a"}], "result_types": ["r"]},
+            "status": "offline",
+        }
+        with self.assertRaises(ContractError):
+            validate_object_contract(obj)
+
+
+class TestObjectRegistry(TempDirTest):
+    def test_register_requires_mounted_implemented_catalog(self):
+        cat = CatalogRegistry(self.store)
+        obj_reg = ObjectRegistry(self.store, cat)
+        with self.assertRaises(ObjectError):
+            obj_reg.register({"object_id": "o", "catalog_id": "ghost", "capability": {"actions": [{"name": "a", "params_scope": "*"}], "result_types": ["r"]}, "status": "offline"})
+        cat.mount(make_cat(catalog_id="cat_res", status="reserved"), noop)
+        with self.assertRaises(ObjectError) as ctx:
+            obj_reg.register({"object_id": "o", "catalog_id": "cat_res", "capability": {"actions": [{"name": "a", "params_scope": "*"}], "result_types": ["r"]}, "status": "offline"})
+        self.assertEqual(ctx.exception.code, "CATALOG_RESERVED")
+        cat.mount(make_cat(catalog_id="cat_ok"), noop)
+        r = obj_reg.register({"object_id": "o", "catalog_id": "cat_ok", "capability": {"actions": [{"name": "a", "params_scope": "*"}], "result_types": ["r"]}, "status": "offline"})
+        self.assertEqual(r["status"], "offline")
+        obj_reg.go_online("o", {"env_id": "e1"})
+        self.assertEqual(obj_reg.get("o")["status"], "online")
+        self.assertEqual(list(obj_reg.list_online().keys()), ["o"])
+
+
+class TestEmbeddedAdapter(TempDirTest):
+    def test_translate_send_text(self):
+        d = embedded.translate("send_text", {"text": "你好"})
+        self.assertEqual(d["type"], "chat")
+        self.assertEqual(d["payload"], "你好")
+
+    def test_translator_wraps_transport(self):
+        tr = embedded.make_translator()
+        d = tr(embedded.CATALOG_ID, "xiaozhi_sim_01", "send_text", {"text": "hi"})
+        self.assertEqual(d["device_command"]["type"], "chat")
+        self.assertEqual(d["device_command"]["transport"], "loopback")
+
+    def test_translate_bad_params(self):
+        with self.assertRaises(ValueError):
+            embedded.translate("send_text", {"text": ""})
+
+    def test_normalize(self):
+        ok = embedded.normalize({"ok": True, "reply": "hi"})
+        self.assertEqual(ok["conclusion"], "成功")
+        bad = embedded.normalize({"ok": False, "detail": "serial timeout"})
+        self.assertEqual(bad["conclusion"], "失败")
+        self.assertEqual(bad["detail"], "serial timeout")
+
+
+class TestSecurityResearchAdapter(TempDirTest):
+    def _valid_scenario(self, **over):
+        base = {
+            "scenario_id": "s_01",
+            "dimension": "通讯隐匿",
+            "case": {"type": "positive", "name": "公开报道案例A特征复盘"},
+            "environment": {"env_id": "kali_local_sim", "target_scope": "本机自建资产"},
+            "defense_pair_ref": "defense_01",
+            "implementation": {"mode": "自行搭建", "rationale": "无现成方案，仅特征归纳层面"},
+            "tools_source_ledger": [{"source": "官方开源渠道", "limited_use": "本地离线演示"}],
+            "four_no_declaration": {
+                "no_real_intrusion": True,
+                "no_real_bots": True,
+                "no_real_currency_mixing": True,
+                "no_real_server_hiding": True,
+            },
+        }
+        base.update(over)
+        return base
+
+    def test_valid_scenario_accepted(self):
+        sec = SecurityValidator(self.store, self.dir)
+        r = security_research.define_scenario(self._valid_scenario(), sec)
+        self.assertTrue(r["accepted"])
+
+    def test_dimension_out_of_scope(self):
+        sec = SecurityValidator(self.store, self.dir)
+        with self.assertRaises(security_research.ScenarioError) as ctx:
+            security_research.define_scenario(self._valid_scenario(dimension="物理攻击"), sec)
+        self.assertEqual(ctx.exception.code, "DIMENSION_OUT_OF_SCOPE")
+        self.assertIn("Tor浏览器测试", ctx.exception.message)
+
+    def test_four_no_missing_rejected(self):
+        sec = SecurityValidator(self.store, self.dir)
+        bad = self._valid_scenario()
+        bad["four_no_declaration"]["no_real_intrusion"] = False
+        with self.assertRaises(security_research.ScenarioError) as ctx:
+            security_research.define_scenario(bad, sec)
+        self.assertEqual(ctx.exception.code, "FOUR_NO_MISSING")
+
+    def test_defense_pair_missing_rejected(self):
+        sec = SecurityValidator(self.store, self.dir)
+        with self.assertRaises(security_research.ScenarioError) as ctx:
+            security_research.define_scenario(self._valid_scenario(defense_pair_ref=""), sec)
+        self.assertEqual(ctx.exception.code, "DEFENSE_PAIR_MISSING")
+
+    def test_target_scope_rejected(self):
+        sec = SecurityValidator(self.store, self.dir)
+        with self.assertRaises(security_research.ScenarioError):
+            security_research.define_scenario(self._valid_scenario(environment={"env_id": "e", "target_scope": "真实外网目标"}), sec)
+
+    def test_tool_ledger_rejected(self):
+        sec = SecurityValidator(self.store, self.dir)
+        with self.assertRaises(security_research.ScenarioError):
+            security_research.define_scenario(self._valid_scenario(tools_source_ledger=[]), sec)
+
+    def test_incomplete_fields_rejected(self):
+        sec = SecurityValidator(self.store, self.dir)
+        with self.assertRaises(security_research.ScenarioError) as ctx:
+            security_research.define_scenario({"scenario_id": "s2"}, sec)
+        self.assertEqual(ctx.exception.code, "SCENARIO_INCOMPLETE")
+
+
+class TestPrepare(TempDirTest):
+    def test_source_fail_recorded_no_nonofficial(self):
+        sec = SecurityValidator(self.store, self.dir)
+        pipe = PreparePipeline(sec, self.dir)
+        r = pipe.prepare("tor", installer=None)
+        self.assertEqual(r["result"], "未就绪")
+        self.assertIn("非官方渠道", r["steps"][-1]["reason"])
+        self.assertFalse(sec.environment_ready("prepare:tor"))
+
+    def test_full_pipeline_ready_checklist(self):
+        sec = SecurityValidator(self.store, self.dir)
+        pipe = PreparePipeline(sec, self.dir)
+        r = pipe.prepare("dev_sidecar", installer=lambda hint: hint)
+        self.assertEqual(r["result"], "就绪")
+        self.assertEqual(set(r["readiness_checklist"].keys()), {"安装来源", "所在环境", "限定用途"})
+        self.assertTrue(sec.environment_ready("prepare:dev_sidecar"))
+
+    def test_unknown_item(self):
+        sec = SecurityValidator(self.store, self.dir)
+        pipe = PreparePipeline(sec, self.dir)
+        with self.assertRaises(PrepareError):
+            pipe.prepare("unknown_tool", installer=lambda h: h)
+
+
+if __name__ == "__main__":
+    unittest.main()

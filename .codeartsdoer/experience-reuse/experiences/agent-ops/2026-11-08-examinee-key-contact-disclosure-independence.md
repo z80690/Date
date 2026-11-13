@@ -12,8 +12,8 @@ source_sessions: [ses_e48ebbb57ffeJeA6mFP69qRHLs]
 project: Date
 severity: medium
 quality_score: 91
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-12T20:25:27
 low_quality_hit_count: 0
 tier: S
 related_experiences: [agent-ops/2026-11-07-worker-grader-exam-gate-pattern.md, workflow/2026-11-07-independent-exam-grading-rubric.md, workflow/2026-11-07-exam-question-authoring-contract.md, agent-ops/2026-11-08-examiner-precheck-evidence-parallel-audit.md]

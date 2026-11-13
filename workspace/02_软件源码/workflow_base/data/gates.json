@@ -1,0 +1,100 @@
+{
+ "format_version": "v1",
+ "payload": {
+  "eval_reports": {
+   "stage": "eval_reports",
+   "artifact_ref": "07_参考资料/评估报告/",
+   "status": "已同意",
+   "reject_opinion": "",
+   "submitted_at": "2026-11-10 23:21:39",
+   "decided_at": "2026-11-11 00:40:22",
+   "history": [
+    {
+     "stage": "eval_reports",
+     "artifact_ref": "07_参考资料/评估报告/",
+     "status": "等待确认",
+     "reject_opinion": "",
+     "submitted_at": "2026-11-10 23:20:51",
+     "decided_at": "",
+     "history": []
+    }
+   ]
+  },
+  "acceptance": {
+   "stage": "acceptance",
+   "artifact_ref": "04_测试验证/final_summary.json",
+   "status": "等待确认",
+   "reject_opinion": "",
+   "submitted_at": "2026-11-11 00:40:42",
+   "decided_at": "",
+   "history": [
+    {
+     "stage": "acceptance",
+     "artifact_ref": "04_测试验证/final_summary.json",
+     "status": "等待确认",
+     "reject_opinion": "",
+     "submitted_at": "2026-11-11 00:10:43",
+     "decided_at": "",
+     "history": []
+    },
+    {
+     "stage": "acceptance",
+     "artifact_ref": "04_测试验证/final_summary.json",
+     "status": "等待确认",
+     "reject_opinion": "",
+     "submitted_at": "2026-11-11 00:13:10",
+     "decided_at": "",
+     "history": [
+      {
+       "stage": "acceptance",
+       "artifact_ref": "04_测试验证/final_summary.json",
+       "status": "等待确认",
+       "reject_opinion": "",
+       "submitted_at": "2026-11-11 00:10:43",
+       "decided_at": "",
+       "history": []
+      }
+     ]
+    },
+    {
+     "stage": "acceptance",
+     "artifact_ref": "04_测试验证/final_summary.json",
+     "status": "等待确认",
+     "reject_opinion": "",
+     "submitted_at": "2026-11-11 00:16:13",
+     "decided_at": "",
+     "history": [
+      {
+       "stage": "acceptance",
+       "artifact_ref": "04_测试验证/final_summary.json",
+       "status": "等待确认",
+       "reject_opinion": "",
+       "submitted_at": "2026-11-11 00:10:43",
+       "decided_at": "",
+       "history": []
+      },
+      {
+       "stage": "acceptance",
+       "artifact_ref": "04_测试验证/final_summary.json",
+       "status": "等待确认",
+       "reject_opinion": "",
+       "submitted_at": "2026-11-11 00:13:10",
+       "decided_at": "",
+       "history": [
+        {
+         "stage": "acceptance",
+         "artifact_ref": "04_测试验证/final_summary.json",
+         "status": "等待确认",
+         "reject_opinion": "",
+         "submitted_at": "2026-11-11 00:10:43",
+         "decided_at": "",
+         "history": []
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

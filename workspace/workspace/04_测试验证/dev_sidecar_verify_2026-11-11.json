@@ -1,0 +1,9 @@
+{
+ "steps": [
+  {
+   "step": "zip_present",
+   "ok": false,
+   "detail": "C:\\Users\\Administrator\\Desktop\\Date\\workspace\\workspace\\06_开发工具\\prepared\\dev_sidecar\\DevSidecar-2.3.5-x64.zip 不存在或大小不足（下载未完成）"
+  }
+ ]
+}

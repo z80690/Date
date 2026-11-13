@@ -14,8 +14,8 @@ source_sessions: [ses_e48bee51affeThxvdxYI2D1zuM]
 project: Date
 severity: low
 quality_score: 84
-hit_count: 1
-last_hit_at: 2026-11-09T13:40:08
+hit_count: 2
+last_hit_at: 2026-11-12T07:36:05
 low_quality_hit_count: 0
 tier: A
 related_experiences: [2026-11-08-wiki-section-tiered-revision-judgment-contract, 2026-11-08-wiki-section-revision-patch-json-mode, 2026-11-08-module-inflation-capability-grouping-granularity, 2026-11-07-secondhand-summary-insufficient-verify-primary-source, 2026-11-06-verify-before-write-knowledge-docs]

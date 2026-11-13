@@ -1,0 +1,2 @@
+{"status": "ok", "service": "p003-https-target", "note": "DVWA stand-in"}
+HTTP=200

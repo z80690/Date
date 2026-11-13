@@ -1,0 +1,54 @@
+{
+ "route": {
+  "chosen": "windows",
+  "reason": "Windows 优先，本机直接启动"
+ },
+ "loop": {
+  "task_id": "f22205d683e7487ca87a6f59f70a7f71",
+  "dispatch": {
+   "object_id": "xiaozhi_sim_01",
+   "device_command": {
+    "type": "chat",
+    "payload": "底座闭环验收",
+    "transport": "loopback"
+   },
+   "submit_result": null
+  },
+  "raw_report": {
+   "ok": true,
+   "reply": "[xiaozhi-sim] 已响应: 底座闭环验收",
+   "transport": "loopback"
+  },
+  "normalized": {
+   "conclusion": "成功",
+   "detail": "[xiaozhi-sim] 已响应: 底座闭环验收",
+   "raw": {
+    "ok": true,
+    "reply": "[xiaozhi-sim] 已响应: 底座闭环验收",
+    "transport": "loopback"
+   }
+  },
+  "final_status": "成功",
+  "events": [
+   {
+    "seq": 1,
+    "receipt": {
+     "task_id": "f22205d683e7487ca87a6f59f70a7f71",
+     "conclusion": "成功",
+     "detail": "[xiaozhi-sim] 已响应: 底座闭环验收",
+     "terminal": true,
+     "received_at": "2026-11-11 00:40:22"
+    }
+   }
+  ],
+  "selection_binding": {
+   "server_semantics": "xiaozhi-esp32-server session protocol (MIT)",
+   "device_semantics": "xiaozhi-esp32 device behavior (MIT)",
+   "firmware_sim_reserved": [
+    "renode",
+    "qemu"
+   ],
+   "build_toolchain": "esp-idf"
+  }
+ }
+}

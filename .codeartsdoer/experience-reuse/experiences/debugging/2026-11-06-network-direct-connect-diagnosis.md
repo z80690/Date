@@ -4,7 +4,7 @@ title: 网络直连失败分层诊断：先证配置层干净，再判出口链�
 category: debugging
 nature: methodology
 created_at: 2026-11-06T18:41:59
-updated_at: 2026-11-06T18:45:59
+updated_at: 2026-11-12T17:56:49
 tags: [network-diagnosis, proxy, git-config, direct-connect, error-triage]
 keywords: [Connection was reset, Could not connect, rate limit, git proxy, 空proxy, 直连, 环境变量, NO_PROXY, hosts, ls-remote, 分层诊断]
 problem_patterns: [git clone / webfetch 报 Connection was reset 疑似代理问题, 不确定卡在代理配置还是出口链路, 空 proxy 配置被误当垃圾清理]
@@ -16,7 +16,7 @@ hit_count: 0
 last_hit_at: null
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-06-codeartsdoer-docs-retrieval]
+related_experiences: [2026-11-06-codeartsdoer-docs-retrieval, 2026-11-12-git-url-config-noproxy-silent-proxy-override]
 ---
 
 # 网络直连失败分层诊断：先证配置层干净，再判出口链路

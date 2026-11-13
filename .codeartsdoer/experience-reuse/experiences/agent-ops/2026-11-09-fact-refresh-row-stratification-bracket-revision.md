@@ -15,8 +15,8 @@ project: Date
 severity: low
 quality_score: 84
 utility_score: 80
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-11T09:46:37
 low_quality_hit_count: 0
 tier: A
 related_experiences: [2026-11-08-wiki-section-tiered-revision-judgment-contract, 2026-11-08-wiki-section-same-layer-action-criteria, 2026-11-08-wiki-section-revision-patch-json-mode, 2026-11-09-glossary-status-refresh-zero-revision-criterion]

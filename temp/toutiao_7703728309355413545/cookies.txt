@@ -1,0 +1,5 @@
+# Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file!  Do not edit.
+
+www.ixigua.com	FALSE	/	FALSE	1794321315	__ac_nonce	06af3257d00b27f3023fc
