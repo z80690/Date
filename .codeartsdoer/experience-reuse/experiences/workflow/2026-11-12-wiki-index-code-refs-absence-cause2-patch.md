@@ -4,7 +4,7 @@ title: wiki-index 文档 code_refs 为空时 reverse_lookup 必然 unmatched：�
 category: workflow
 nature: methodology
 created_at: 2026-11-12T08:03:10
-updated_at: 2026-11-12T08:03:10
+updated_at: 2026-11-14T10:33:29
 tags: [wiki增量更新, 影响分析, 索引漏建, 归属补判, 知识库]
 keywords: [reverse_lookup, unmatched, section_code_paths, code_refs, 成因2, 索引漏建, module_tree, build_index, hash unknown, 增量更新]
 problem_patterns:
@@ -18,7 +18,7 @@ hit_count: 8
 last_hit_at: 2026-11-14T01:56:22
 low_quality_hit_count: 0
 tier: S
-related_experiences: [2026-11-08-wiki-increment-update-unmatched-file-routing, 2026-11-11-wiki-arch-snapshot-stale-new-module-read-verify, 2026-11-11-wiki-added-mislabeled-merkle-reset-hash-triage]
+related_experiences: [2026-11-08-wiki-increment-update-unmatched-file-routing, 2026-11-11-wiki-arch-snapshot-stale-new-module-read-verify, 2026-11-11-wiki-added-mislabeled-merkle-reset-hash-triage, 2026-11-14-wiki-update-plan-clear-vs-crossround-prior-note-token]
 ---
 
 # wiki-index 文档 code_refs 为空时 reverse_lookup 必然 unmatched：按 module_tree 归属判成因 2 补判
@@ -42,7 +42,7 @@ unmatched 的成因不是文件与文档的关系问题，而是**索引侧缺�
 
 1. **遇 unmatched 先查索引缺口**：找到文件按 module_tree 应归属的文档，读 wiki-index.json 中该文档的 `section_code_paths` 是否为空。
 2. **空 → 判成因 2 补判**：把文件路由进该文档的修订面，hash 全 unknown 按 subagent 修订档处理（需实读源文件取证，不依赖索引行号）。
-3. **留痕**：在 update_plan note 中记一行"该文档 code_refs 空，按 module_tree 归属判成因 2 补判"，供校验与复盘追溯。
+3. **留痕**：在 update_plan note 中记一行"该文档 code_refs 空，按 module_tree 归属判成因 2 补判"，供本轮校验与复盘追溯；轮末 Stage 6 清空 update_plan 前，判定依据须迁移至 stage_2 的 `note_<version_token>` 追加式留痕供跨轮复用（update_plan 是单轮工作面、轮末会被清空，跨轮先验禁寄存其上——修正载体见 2026-11-14-wiki-update-plan-clear-vs-crossround-prior-note-token）。
 4. **修订形态分档**：常规变更写入正文小节；一次性诊断探针类新增文件（如临时 probe/alt 脚本）不构成正文知识增量，仅在架构设计小节以 line_number_only 登记 code_refs。
 5. **build_index 回验**：修订合并完成后跑增量索引重建，验证 code_paths 数量显著回升（漏建缺口应被一次性补齐），同时确认 .code-links.json 零残留。
 
