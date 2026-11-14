@@ -15,8 +15,8 @@ source_sessions: [ses_e32e25b09ffeSjYrHNrWK7ATrq]
 project: Date
 severity: medium
 quality_score: 87
-hit_count: 6
-last_hit_at: 2026-11-13T12:52:04
+hit_count: 7
+last_hit_at: 2026-11-14T01:56:22
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-12-wiki-update-version-token-expiry-restart, 2026-11-09-wiki-hash-shortcut-requires-merge-pass, 2026-11-11-wiki-added-mislabeled-merkle-reset-hash-triage, 2026-11-09-repeat-changed-set-reuse-prior-round-verdicts]
