@@ -12,8 +12,8 @@ source_sessions: [ses_e3abe9d50ffe6h0jefPpuZafdL]
 project: Date
 severity: medium
 quality_score: 84
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-14T12:01:31
 low_quality_hit_count: 0
 tier: A
 related_experiences: ["debugging/2026-11-09-cli-subprocess-utf8-ansi-decode-mojibake", "build-env/2026-11-08-ps51-getcontent-selectstring-encoding-split", "workflow/2026-11-10-video-content-full-recovery-pipeline"]

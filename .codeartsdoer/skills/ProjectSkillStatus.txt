@@ -16,3 +16,4 @@ repo-wiki-update-execution=true
 cron-scheduled-task-config=true
 ruff-review=true
 local-drill-execution-patterns=true
+vercel-python-deploy=true

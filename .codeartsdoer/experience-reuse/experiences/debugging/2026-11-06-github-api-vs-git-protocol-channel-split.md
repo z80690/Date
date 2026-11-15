@@ -12,8 +12,8 @@ source_sessions: [ses_e4e8cc3d7ffenMVCgsUzGkzfrb]
 project: Date
 severity: medium
 quality_score: 86
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-14T12:01:31
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-06-github-clone-timeout-intermittent-link, 2026-11-06-network-direct-connect-diagnosis, 2026-11-12-github-pull-feasibility-abc-community-fork-first]

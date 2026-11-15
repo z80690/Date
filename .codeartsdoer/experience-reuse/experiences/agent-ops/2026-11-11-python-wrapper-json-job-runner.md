@@ -15,8 +15,8 @@ source_sessions: [ses_e37a7d04bffeGDy30227RzJmD2]
 project: Date
 severity: medium
 quality_score: 88
-hit_count: 8
-last_hit_at: 2026-11-14T01:56:22
+hit_count: 10
+last_hit_at: 2026-11-15T04:25:55
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-09-wsl-bash-drive-letter-path-relativized, 2026-11-07-powershell-command-construction-limits-script-fallback, 2026-11-08-wiki-update-script-behavior-contract-blindspots, 2026-11-09-companion-execution-skill-co-load-before-scripts]

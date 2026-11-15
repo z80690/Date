@@ -12,8 +12,8 @@ source_sessions: ["ses_e3302fce2ffe5bQ32J65w6nefV"]
 project: Date
 severity: medium
 quality_score: 85
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-14T12:01:31
 low_quality_hit_count: 0
 tier: S
 related_experiences: ["2026-11-06-powershell-inline-json-escaping-python-fallback", "2026-11-10-python-print-redirect-gbk-mojibake-write-file-directly", "2026-11-09-cli-subprocess-utf8-ansi-decode-mojibake"]

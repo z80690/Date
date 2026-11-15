@@ -14,8 +14,8 @@ source_sessions: [ses_e489395f4ffekheN9UTSC6iPDv]
 project: Date
 severity: low
 quality_score: 84
-hit_count: 6
-last_hit_at: 2026-11-13T13:02:13
+hit_count: 7
+last_hit_at: 2026-11-15T04:35:40
 low_quality_hit_count: 0
 tier: A
 related_experiences: [2026-11-08-wiki-section-same-layer-action-criteria, 2026-11-08-wiki-section-revision-patch-json-mode, 2026-11-08-wiki-update-script-behavior-contract-blindspots, 2026-11-08-subagent-patch-field-drift-silent-content-loss, 2026-11-07-dispatch-brief-embedded-fact-pack]
