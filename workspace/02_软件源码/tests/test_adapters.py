@@ -17,6 +17,7 @@ from workflow_base.adapters.contract import (
 )
 from workflow_base.adapters.objects import ObjectRegistry, ObjectError
 from workflow_base.adapters import embedded, security_research
+from workflow_base.adapters import velxio_adapter
 from workflow_base.tools.prepare import PreparePipeline, PrepareError, PREP_OBJECTS
 
 
@@ -199,6 +200,33 @@ class TestPrepare(TempDirTest):
         pipe = PreparePipeline(sec, self.dir)
         with self.assertRaises(PrepareError):
             pipe.prepare("unknown_tool", installer=lambda h: h)
+
+
+class TestVelxioAdapter(TempDirTest):
+    """固件仿真适配层：环境探测如实、能力声明不越界、缺失不假装。"""
+
+    def test_detect_missing_home_is_unavailable(self):
+        d = velxio_adapter.detect(self.dir + "/does_not_exist")
+        self.assertFalse(d["ready"])
+        self.assertEqual(d["status"], "unavailable")
+        self.assertIn("不假装可用", d["reason"])
+
+    def test_detect_reports_each_probe(self):
+        d = velxio_adapter.detect(self.dir + "/does_not_exist")
+        items = {c["item"] for c in d["checks"]}
+        self.assertTrue({"arduino-cli", "venv-python", "verify-script"}.issubset(items))
+        self.assertTrue(all(not c["pass"] for c in d["checks"]))
+
+    def test_compile_blink_unavailable_when_no_env(self):
+        r = velxio_adapter.compile_blink(self.dir + "/does_not_exist")
+        self.assertFalse(r["ok"])
+        self.assertEqual(r["status"], "unavailable")
+
+    def test_capability_declares_layer_boundary(self):
+        c = velxio_adapter.capability()
+        self.assertEqual(c["tier"], "firmware-simulation")
+        self.assertFalse(c["protocol_layer_replaced"])  # 协议桩保留，两层互不替代
+        self.assertIn("浏览器前端仿真执行", c["not_yet_verified"])
 
 
 if __name__ == "__main__":

@@ -60,26 +60,43 @@ class XiaozhiSimulatorHost:
         self.alive = False
 
     def firmware_sim_path(self) -> Dict[str, Any]:
-        """固件级仿真接口：Velxio 为推荐执行器（本机实测受限，默认不启用）。
+        """固件级仿真接口：Velxio 为推荐执行器（本地 MCP 编译实测通过，默认启用）。
 
         分层：协议桩（本类 on_command，负责小智会话对答）与固件仿真（本方法）
         是两层，互不替代。Velxio 补的是工作流文档承诺、代码一直空着的固件层。
         """
         return {
-            "enabled": False,  # Windows 原生实测 243 失败(pass_fds POSIX 原语)，未达可默认启用门槛
-            "note": "固件仿真交给 Velxio（QEMU 跑真固件+串口/GPIO 采集）；协议对端仍走本桩。启用需 Docker 或 WSL Linux 环境",
+            "enabled": True,  # 本地 venv+arduino-cli+Velxio MCP 实测编 Blink 出 hex，simulation_ready=True
+            "note": "固件仿真交给 Velxio（QEMU 跑真固件+串口/GPIO 采集）；协议对端仍走本桩。本地实测走通编译层，仿真执行在浏览器前端",
             "recommended": "davidmonterocrespo24/velxio",
             "license": "AGPLv3（仅本地使用，未修改未分发，不触发传染）",
             "local_path": "D:/refs/velxio",
             "mcp_tools": ["compile_project", "run_project", "create_circuit", "update_circuit"],
             "mcp_transport": "stdio (backend/mcp_server.py) 或 SSE :8002",
             "boards": ["Arduino AVR", "RP2040/Pico", "ESP32(Xtensa/RISC-V)"],
-            "measured": {
-                "env": "Windows 原生, Python 3.13, pytest 9.2",
-                "passed": 1769, "failed": 243, "errors": 8, "skipped": 10,
-                "root_cause": "pass_fds not supported on Windows（POSIX fd 传递，QEMU 子进程用）；Arduino 库路径缺失",
-                "recommended_runtime": "Docker 镜像 ghcr.io/davidmonterocrespo24/velxio:master 或 WSL Linux",
-                "confidence": "L2（单元测试实测；Docker/WSL 路线因 daemon 未起未实测）",
+            "runtime": {
+                "cli": "D:/refs/velxio/tools/arduino-cli.exe (v1.6.0)",
+                "venv": "D:/refs/velxio/.venv",
+                "core": "arduino:avr@1.8.8",
+                "proxy": "http://127.0.0.1:52764（国内下载 core 必需）",
+                "verify_script": "D:/refs/velxio/verify_blink_mcp.py",
             },
+            "measured": {
+                "native_windows_pytest": {
+                    "env": "Windows 原生, Python 3.13, pytest 9.2",
+                    "passed": 1769, "failed": 243, "errors": 8, "skipped": 10,
+                    "root_cause": "pass_fds not supported on Windows（POSIX fd 传递，QEMU 子进程用）；Arduino 库路径缺失",
+                },
+                "local_mcp_blink": {
+                    "env": "本地 venv + arduino-cli 1.6.0 + Velxio MCP compile_project/run_project",
+                    "board": "arduino:avr:uno",
+                    "success": True, "simulation_ready": True,
+                    "hex_bytes": 2556, "sketch_bytes": 924,
+                    "result": "VELXIO_MCP_BLINK PASS",
+                },
+                "docker_image": "ghcr.io/davidmonterocrespo24/velxio:master 未拉取成功（1.55GB，ghcr.io 国内 136~373KB/s，daemon 不吃系统代理）；本地路线已等效跑通编译层",
+                "confidence": "L3（本地 MCP 实测编译层真出 hex；浏览器端仿真执行与 ESP32/小智固件编译未测）",
+            },
+            "not_yet_verified": ["浏览器前端仿真实际运行（Velxio 执行在客户端）", "ESP32/小智固件编译加载（O4，需 ESP-IDF）", "Docker 官方镜像端到端"],
             "legend": {"primary": "velxio", "fallback": "renode/qemu（原规划保留）", "build": "esp-idf/arduino-cli"},
         }
