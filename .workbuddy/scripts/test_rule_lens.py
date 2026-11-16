@@ -54,7 +54,7 @@ def main():
 
     # 6. 无关键词只给常驻
     _, empty = run("need")
-    all_ok &= check("无关键词只加载常驻铁律", "只加载 6 条常驻铁律" in empty)
+    all_ok &= check("无关键词只加载常驻铁律", "只加载 7 条常驻铁律" in empty)
 
     print("\n总结: {}".format("全部通过" if all_ok else "有失败项"))
     return 0 if all_ok else 1

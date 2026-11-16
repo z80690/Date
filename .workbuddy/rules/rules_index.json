@@ -7,6 +7,7 @@
     {"id":"C4","source":"项目协作公约","title":"规矩层冻结","summary":"公约零改动，新流程装技能，禁自建定时","when":"改规矩 冻结 技能 定时 规则层","layer":"constant"},
     {"id":"C5","source":"项目协作公约","title":"执行节制","summary":"派工≤20分钟，超线暂停，禁轮询走事件","when":"派工 时限 预算 中断 轮询 事件","layer":"constant"},
     {"id":"C6","source":"项目协作公约","title":"单一事实源","summary":"状态只存一处，冲突按规则>知识库>记忆>推断","when":"状态 冲突 事实源 记忆 知识库","layer":"constant"},
+    {"id":"C7","source":"项目协作公约","title":"预测校正","summary":"先猜一步再拿现实校一步，纯猜会飘纯看会乱，结论带把握","when":"干活 方法 预测 校正 观测 猜 校 验证 把握 靠谱","layer":"constant"},
 
     {"id":"W1","source":"项目工作规则","title":"目录池纪律","summary":"新项目先建齐00-09目录，缺目录不写代码","when":"新项目 开工 建目录 目录池 初始化","layer":"ondemand"},
     {"id":"W2","source":"项目工作规则","title":"资料归档","summary":"需求进00硬件01代码02数据04流程06交付08","when":"归档 资料 目录 文件放哪 00 01 02 04 08","layer":"ondemand"},

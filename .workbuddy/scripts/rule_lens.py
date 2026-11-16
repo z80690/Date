@@ -6,7 +6,7 @@
   python rule_lens.py list              打印整张目录
   python rule_lens.py need "关键词"      按关键词找这次该读哪几条（只给摘要）
   python rule_lens.py need "关键词" --show  命中后连正文一起翻出来
-  python rule_lens.py check             自检：6条是否仍常驻、索引条数对不对
+  python rule_lens.py check             自检：7条是否仍常驻、索引条数对不对
 
 设计要点（缓存友好）：
   每次输出开头都是同一段固定前缀，字字不变；变的部分拼在后面。
@@ -25,8 +25,8 @@ FULLTEXT_PATH = os.path.join(ROOT, "rules", "personal_fulltext.md")
 
 # 固定前缀：每次输出都有，字字不动 —— KV Cache 就吃这个
 PREFIX = (
-    "=== 常驻铁律：6条协作公约（每次会话自动注入，不用翻）===\n"
-    "C1全程SDD / C2学习材料 / C3仓库隔离 / C4规矩冻结 / C5执行节制 / C6单一事实源\n"
+    "=== 常驻铁律：7条协作公约（每次会话自动注入，不用翻）===\n"
+    "C1全程SDD / C2学习材料 / C3仓库隔离 / C4规矩冻结 / C5执行节制 / C6单一事实源 / C7预测校正\n"
     "（正文见 .workbuddy/rules/项目协作公约.md，正文一个字没改）\n"
 )
 
@@ -51,7 +51,7 @@ def fulltext_for(rule_id):
     if rule_id.startswith("W"):
         return "（八条正文见 .workbuddy/rules/项目工作规则.md，命中第 {} 条，去读该文件对应编号）".format(rule_id[1:])
     if rule_id.startswith("C"):
-        return "（六条常驻，正文见 .workbuddy/rules/项目协作公约.md）"
+        return "（七条常驻，正文见 .workbuddy/rules/项目协作公约.md）"
     if not os.path.exists(FULLTEXT_PATH):
         return "（正文存档缺失：{}）".format(FULLTEXT_PATH)
     with open(FULLTEXT_PATH, "r", encoding="utf-8") as f:
@@ -71,7 +71,7 @@ def cmd_need(rules, keywords, show=False):
     print(PREFIX)
     print("=== 本次任务：{} ===".format(" ".join(kws) if kws else "(无关键词，只给常驻)"))
     if not kws:
-        print("没给关键词，只加载 6 条常驻铁律。")
+        print("没给关键词，只加载 7 条常驻铁律。")
         return 0
     hit = []
     for r in rules:
@@ -83,7 +83,7 @@ def cmd_need(rules, keywords, show=False):
                 hit.append(r)
                 break
     if not hit:
-        print("没匹配到按需规矩，只加载 6 条常驻铁律。")
+        print("没匹配到按需规矩，只加载 7 条常驻铁律。")
         return 0
     print("=== 命中 {} 条（按需加载，其余不读）===".format(len(hit)))
     for r in hit:
@@ -102,15 +102,15 @@ def cmd_check(rules):
     ondemand = [r for r in rules if r["layer"] == "ondemand"]
     ids = [r["id"] for r in rules]
     ok = True
-    print("总条数: {} (期望 28)".format(len(rules)))
-    print("常驻: {} (期望 6) / 按需: {} (期望 22)".format(len(constant), len(ondemand)))
+    print("总条数: {} (期望 29)".format(len(rules)))
+    print("常驻: {} (期望 7) / 按需: {} (期望 22)".format(len(constant), len(ondemand)))
     print("编号唯一: {}".format("是" if len(ids) == len(set(ids)) else "否"))
-    print("6条编号齐全: {}".format("是" if all("C{}".format(i) in ids for i in range(1, 7)) else "否"))
-    if len(rules) != 28 or len(constant) != 6 or len(ondemand) != 22:
+    print("7条编号齐全: {}".format("是" if all("C{}".format(i) in ids for i in range(1, 8)) else "否"))
+    if len(rules) != 29 or len(constant) != 7 or len(ondemand) != 22:
         ok = False
     if len(ids) != len(set(ids)):
         ok = False
-    if not all("C{}".format(i) in ids for i in range(1, 7)):
+    if not all("C{}".format(i) in ids for i in range(1, 8)):
         ok = False
     print("结论: {}".format("PASS" if ok else "FAIL"))
     return 0 if ok else 1
