@@ -6,8 +6,9 @@
    "embedded": [
     "78/xiaozhi-esp32",
     "xinnan-tech/xiaozhi-esp32-server",
-    "renode/renode",
     "espressif/esp-idf",
+    "davidmonterocrespo24/velxio",
+    "renode/renode",
     "qemu/qemu"
    ],
    "security": [
@@ -33,7 +34,7 @@
   },
   "crash_5s_interrupt": {
    "pass": true,
-   "detail": "崩溃后心跳超时→中断标记+通知；中断任务=['ca09f19c8cb344de8e0dbae72647dede']（5.3.3 异常 2/4.2.2）"
+   "detail": "崩溃后心跳超时→中断标记+通知；中断任务=['ff2eafce3cd84d4eae1517f7a4d870a6']（5.3.3 异常 2/4.2.2）"
   },
   "isolation_after_crash": {
    "pass": true,
@@ -75,7 +76,7 @@
   },
   "intercept_log_present": {
    "pass": true,
-   "detail": "拦截日志样本 18 条（含历史绕过尝试）"
+   "detail": "拦截日志样本 20 条（含历史绕过尝试）"
   }
  },
  "g8": {

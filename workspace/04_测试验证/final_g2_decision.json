@@ -5,8 +5,9 @@
   "embedded": [
    "78/xiaozhi-esp32",
    "xinnan-tech/xiaozhi-esp32-server",
-   "renode/renode",
    "espressif/esp-idf",
+   "davidmonterocrespo24/velxio",
+   "renode/renode",
    "qemu/qemu"
   ],
   "security": [

@@ -5,7 +5,7 @@
    "catalog_id": "embedded",
    "primary": "windows",
    "fallback": "kali",
-   "declared_at": "2026-11-11 00:40:22"
+   "declared_at": "2026-11-17 06:45:57"
   },
   "security_research": {
    "catalog_id": "security_research",

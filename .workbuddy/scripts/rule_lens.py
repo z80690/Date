@@ -96,22 +96,35 @@ def cmd_need(rules, keywords, show=False):
 
 
 def cmd_check(rules):
+    """自检：条数与公约条数都从文件动态读，加减规矩不用改代码。"""
     print(PREFIX)
-    print("=== 自检 ===")
+    print("=== 自检（条数动态读，加减规矩不改代码）===")
     constant = [r for r in rules if r["layer"] == "constant"]
     ondemand = [r for r in rules if r["layer"] == "ondemand"]
     ids = [r["id"] for r in rules]
-    ok = True
-    print("总条数: {} (期望 29)".format(len(rules)))
-    print("常驻: {} (期望 7) / 按需: {} (期望 22)".format(len(constant), len(ondemand)))
+    convention = [r for r in rules if r["source"] == "项目协作公约"]
+    n_index = len(convention)            # 索引里公约条数
+    n_text = 0                           # 正文里公约条数（正则数编号行）
+    with open(os.path.join(ROOT, "rules", "项目协作公约.md"), encoding="utf-8") as f:
+        n_text = len(re.findall(r"^\d+\.", f.read(), re.M))
+
+    c_ids = sorted(r["id"] for r in convention)
+    expect = ["C{}".format(i) for i in range(1, n_index + 1)]
+    fields_ok = all(all(k in r for k in ("id", "source", "title", "summary", "when", "layer"))
+                    for r in rules)
+    layer_ok = all(r["layer"] in ("constant", "ondemand") for r in rules)
+
+    print("总条数: {} (常驻 {} / 按需 {})".format(len(rules), len(constant), len(ondemand)))
+    print("公约条数: 正文 {} / 索引 {} (期望一致)".format(n_text, n_index))
     print("编号唯一: {}".format("是" if len(ids) == len(set(ids)) else "否"))
-    print("7条编号齐全: {}".format("是" if all("C{}".format(i) in ids for i in range(1, 8)) else "否"))
-    if len(rules) != 29 or len(constant) != 7 or len(ondemand) != 22:
-        ok = False
-    if len(ids) != len(set(ids)):
-        ok = False
-    if not all("C{}".format(i) in ids for i in range(1, 8)):
-        ok = False
+    print("公约编号C1..C{}齐全: {}".format(n_index, "是" if c_ids == expect else "否"))
+    print("索引字段完整/层合法: {}".format("是" if fields_ok and layer_ok else "否"))
+
+    ok = (n_text == n_index and n_index > 0
+          and len(ids) == len(set(ids))
+          and c_ids == expect
+          and fields_ok and layer_ok
+          and len(constant) == n_index)
     print("结论: {}".format("PASS" if ok else "FAIL"))
     return 0 if ok else 1
 

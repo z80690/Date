@@ -60,11 +60,26 @@ class XiaozhiSimulatorHost:
         self.alive = False
 
     def firmware_sim_path(self) -> Dict[str, Any]:
-        """固件级仿真接口预留：真实硬件路径经 Renode/QEMU 加载固件（本阶段不启用）。"""
+        """固件级仿真接口：Velxio 为推荐执行器（本机实测受限，默认不启用）。
+
+        分层：协议桩（本类 on_command，负责小智会话对答）与固件仿真（本方法）
+        是两层，互不替代。Velxio 补的是工作流文档承诺、代码一直空着的固件层。
+        """
         return {
-            "enabled": False,
-            "note": "协议对等模拟阶段不加载固件；真实硬件接入时经 Renode(主)/QEMU(辅) 加载 ESP-IDF 构建产物",
-            "renode": "primary",
-            "qemu": "fallback",
-            "esp_idf": "build toolchain",
+            "enabled": False,  # Windows 原生实测 243 失败(pass_fds POSIX 原语)，未达可默认启用门槛
+            "note": "固件仿真交给 Velxio（QEMU 跑真固件+串口/GPIO 采集）；协议对端仍走本桩。启用需 Docker 或 WSL Linux 环境",
+            "recommended": "davidmonterocrespo24/velxio",
+            "license": "AGPLv3（仅本地使用，未修改未分发，不触发传染）",
+            "local_path": "D:/refs/velxio",
+            "mcp_tools": ["compile_project", "run_project", "create_circuit", "update_circuit"],
+            "mcp_transport": "stdio (backend/mcp_server.py) 或 SSE :8002",
+            "boards": ["Arduino AVR", "RP2040/Pico", "ESP32(Xtensa/RISC-V)"],
+            "measured": {
+                "env": "Windows 原生, Python 3.13, pytest 9.2",
+                "passed": 1769, "failed": 243, "errors": 8, "skipped": 10,
+                "root_cause": "pass_fds not supported on Windows（POSIX fd 传递，QEMU 子进程用）；Arduino 库路径缺失",
+                "recommended_runtime": "Docker 镜像 ghcr.io/davidmonterocrespo24/velxio:master 或 WSL Linux",
+                "confidence": "L2（单元测试实测；Docker/WSL 路线因 daemon 未起未实测）",
+            },
+            "legend": {"primary": "velxio", "fallback": "renode/qemu（原规划保留）", "build": "esp-idf/arduino-cli"},
         }

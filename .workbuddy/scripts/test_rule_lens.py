@@ -56,6 +56,11 @@ def main():
     _, empty = run("need")
     all_ok &= check("无关键词只加载常驻铁律", "只加载 7 条常驻铁律" in empty)
 
+    # 7. 三副本公约正文一致（O2 校验脚本）
+    sync = os.path.join(HERE, "check_rules_sync.py")
+    p = subprocess.run([sys.executable, sync], capture_output=True, text=True, encoding="utf-8")
+    all_ok &= check("公约三副本正文逐字一致", p.returncode == 0)
+
     print("\n总结: {}".format("全部通过" if all_ok else "有失败项"))
     return 0 if all_ok else 1
 

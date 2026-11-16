@@ -61,7 +61,7 @@ REPORT["g2"] = {
     "decision": "嵌入式 5 项全用；攻防 4 项全用现成",
     "gate_status": g2["status"],
     "selection": {
-        "embedded": ["78/xiaozhi-esp32", "xinnan-tech/xiaozhi-esp32-server", "renode/renode", "espressif/esp-idf", "qemu/qemu"],
+        "embedded": ["78/xiaozhi-esp32", "xinnan-tech/xiaozhi-esp32-server", "espressif/esp-idf", "davidmonterocrespo24/velxio", "renode/renode", "qemu/qemu"],
         "security": ["digininja/DVWA", "WebGoat/WebGoat", "zaproxy/zaproxy", "docmirror/dev-sidecar"],
     },
 }
@@ -338,7 +338,7 @@ deliverable = """# 功能说明与恢复边界（device_workflow_api 交付文�
 
 ## 三、G2 选型落位（用户拍板）
 
-- 嵌入式 5 项全用：xiaozhi-esp32（设备端协议参照）/xiaozhi-esp32-server（服务端协议参照）/Renode（仿真主）/QEMU（仿真辅）/ESP-IDF（编译基础）——本阶段模拟器宿主以协议对等方式运行（tasks 6.1 允许形态），固件级仿真接口已预留（simulator.firmware_sim_path）。
+- 嵌入式选型：xiaozhi-esp32（设备端协议参照）/xiaozhi-esp32-server（服务端协议参照）/ESP-IDF（编译基础）为协议层；固件仿真层改用 Velxio（davidmonterocrespo24/velxio，AGPLv3，D:/refs/velxio）——它补的正是工作流文档承诺、旧代码一直 enabled:False 空着的 Renode/QEMU 固件仿真位（QEMU 跑真固件+串口/GPIO 采集+示波器，带 MCP 接口）。Renode/QEMU 降为备选。实测：Windows 原生 1769 过/243 败（pass_fds 是 POSIX 原语，Windows 不支持），须走 Docker/WSL Linux；故 firmware_sim_path 保持 enabled:False 不默认启用，协议桩照常跑（两层互不替代）。详见 simulator.firmware_sim_path() 的 measured 字段。
 - 攻防 4 项全用现成：DVWA（已获取本地离线副本）/WebGoat（已登记部署受限：无 Java 运行时）/OWASP ZAP/dev-sidecar（流水线就绪）。
 """.replace("{snap}", SNAP)
 write_md(os.path.join(ROOT, "08_交付文档", "功能说明与恢复边界.md"), deliverable)
