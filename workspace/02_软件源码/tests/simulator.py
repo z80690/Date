@@ -102,9 +102,16 @@ class XiaozhiSimulatorHost:
                     "clock_ticks": "0ms 恒定（无头浏览器采样 10 次均 0）——仿真时钟未走动，LED 闪烁未看到，不假装已验证",
                     "note": "后端需把 arduino-cli 目录加进 PATH，否则编译报 WinError 2；/api/metrics/run 404 是统计埋点，无关仿真",
                 },
+                "browser_headful_p14": {
+                    "env": "有界面 Edge（headless=false）+ 本地全栈，复验上一单'无头限制'猜测",
+                    "compile": "✓ 编译成功，924 bytes，programLen=2556（与 MCP 实测一致）",
+                    "clock": "计时器恒定 0.0 秒，多次截图无变化；DOM 探查无仿真时钟元素（误抓到的是 OUTPUT 日志时间戳）",
+                    "spice_warning": "SPICE: 目前没有活跃的向量（no active vectors）——仿真内核未驱动代码，是看不到闪烁的可能根因",
+                    "result": "有界面模式仍未看到 LED 闪烁；排除'无头动画限制'这一猜测，问题指向仿真内核本身；保持 L3 不升 L4",
+                },
                 "docker_image": "ghcr.io/davidmonterocrespo24/velxio:master 未拉取成功（1.55GB，ghcr.io 国内 136~373KB/s，daemon 不吃系统代理）；本地全栈已等效跑通编译层",
-                "confidence": "L3（本地 MCP 出 hex + 浏览器全栈编译成功、仿真引擎启动；但无头环境时钟不走、LED 闪烁与 ESP32/小智固件编译均未实测，不升 L4）",
+                "confidence": "L3（本地 MCP 出 hex + 浏览器全栈编译成功、仿真引擎启动；无头与有界面两种模式时钟均不走、LED 闪烁未看到；ESP32/小智固件编译未测，不升 L4）",
             },
-            "not_yet_verified": ["浏览器仿真时钟走动/LED 实际闪烁（无头环境 0ms，需真实交互浏览器复验）", "ESP32/小智固件编译加载（O4，需 ESP-IDF）", "Docker 官方镜像端到端"],
+            "not_yet_verified": ["仿真内核真正驱动固件运行（SPICE 报 no active vectors，时钟 0.0 秒不动，LED 闪烁未看到；需查 QEMU/SPICE 配置）", "ESP32/小智固件编译加载（O4，需 ESP-IDF）", "Docker 官方镜像端到端"],
             "legend": {"primary": "velxio", "fallback": "renode/qemu（原规划保留）", "build": "esp-idf/arduino-cli"},
         }
