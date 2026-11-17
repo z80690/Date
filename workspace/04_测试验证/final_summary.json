@@ -34,7 +34,7 @@
   },
   "crash_5s_interrupt": {
    "pass": true,
-   "detail": "崩溃后心跳超时→中断标记+通知；中断任务=['ad7887081e764aa8b0997c182b6d4e10']（5.3.3 异常 2/4.2.2）"
+   "detail": "崩溃后心跳超时→中断标记+通知；中断任务=['ded81b618e9d41a0ac8232932122cb3b']（5.3.3 异常 2/4.2.2）"
   },
   "isolation_after_crash": {
    "pass": true,

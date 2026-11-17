@@ -2575,6 +2575,252 @@
      "transport": "loopback"
     }
    }
+  },
+  "74a3bc7f3ad848a0aa9cdc73977e7d58": {
+   "task_id": "74a3bc7f3ad848a0aa9cdc73977e7d58",
+   "catalog_id": "embedded",
+   "object_id": "xiaozhi_sim_01",
+   "action": "send_text",
+   "params": {
+    "text": "底座闭环验收"
+   },
+   "status": "成功",
+   "reason": "",
+   "events": [
+    {
+     "seq": 1,
+     "receipt": {
+      "task_id": "74a3bc7f3ad848a0aa9cdc73977e7d58",
+      "conclusion": "成功",
+      "detail": "[xiaozhi-sim] 已响应: 底座闭环验收",
+      "terminal": true,
+      "received_at": "2026-11-17 08:05:50"
+     }
+    }
+   ],
+   "dispatch": {
+    "object_id": "xiaozhi_sim_01",
+    "device_command": {
+     "type": "chat",
+     "payload": "底座闭环验收",
+     "transport": "loopback"
+    },
+    "submit_result": null
+   }
+  },
+  "ded81b618e9d41a0ac8232932122cb3b": {
+   "task_id": "ded81b618e9d41a0ac8232932122cb3b",
+   "catalog_id": "embedded",
+   "object_id": "xiaozhi_sim_01",
+   "action": "send_text",
+   "params": {
+    "text": "crash drill"
+   },
+   "status": "中断",
+   "reason": "心跳断连超过 5 秒，相关实例标记中断",
+   "events": [],
+   "dispatch": {
+    "object_id": "xiaozhi_sim_01",
+    "device_command": {
+     "type": "chat",
+     "payload": "crash drill",
+     "transport": "loopback"
+    },
+    "submit_result": null
+   }
+  },
+  "18044b699c4c4deeabca76724a305ac0": {
+   "task_id": "18044b699c4c4deeabca76724a305ac0",
+   "catalog_id": "embedded",
+   "object_id": "xiaozhi_sim_01",
+   "action": "report_status",
+   "params": {},
+   "status": "成功",
+   "reason": "",
+   "events": [
+    {
+     "seq": 1,
+     "receipt": {
+      "task_id": "18044b699c4c4deeabca76724a305ac0",
+      "conclusion": "成功",
+      "detail": "补收回执",
+      "terminal": true,
+      "received_at": "2026-11-17 08:05:51"
+     }
+    }
+   ],
+   "dispatch": {
+    "object_id": "xiaozhi_sim_01",
+    "device_command": {
+     "type": "status_query",
+     "payload": {},
+     "transport": "loopback"
+    },
+    "submit_result": null
+   }
+  },
+  "a1aecc24604e4dc6a3fb51aa3aa52f97": {
+   "task_id": "a1aecc24604e4dc6a3fb51aa3aa52f97",
+   "catalog_id": "embedded",
+   "object_id": "xiaozhi_sim_01",
+   "action": "send_text",
+   "params": {
+    "text": "after fail"
+   },
+   "status": "成功",
+   "reason": "",
+   "events": [
+    {
+     "seq": 1,
+     "receipt": {
+      "task_id": "a1aecc24604e4dc6a3fb51aa3aa52f97",
+      "conclusion": "成功",
+      "detail": "底座仍可用",
+      "terminal": true,
+      "received_at": "2026-11-17 08:05:51"
+     }
+    }
+   ],
+   "dispatch": {
+    "object_id": "xiaozhi_sim_01",
+    "device_command": {
+     "type": "chat",
+     "payload": "after fail",
+     "transport": "loopback"
+    },
+    "submit_result": null
+   }
+  },
+  "eb69e7a5bdf74f82be483ad7ffba46e8": {
+   "task_id": "eb69e7a5bdf74f82be483ad7ffba46e8",
+   "catalog_id": "security_research",
+   "object_id": "sec_research_executor_01",
+   "action": "run_scenario_research",
+   "params": {
+    "scenario_id": "s_server_01",
+    "_security_research": true,
+    "_scenario": {
+     "scenario_id": "s_server_01",
+     "dimension": "服务器隐匿",
+     "case": {
+      "type": "positive",
+      "name": "非中心化服务器与工业互联网方案特征复盘"
+     },
+     "environment": {
+      "env_id": "kali_local_sim_windows_equiv",
+      "target_scope": "本机自建资产"
+     },
+     "defense_pair_ref": "defense_02",
+     "implementation": {
+      "mode": "自行搭建",
+      "rationale": "研究模拟仅特征归纳层面，按 G2 拍板以现成靶场/工具为本机自建资产底座"
+     },
+     "tools_source_ledger": [
+      {
+       "source": "官方开源靶场（DVWA 本地离线副本）",
+       "limited_use": "本机自建资产研究模拟"
+      }
+     ],
+     "four_no_declaration": {
+      "no_real_intrusion": true,
+      "no_real_bots": true,
+      "no_real_currency_mixing": true,
+      "no_real_server_hiding": true
+     },
+     "required_prepare_items": [
+      "official_range"
+     ],
+     "completed": true
+    }
+   },
+   "status": "成功",
+   "reason": "",
+   "events": [
+    {
+     "seq": 1,
+     "receipt": {
+      "task_id": "eb69e7a5bdf74f82be483ad7ffba46e8",
+      "conclusion": "成功",
+      "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_server_01",
+      "terminal": true,
+      "received_at": "2026-11-17 08:06:01"
+     }
+    }
+   ],
+   "dispatch": {
+    "object_id": "sec_research_executor_01",
+    "device_command": {
+     "type": "scenario_research",
+     "payload": {
+      "scenario_id": "s_server_01"
+     },
+     "transport": "loopback"
+    }
+   }
+  },
+  "f822a1cb4118405981033d120c66f88b": {
+   "task_id": "f822a1cb4118405981033d120c66f88b",
+   "catalog_id": "security_research",
+   "object_id": "sec_research_executor_01",
+   "action": "run_scenario_research",
+   "params": {
+    "scenario_id": "s_fund_01",
+    "_security_research": true,
+    "_scenario": {
+     "scenario_id": "s_fund_01",
+     "dimension": "资金安全",
+     "case": {
+      "type": "negative",
+      "name": "业余混币链路暴露特征→检测思路（纯链上公开数据研究视角）"
+     },
+     "environment": {
+      "env_id": "kali_local_sim_windows_equiv",
+      "target_scope": "本机自建资产"
+     },
+     "defense_pair_ref": "defense_03",
+     "implementation": {
+      "mode": "自行搭建",
+      "rationale": "研究模拟仅特征归纳层面，按 G2 拍板以现成靶场/工具为本机自建资产底座"
+     },
+     "tools_source_ledger": [
+      {
+       "source": "无需外部工具",
+       "limited_use": "不适用"
+      }
+     ],
+     "four_no_declaration": {
+      "no_real_intrusion": true,
+      "no_real_bots": true,
+      "no_real_currency_mixing": true,
+      "no_real_server_hiding": true
+     },
+     "required_prepare_items": []
+    }
+   },
+   "status": "成功",
+   "reason": "",
+   "events": [
+    {
+     "seq": 1,
+     "receipt": {
+      "task_id": "f822a1cb4118405981033d120c66f88b",
+      "conclusion": "成功",
+      "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
+      "terminal": true,
+      "received_at": "2026-11-17 08:06:01"
+     }
+    }
+   ],
+   "dispatch": {
+    "object_id": "sec_research_executor_01",
+    "device_command": {
+     "type": "scenario_research",
+     "payload": {
+      "scenario_id": "s_fund_01"
+     },
+     "transport": "loopback"
+    }
+   }
   }
  }
 }

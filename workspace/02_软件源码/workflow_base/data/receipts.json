@@ -392,6 +392,41 @@
    "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
    "terminal": true,
    "received_at": "2026-11-17 07:25:54"
+  },
+  {
+   "task_id": "74a3bc7f3ad848a0aa9cdc73977e7d58",
+   "conclusion": "成功",
+   "detail": "[xiaozhi-sim] 已响应: 底座闭环验收",
+   "terminal": true,
+   "received_at": "2026-11-17 08:05:50"
+  },
+  {
+   "task_id": "18044b699c4c4deeabca76724a305ac0",
+   "conclusion": "成功",
+   "detail": "补收回执",
+   "terminal": true,
+   "received_at": "2026-11-17 08:05:51"
+  },
+  {
+   "task_id": "a1aecc24604e4dc6a3fb51aa3aa52f97",
+   "conclusion": "成功",
+   "detail": "底座仍可用",
+   "terminal": true,
+   "received_at": "2026-11-17 08:05:51"
+  },
+  {
+   "task_id": "eb69e7a5bdf74f82be483ad7ffba46e8",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_server_01",
+   "terminal": true,
+   "received_at": "2026-11-17 08:06:01"
+  },
+  {
+   "task_id": "f822a1cb4118405981033d120c66f88b",
+   "conclusion": "成功",
+   "detail": "研究模拟完成（特征归纳+防御检测点，本地离线）：s_fund_01",
+   "terminal": true,
+   "received_at": "2026-11-17 08:06:01"
   }
  ]
 }
