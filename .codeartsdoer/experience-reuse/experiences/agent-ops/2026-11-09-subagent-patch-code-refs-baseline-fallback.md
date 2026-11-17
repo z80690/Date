@@ -15,8 +15,8 @@ source_sessions: [ses_e4405534affeu8pLGAbuG7Iwh9]
 project: Date
 severity: medium
 quality_score: 88
-hit_count: 5
-last_hit_at: 2026-11-13T13:03:01
+hit_count: 6
+last_hit_at: 2026-11-15T20:03:04
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-08-subagent-patch-field-drift-silent-content-loss, 2026-11-09-glossary-status-refresh-zero-revision-criterion, 2026-11-09-wiki-hash-shortcut-requires-merge-pass, 2026-11-08-wiki-section-revision-patch-json-mode]

@@ -14,8 +14,8 @@ source_sessions: [ses_e3930e653ffejnN62cpj5ECw5v]
 project: Date
 severity: medium
 quality_score: 87
-hit_count: 11
-last_hit_at: 2026-11-15T15:47:24
+hit_count: 13
+last_hit_at: 2026-11-16T15:36:43
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-08-wiki-increment-update-unmatched-file-routing, 2026-11-11-wiki-arch-snapshot-stale-new-module-read-verify, 2026-11-11-wiki-added-mislabeled-merkle-reset-hash-triage, 2026-11-14-wiki-update-plan-clear-vs-crossround-prior-note-token]

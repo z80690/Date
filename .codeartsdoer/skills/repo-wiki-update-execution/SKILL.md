@@ -1,29 +1,37 @@
 ---
 name: repo-wiki-update-execution
-description: |-
-  >-
-    repo-simple-wiki-update / repo-simple-wiki 技能在本机环境（Windows PowerShell 5.1 或
-    WSL bash、纯 Markdown 知识库仓库）的执行适配契约：.md
-    仓库符号骨架恒空降级为直读源文件；脚本参数契约（extract_changed_snippets 需文件路径非内联 JSON；bash=WSL
-    时盘符路径须写 /mnt/c/；双 Python 解释器契约——.sh 内 python=WSL Python 认 /mnt/c，bash 直调
-    python 短命令=Windows Python 认 C:/，含 /mnt/c 的脚本命令即使 ≤231 字符也不可直连一律走
-    .sh，独立脚本内部路径务必 C:/ 正斜杠）；architecture.json 产物过期时
-    modules=[] 不构成无新模块依据，须实读抽验（包入口+符号数）定新模块；wiki-index 中文档
-    section_code_paths 为空（上轮 code-links 未被吸收）时按 module_tree 归属判成因 2
-    补判，勿读 architecture.json；大目录迁移（根目录归拢）后 module_tree 路径 Test-Path
-    双侧验证修正+全文档路径前缀与 cd 命令联动，目录池归档区目录（<10 md 散文件+符号弱+README
-    归档区声明）不成新模块路由既有主题；subagent patch
-    漂移校验四形态（content≠new_content 会静默丢修订正文、line_number_only 的 new_content 须为 JSON
-    null 非 "null" 字符串、直引号漂弯引号、new_content 混入小节标题行须剥离防重复）；line_number_only 的 code_refs 以 wiki-index
-    原值为基线（subagent 扩充未实读引用一律回退）；hash_status=changed 小节即使零改动也须走 merge 刷
-    source_hashes 否则永远无法 hash 短路；merkle DB 重置致 state.json 全量 added 误标（连已索引文件也标 added）以 hash_status 甄别，勿对未变文件启动 subagent；第三方开源项目克隆大目录（DVWA 类：README 多语言+.github+CHANGELOG 特征）不建模块不展开，路由既有主题补环境资产条目，档位统计剔除克隆文件；新增落位文件正文口径已一致时 line_number_only+合并后完整列表补建 code_refs；工具运行时日志目录（.workbuddy 等）与任务过程产物目录（temp/toutiao_*
-    素材缓存等）判成因 1 跳过；merge_section_patch 的覆盖盲区（H1 标题与 frontmatter description
-    需人工补正）；progress.json 的 edit 边界陷阱（跨 stage 块易吞相邻键名；update_plan 清空等超长 JSON 块改写用独立
-    Python 脚本原子完成）；build_index 消费后删除 .code-links.json 属正常行为。凡执行
-    repo-simple-wiki-update / repo-simple-wiki 流程（含每日定时 Wiki 更新任务）、修订
-    codebase-knowledge/project-knowledge 文档、Wiki
-    脚本报错、state.json 疑似全量 added 误标、大目录新增需判第三方克隆时，应在主技能加载后、脚本执行前伴随加载本技能——未伴随加载必踩脚本参数与路径风格坑（2026-11-11
-    实证：主技能已加载但本技能未加载，extract_changed_snippets 内联 JSON 与双解释器路径两坑连踩）。
+description: >-
+  repo-simple-wiki-update / repo-simple-wiki 技能在本机环境（Windows PowerShell 5.1 或
+  WSL bash、纯 Markdown 知识库仓库）的执行适配契约：.md
+  仓库符号骨架恒空降级为直读源文件；脚本参数契约（extract_changed_snippets 需文件路径非内联 JSON；bash=WSL
+  时盘符路径须写 /mnt/c/；双 Python 解释器契约——.sh 内 python=WSL Python 认 /mnt/c，bash 直调
+  python 短命令=Windows Python 认 C:/，含 /mnt/c 的脚本命令即使 ≤231 字符也不可直连一律走
+  .sh，独立脚本内部路径务必 C:/ 正斜杠；推荐执行模式=Python wrapper subprocess 以仓库根为 cwd+相对路径参数，同时规避
+  WSL 路径拼接与 231 字符上限）；architecture.json 产物过期时 modules=[]
+  不构成无新模块依据，须实读抽验（包入口+符号数）定新模块；wiki-index 中文档 section_code_paths 为空（上轮
+  code-links 未被吸收）时按 module_tree 归属判成因 2 补判，勿读 architecture.json；大目录迁移（根目录归拢）后
+  module_tree 路径 Test-Path 双侧验证修正+全文档路径前缀与 cd 命令联动，目录池归档区目录（<10 md
+  散文件+符号弱+README 归档区声明）不成新模块路由既有主题；subagent patch 漂移校验四形态（content≠new_content
+  会静默丢修订正文、line_number_only 的 new_content 须为 JSON null 非 "null"
+  字符串、直引号漂弯引号、new_content 混入小节标题行须剥离防重复）；line_number_only 的 code_refs 以
+  wiki-index 原值为基线（subagent 扩充未实读引用一律回退）；hash_status=changed 小节即使零改动也须走 merge 刷
+  source_hashes 否则永远无法 hash 短路；merkle DB 重置致 state.json 全量 added 误标（连已索引文件也标
+  added）以 hash_status 甄别，勿对未变文件启动 subagent；第三方开源项目克隆大目录（DVWA 类：README
+  多语言+.github+CHANGELOG 特征）不建模块不展开，路由既有主题补环境资产条目，档位统计剔除克隆文件；新增落位文件正文口径已一致时
+  line_number_only+合并后完整列表补建 code_refs；工具运行时日志目录（.workbuddy
+  等）与任务过程产物目录（temp/toutiao_* 素材缓存等）判成因 1 跳过；merge_section_patch 的覆盖盲区（H1 标题与
+  frontmatter description 需人工补正）；progress.json 的 edit 边界陷阱（跨 stage
+  块易吞相邻键名；oldString/newString 结构范围不对称漏闭合——长 oldString 换短 newString 结尾结构被吞致
+  JSONDecodeError，改完必 json.load 验证；update_plan 清空等超长 JSON 块改写用独立 Python
+  脚本原子完成）；上轮中断于 Stage 6 前的跨轮恢复（update_plan 未清空/.code-links.json 残留/wiki_root
+  遗留指向旧分支→note_<token> 留痕迁移+module_tree_pending_changes 继承执行+残留 code-links 交本轮
+  build_index 消费+重建覆盖修正 wiki_root）；build_index 消费后删除 .code-links.json 属正常行为。凡执行
+  repo-simple-wiki-update / repo-simple-wiki 流程（含每日定时 Wiki 更新任务）、修订
+  codebase-knowledge/project-knowledge 文档、Wiki 脚本报错、state.json 疑似全量 added
+  误标、大目录新增需判第三方克隆、上轮 wiki 更新中断需续跑（progress.json 显示 stage_5/6/7 pending
+  但修订已合并、wiki_root 指向旧分支、docs 树 code-links
+  残留）时，应在主技能加载后、脚本执行前伴随加载本技能——未伴随加载必踩脚本参数与路径风格坑（2026-11-11
+  实证：主技能已加载但本技能未加载，extract_changed_snippets 内联 JSON 与双解释器路径两坑连踩）。
 ---
 
 # repo-simple-wiki-update 执行适配契约（Windows PS5.1 / WSL bash + 纯文档仓库）
@@ -38,6 +46,7 @@ description: |-
 - **merkle DB 重置致 state.json 全量 added 误标**：version_token 跨度大且 changed_files 全部 status=added、连上轮已被 wiki-index 引用的文件也在列时，优先怀疑变更检测器状态重置而非真实全量新增——以 reverse_lookup 的 hash_status 甄别：命中文件 hash=unchanged 即内容未变（merkle 层误标），按 hash 短路仅刷行号，勿对未变文件启动 subagent 修订（2026-11-11 实证：token 408 轮 247 个全部 added，17 个命中文件 hash 全 unchanged，真新增能力文件仅 eval_dims.py/verify_base.py 2 个需补正；骨架 201 符号/23 文件与上轮一致为内容未变的独立佐证）。
 - **token 递增的零修订轮（全短路特例完整路径）**：version_token 递增但 changed_files 与上轮完全相同、reverse_lookup 报所有命中小节 hash_status=unchanged 时，判 token 递增仅为检测器状态推进（文件内容与上轮基线一致，hash 比对为权威），走全短路特例：new_modules/transfer_impact 为空且 unmatched 补判清零后，跳过阶段 3+4 subagent 调度，affected_docs 保持 completed 不动（hash 短路文档无需在 completed/pending 间搬运）。此时主技能字面要求的"调 fix_code_links.py 刷行号"为**无操作**——fix_code_links 仅支持逐文件 `--code-links-file` 模式（无 --wiki-root 全量模式），而全短路轮 wiki 目录下无 .code-links.json 可刷（上轮 build_index 已消费删除），且 hash 一致意味着行号无偏移；勿为走流程强行造空 .code-links.json，直接进阶段 6。build_index 输出**全 reused（updated 0 / added 0）即零修订轮的正常证据**而非异常（2026-11-12 实证：token 422→423 连续两轮同批 3 文件 hash unchanged，8 篇全 reused、69 code_paths 验证通过、format_errors=[]）。
 - **零修订轮（affected_docs=0 型）的判定留痕迁移与基线复核**：变更文件完全不在任何模块路径与索引 code_refs 上（典型=工具运行时日志追加），reverse_lookup 报 affected_docs=0 + unmatched 全判成因 1 → update_plan 为空计划（四个数组全空），跳过阶段 3+4 subagent；但 3.5 校验链仍跑全目录复核基线（validate total=0 属正常——无 .code-links.json 残留可校；redact/lint 与上轮基线对比无回归即可，orphan warning 属全库遗留不阻塞），build_index 全 reused 为零修订轮正常证据。**Stage 6 清空 update_plan 前必须迁移判定依据**：流程要求 update_plan=null，而"同一变更集跨轮重复"的先验复用依赖上轮 update_plan 成因判定记录——把成因判定 note 迁移到 stage_2 的独立 `note_<token>` 字段（如 note_557）再清空，先验不随清空丢失；progress.json 各 stage 的轮次记录一律追加 `note_<token>`/`update_note_<token>` 新字段而非覆盖历史 batch_note，历史轮实证保留完整（2026-11-13 实证：token 557 轮 .workbuddy 执行日志追加 1 文件，成因 1 判定——实读为工具自动生成的纯追加式执行日志+module_tree 无模块路径涵盖+grep wiki 全目录 0 命中排除成因 2+路径一致排除成因 3——迁移至 stage_2.note_557，3.5 基线复核 validate passed/redact 0 可疑/lint 0E15W 与上轮一致，build_index 15 全 reused/216 code_paths）。
+- **上轮中断于 Stage 6 之前的跨轮恢复路径**：progress.json 显示上轮 Stage 3+4/3.5 已 completed（修订已合并进 .md+.code-links.json）但 stage_5/6/7 仍 pending、update_plan 未清空、docs 树残留 N 个 .code-links.json、wiki-index.json 的 wiki_root 字段遗留指向旧分支（如 master，built_at 停留旧时间）时，本轮 version_token 不匹配按"重新开始更新流程"处理，恢复链四步：①旧 update_plan 判定与遗留状态摘要迁移至 stage_2 的 `note_<旧token>` 字段留痕后清空 update_plan（留痕规则见上条）；②旧 update_plan 的 `module_tree_pending_changes`（如 adapter extra_paths 追加 api）**继承写入本轮 update_plan 的同名字段**，Stage 6 合并 module_tree 时一并执行，防遗留改动丢失；③.code-links.json 残留交给本轮 build_index 正常消费——有该文件的文档重新解析 section_code_paths，等价于把上轮修订正式入网，勿手动删除；④wiki_root 遗留无须手动改，build_index 以 `--wiki-root <当前分支>/docs` 重建即覆盖修正。上轮已修订的文档本轮被 state.json 重复列入 changed_files（索引未重建故其 hash=unknown），subagent 复核正文已覆盖后判 line_number_only，merge 刷新 source_hashes——语义等价于上轮修订入网收尾，勿因此重复改正文（2026-11-15 实证：token 23 轮中断于 Stage 6 前，token 36 轮恢复，api/index.py 复判 line_number_only，build_index updated=2/reused=13/total=15、code_paths_verified=215、wiki_root 修正为 main/docs、adapter extra_paths+=api 落地、validate 2/2 通过）。
 - **第三方开源项目克隆大目录的裁决路径**：目录三证据（真实包结构+符号规模+项目级声明）同向时还须查所有权——README 多语言副本（README.zh/fr/ru…）+.github/（FUNDING/ISSUE_TEMPLATE/workflows）+CHANGELOG 是外部项目克隆特征；属克隆则**不建模块、不展开内部**，路由为"环境资产"在既有 project-knowledge 主题补一条（本项目=DVWA 于 tooling_and_environment"关键文件与位置"补记 1 条，code_ref=workspace/06_开发工具/prepared/DVWA/README.md:1），档位统计把克隆文件计入仓库总盘但从有效变更中剔除（2026-11-11 实证：DVWA 216 文件 GPL-3.0，247→有效 31，占比 4% 维持常规档）。**剔除适用于一切统计口径与全量场景**：变更占比、新模块计数、档位分档、降级判定全部剔除克隆文件，仓库根的克隆与 workspace/prepared 副本同判（2026-11-13 反面实证：全量重建时把根目录 DVWA 217 克隆文件计入变更占比（239/349=68.5%）与新模块计数（4+），误触发降级全量——剔除后有效变更 22/349=6.3%、新模块 3 个本应走增量；次生损失=DVWA 被建成 3 篇模块文档、既有 5 个主题文档与 2 个旧模块文档被当"旧残留"清理）。
 - **新增落位文件的 code_refs 补建（成因 2 变体）**：新增 md 文件正文口径已与既有术语/文档逐字一致（如判据表落位后与 business_glossary 术语定义同口径）时，正文不动，用 line_number_only + **合并后完整 code_refs 列表**（原引用+新增落位文件 :1）补建引用；概述小节若声称"依据 X 提炼"而 X 本轮才落位，须把 X 补进该小节 code_refs 使声明与引用对齐；此类文档不在 reverse_lookup 的 affected_docs（hash 短路只作用于其 code_refs 既有文件），须由主 Agent 在 unmatched 补判时显式纳入（2026-11-11 实证：主备工作流切换判据.md+两份评估报告 3 文件按此补建，validate 3/3 通过）。
 - **索引 code_refs 空文档的成因 2 补判**：wiki-index.json 中某文档 `section_code_paths` 为空（典型=上轮 3.2 新增模块文档"直接写入 .md+code-links"未被 build_index 完整吸收）时，该文档覆盖路径下任何文件的变更都会被 reverse_lookup 报 unmatched——此时不读 architecture.json，直接按 module_tree 模块归属补判（added 文件在模块 path 范围内=阶段 2.3 第一级规则），把该文档加入受影响列表走 subagent 修订（索引中无 code_refs → hash 全 unknown 视为 changed，受影响小节按文档实际小节全集提取），判定依据写入 update_plan 的 note 字段留痕（2026-11-11 实证：工作流底座（workflow_base）.md 与 tooling_and_environment.md 两文档索引 code_refs 均空，prepare.py/probe_tor_alt2.py 及 workspace/06_开发工具 三文件按此补判归入，修订后 build_index code_paths 56→98，成因2 漏建一次性补齐）。
@@ -73,5 +82,5 @@ description: |-
 - **README 的 code-links 裸名错名**：subagent 生成复杂模块 README 时可能把 code-links 写成裸名 `.code-links.json`（缺 `README.` 前缀）——内容正确、validate 扫得到且通过，但 build_index 按 `<wiki文件名>.code-links.json` 同名匹配**吸收不到**，README 的 section_code_paths 缺失；validate 通过后仍须查 docs 树有无裸名文件，核对其中 wiki_file 归属后重命名（2026-11-13 实证：DVWA漏洞演练平台/ 与 项目工作区/ 各一个裸名文件，重命名为 README.code-links.json 后 build_index 15/15 全吸收）。
 - **全量重建的旧残留清理**：降级/全量重建重置模块树与主题集合后，不属于新树的旧主题目录（project-knowledge 下旧 category 目录）与旧模块文档须在 build_index 前删除，防被全量索引成孤儿条目；两个 index.md 由阶段 5 重写覆盖无需预删（2026-11-13 实证：删 5 个旧主题目录+2 个旧 codebase 文档）。
 - 收尾：progress.json 逐 batch 落盘（stage_3/4 的 pending→completed 移转在 merge+validate 通过后立即写，防中断丢失）；临时脚本用完删除，patch JSON 留 temp/patches/ 追溯（temp/ 为入库排除区）。
-- **edit 改 progress.json 的边界陷阱**：oldString/newString 必须限制在单个 stage 块内部，勿跨 stage 边界——跨块时易出现 oldString 含相邻 stage 的开头键名行而 newString 忘带该行，导致 `"stage_4": {` 之类键名被吞、JSON 损坏（2026-11-08 实证，读回核实后修复）。跨块/大面积改写二选一：整体 write 并完整保留 module_tree；或写独立 Python 脚本（内部路径 C:/ 正斜杠，见双解释器契约）json.load→改字段→json.dump(ensure_ascii=False, indent=2) 原子完成——update_plan 清空这类超长 JSON 块的修改 edit 无法精确锚定 oldString，Python 原子改最可靠，且可顺带做 WikiRetrieval 标记校验与 stage_6/7/顶层状态一并落盘（2026-11-11 实证：finalize_progress.py 一次完成 update_plan=null + stage_6/7 completed + status=completed）。每次改完用 `python -c "import json; json.load(open(path, encoding='utf-8'))"` 验证合法性再进下一阶段。
+- **edit 改 progress.json 的边界陷阱**：oldString/newString 必须限制在单个 stage 块内部，勿跨 stage 边界——跨块时易出现 oldString 含相邻 stage 的开头键名行而 newString 忘带该行，导致 `"stage_4": {` 之类键名被吞、JSON 损坏（2026-11-08 实证，读回核实后修复）。**第二形态（2026-11-15 实证）：oldString 与 newString 结构范围不对称**——oldString 以目标 stage 块的完整闭合（`"pending"/"code_links_reviewed"/"quarantined"`+`},`）结尾，而 newString 只写到内部数组 `],` 就结束，遗漏闭合部分，stage 块未闭合直接接下一 stage 报 JSONDecodeError（如 Expecting ',' delimiter）；修复=按报错行号 read 定位缺闭合处，补回 `"pending": [], "code_links_reviewed": ..., "quarantined": [] },`；预防=oldString 起于哪层结构 newString 就必须在该层配对收尾（start/end 各自对称），改完立即 `python -c "import json; json.load(open(path, encoding='utf-8'))"` 验证。跨块/大面积改写二选一：整体 write 并完整保留 module_tree；或写独立 Python 脚本（内部路径 C:/ 正斜杠，见双解释器契约）json.load→改字段→json.dump(ensure_ascii=False, indent=2) 原子完成——update_plan 清空这类超长 JSON 块的修改 edit 无法精确锚定 oldString，Python 原子改最可靠，且可顺带做 WikiRetrieval 标记校验与 stage_6/7/顶层状态一并落盘（2026-11-11 实证：finalize_progress.py 一次完成 update_plan=null + stage_6/7 completed + status=completed）。每次改完用 `python -c "import json; json.load(open(path, encoding='utf-8'))"` 验证合法性再进下一阶段。
 - **skill_manage 修改生成技能的通道差异**：edit 校验器按行解析 frontmatter，遇 `description: >-` 折叠样式会误报 "SKILL.md must have name and description in frontmatter" 而拒绝（frontmatter 实际完好）；patch 与 patch_frontmatter 的校验路径可正常处理该样式。改正文用 **patch**，改 frontmatter 用 **patch_frontmatter**，write_file 不能写 SKILL.md 本身（subpath 仅限 references/examples/scripts/assets）（2026-11-09 实证：edit 连续 4 次全拒，换 patch 全部通过）。

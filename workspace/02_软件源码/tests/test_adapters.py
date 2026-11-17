@@ -6,19 +6,18 @@ import shutil
 import tempfile
 import unittest
 
-from workflow_base.core.store import Store
-from workflow_base.core.catalog import CatalogRegistry
-from workflow_base.core.security import SecurityValidator
+from workflow_base.adapters import embedded, ghidra_adapter, security_research, velxio_adapter
 from workflow_base.adapters.contract import (
+    CONTRACT_VERSION,
+    ContractError,
     validate_catalog_contract,
     validate_object_contract,
-    ContractError,
-    CONTRACT_VERSION,
 )
-from workflow_base.adapters.objects import ObjectRegistry, ObjectError
-from workflow_base.adapters import embedded, security_research
-from workflow_base.adapters import velxio_adapter
-from workflow_base.tools.prepare import PreparePipeline, PrepareError, PREP_OBJECTS
+from workflow_base.adapters.objects import ObjectError, ObjectRegistry
+from workflow_base.core.catalog import CatalogRegistry
+from workflow_base.core.security import SecurityValidator
+from workflow_base.core.store import Store
+from workflow_base.tools.prepare import PrepareError, PreparePipeline
 
 
 def noop(info):
@@ -227,6 +226,64 @@ class TestVelxioAdapter(TempDirTest):
         self.assertEqual(c["tier"], "firmware-simulation")
         self.assertFalse(c["protocol_layer_replaced"])  # 协议桩保留，两层互不替代
         self.assertIn("浏览器前端仿真执行", c["not_yet_verified"])
+
+
+class TestGhidraAdapter(TempDirTest):
+    """二进制逆向适配层：探测如实、归一稳定、缺失不假装（P17）。"""
+
+    def test_detect_missing_home_is_unavailable(self):
+        d = ghidra_adapter.detect(self.dir + "/does_not_exist")
+        self.assertFalse(d["ready"])
+        self.assertEqual(d["status"], "unavailable")
+        self.assertIn("不假装可用", d["reason"])
+
+    def test_detect_reports_each_probe(self):
+        d = ghidra_adapter.detect(self.dir + "/does_not_exist")
+        items = {c["item"] for c in d["checks"]}
+        self.assertTrue({"analyzeHeadless", "jdk21"}.issubset(items))
+        self.assertFalse(all(c["pass"] for c in d["checks"]))
+
+    def test_analyze_unavailable_when_no_env(self):
+        r = ghidra_adapter.analyze_binary("whatever.exe", ghidra_home=self.dir + "/nope")
+        self.assertFalse(r["ok"])
+        self.assertEqual(r["status"], "unavailable")
+
+    def test_analyze_reports_missing_binary_when_ready(self):
+        # 用假 root 会先在环境探测处拦住；只有环境就绪才轮到目标文件校验，
+        # 所以这里只断言"不会给出 verified"。
+        r = ghidra_adapter.analyze_binary(self.dir + "/ghost.exe")
+        self.assertNotEqual(r["status"], "verified")
+
+    def test_normalize_dump_counts(self):
+        payload = {
+            "program": "t.exe",
+            "language_id": "x86:LE:64:default",
+            "function_count": 2,
+            "functions": [
+                {"name": "main", "entry": "140001000", "size_bytes": 10,
+                 "decompiled_c": "int main(void) { return 0; }"},
+                {"name": "sub", "entry": "140001010", "size_bytes": 5,
+                 "decompiled_c": None},
+            ],
+        }
+        n = ghidra_adapter.normalize_dump(payload)
+        self.assertEqual(n["function_count"], 2)
+        self.assertEqual(n["decompiled_count"], 1)
+        self.assertTrue(n["functions"][0]["decompiled"])
+        self.assertFalse(n["functions"][1]["decompiled"])
+
+    def test_normalize_dump_empty_payload(self):
+        n = ghidra_adapter.normalize_dump({})
+        self.assertEqual(n["function_count"], 0)
+        self.assertEqual(n["decompiled_count"], 0)
+        self.assertEqual(n["functions"], [])
+
+    def test_capability_declares_selection_boundary(self):
+        c = ghidra_adapter.capability(self.dir + "/nope")
+        self.assertEqual(c["name"], "ghidra_reverse")
+        self.assertEqual(c["tier"], "binary-reverse-engineering")
+        self.assertIn("IDA 9.5", c["selection"]["video_pointer"])
+        self.assertIn("AI 解释层(LLM 桥)", c["not_yet_verified"])
 
 
 if __name__ == "__main__":

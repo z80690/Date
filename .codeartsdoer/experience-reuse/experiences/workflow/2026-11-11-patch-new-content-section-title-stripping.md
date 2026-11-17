@@ -15,8 +15,8 @@ source_sessions: [ses_e37c7267cffewyCyg5XHZYfAwm]
 project: Date
 severity: medium
 quality_score: 90
-hit_count: 8
-last_hit_at: 2026-11-15T04:35:40
+hit_count: 9
+last_hit_at: 2026-11-15T20:03:04
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-08-wiki-section-revision-patch-json-mode, 2026-11-11-replace-content-merge-integrity, 2026-11-11-wiki-verbatim-consistency-line-number-only]

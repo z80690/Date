@@ -14,8 +14,8 @@ source_sessions: [ses_e2fb0871affelu6jBOtwd3ki79]
 project: Date
 severity: low
 quality_score: 84
-hit_count: 3
-last_hit_at: 2026-11-15T15:47:24
+hit_count: 5
+last_hit_at: 2026-11-16T15:36:43
 low_quality_hit_count: 0
 tier: A
 related_experiences: [2026-11-12-wiki-zero-revision-round-full-short-circuit, 2026-11-12-wiki-index-code-refs-absence-cause2-patch, 2026-11-14-wiki-subagent-artifact-defects-pre-build-index, 2026-11-13-wiki-transfer-impact-empty-crosscheck-wiki-relations]

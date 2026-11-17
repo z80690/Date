@@ -4,7 +4,7 @@
   "reason": "Windows 优先，本机直接启动"
  },
  "loop": {
-  "task_id": "74a3bc7f3ad848a0aa9cdc73977e7d58",
+  "task_id": "259e4839062848848e7684ff38083c5c",
   "dispatch": {
    "object_id": "xiaozhi_sim_01",
    "device_command": {
@@ -33,11 +33,11 @@
    {
     "seq": 1,
     "receipt": {
-     "task_id": "74a3bc7f3ad848a0aa9cdc73977e7d58",
+     "task_id": "259e4839062848848e7684ff38083c5c",
      "conclusion": "成功",
      "detail": "[xiaozhi-sim] 已响应: 底座闭环验收",
      "terminal": true,
-     "received_at": "2026-11-17 08:05:50"
+     "received_at": "2026-11-17 17:10:25"
     }
    }
   ],

@@ -14,8 +14,8 @@ source_sessions: [ses_e2d0d0ea0ffeUEzeC14VGPFT9M]
 project: Date
 severity: low
 quality_score: 86
-hit_count: 0
-last_hit_at: null
+hit_count: 1
+last_hit_at: 2026-11-15T20:03:04
 low_quality_hit_count: 0
 tier: S
 related_experiences: [2026-11-08-wiki-section-same-layer-action-criteria, 2026-11-11-wiki-verbatim-consistency-line-number-only, 2026-11-08-wiki-section-tiered-revision-judgment-contract, 2026-11-09-subagent-patch-code-refs-baseline-fallback, 2026-11-13-merge-code-refs-replace-semantics-union-guard]
