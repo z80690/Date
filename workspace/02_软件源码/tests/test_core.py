@@ -5,31 +5,35 @@
 
 from __future__ import annotations
 
+import importlib
+import inspect
 import json
 import os
+import pkgutil
 import shutil
 import tempfile
 import time
 import unittest
+from typing import get_type_hints
 
-from workflow_base.core.store import Store
-from workflow_base.core.catalog import CatalogRegistry, CatalogError
+from workflow_base.adapters.eval_dims import EMBEDDED_DIMENSIONS
+from workflow_base.core.catalog import CatalogError, CatalogRegistry
+from workflow_base.core.environment import EnvironmentOrchestrator
+from workflow_base.core.evaluator import EvaluatorError, ReportGenerator
+from workflow_base.core.gates import APPROVED, REJECTED, WAITING, GateError, GateManager
+from workflow_base.core.planner import Planner
+from workflow_base.core.receipts import ReceiptCenter, ReceiptError
 from workflow_base.core.scheduler import (
-    Scheduler,
-    SchedulerError,
+    STATUS_FAILED,
+    STATUS_INTERRUPTED,
     STATUS_PENDING,
     STATUS_RUNNING,
     STATUS_SUCCESS,
-    STATUS_FAILED,
-    STATUS_INTERRUPTED,
+    Scheduler,
+    SchedulerError,
 )
-from workflow_base.core.receipts import ReceiptCenter, ReceiptError
-from workflow_base.core.environment import EnvironmentOrchestrator
 from workflow_base.core.security import SecurityValidator
-from workflow_base.core.gates import GateManager, GateError, WAITING, APPROVED, REJECTED
-from workflow_base.core.planner import Planner
-from workflow_base.core.evaluator import ReportGenerator, EvaluatorError
-from workflow_base.adapters.eval_dims import EMBEDDED_DIMENSIONS
+from workflow_base.core.store import Store
 
 
 def noop_contract(info):
@@ -409,6 +413,33 @@ class TestStore(TempDirTest):
             json.dump({"format_version": "v9", "payload": {}}, f)
         with self.assertRaises(ValueError):
             self.store.load("catalogs")
+
+
+class TestTypeHintsResolvable(unittest.TestCase):
+    """回归守卫：core 包所有类方法的类型注解必须可解析。
+
+    from __future__ import annotations 让注解变成字符串，漏 import 平时不报，
+    直到 get_type_hints 才 NameError。这里对每个类方法做一次解析，把这类
+    "静默炸弹"变成测试期可见的失败。
+    """
+
+    def test_all_core_methods_hints_resolve(self):
+        import workflow_base.core as core
+
+        bad = []
+        for mod_info in pkgutil.iter_modules(core.__path__):
+            mod = importlib.import_module("workflow_base.core." + mod_info.name)
+            for _, obj in vars(mod).items():
+                if not (inspect.isclass(obj) and obj.__module__ == mod.__name__):
+                    continue
+                for meth_name, meth in vars(obj).items():
+                    if not callable(meth):
+                        continue
+                    try:
+                        get_type_hints(meth)
+                    except Exception as exc:  # noqa: BLE001 - 测试需捕获任意解析失败
+                        bad.append(f"{mod_info.name}.{obj.__name__}.{meth_name}: {exc}")
+        self.assertEqual(bad, [], "类型注解解析失败：\n" + "\n".join(bad))
 
 
 if __name__ == "__main__":

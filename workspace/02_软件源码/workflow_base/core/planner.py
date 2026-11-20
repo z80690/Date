@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import threading
 import uuid
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Optional
 
 _ACTION_VERBS = ("执行", "下发", "删除", "写入", "运行", "调用", "烧录", "重启")
 
