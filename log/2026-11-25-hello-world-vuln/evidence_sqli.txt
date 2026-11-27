@@ -1,0 +1,16 @@
+=== 实验时间 ===
+2026-11-25 22:32:26    
+=== 靶机 ===
+http://127.0.0.1:8766
+=== 1 密码错误 ===
+{"login": "FAIL", "matched": []}
+=== 2 正确密码(对照) ===
+{"login": "SUCCESS", "matched": ["admin"]}
+=== 3 注入:密码塞永真 ===
+{"login": "SUCCESS", "matched": ["admin", "alice"]}
+=== 4 注入:注释掉密码 ===
+{"login": "SUCCESS", "matched": ["admin"]}
+=== 复现3次 ===
+{"login": "SUCCESS", "matched": ["admin"]}
+{"login": "SUCCESS", "matched": ["admin"]}
+{"login": "SUCCESS", "matched": ["admin"]}

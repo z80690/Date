@@ -1,0 +1,32 @@
+{
+  "keyword": "../secrets",
+  "files": {
+    "victim_access.log": {
+      "status": "wiped",
+      "before_lines": 3,
+      "after_lines": 2,
+      "removed_lines": 1,
+      "removed_rows": [
+        "2026-11-24T01:13:18,127.0.0.1,attacker-127.0.0.1 -> 127.0.0.1 -> 127.0.0.1,/file?name=../secrets/credential.txt,200"
+      ]
+    },
+    "jump_j1_access.log": {
+      "status": "wiped",
+      "before_lines": 2,
+      "after_lines": 1,
+      "removed_lines": 1,
+      "removed_rows": [
+        "2026-11-24T01:13:18,127.0.0.1,127.0.0.3:9002,/file?name=../secrets/credential.txt,attacker-127.0.0.1 -> 127.0.0.1"
+      ]
+    },
+    "jump_j2_access.log": {
+      "status": "wiped",
+      "before_lines": 3,
+      "after_lines": 2,
+      "removed_lines": 1,
+      "removed_rows": [
+        "2026-11-24T01:13:18,127.0.0.1,127.0.0.4:8080,/file?name=../secrets/credential.txt,attacker-127.0.0.1 -> 127.0.0.1 -> 127.0.0.1"
+      ]
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "time": "2026-11-27T06:10:55.387730+00:00",
+  "compile": {
+    "ready": true,
+    "checks": [
+      {
+        "item": "arduino-cli",
+        "path": "D:/refs/velxio/tools/arduino-cli.exe",
+        "pass": true
+      },
+      {
+        "item": "version 命令",
+        "pass": true,
+        "output": "arduino-cli  Version: 1.6.0 Commit: 50a0e80da Date: 2026-11-10T15:30:44Z"
+      },
+      {
+        "item": "avr 芯片包",
+        "pass": true,
+        "output": "ID          Installed Latest Name\narduino:avr 1.8.8     1.8.8  Arduino AVR Boards"
+      }
+    ],
+    "reason": null
+  },
+  "simulate": {
+    "ready": true,
+    "checks": [
+      {
+        "item": "仿真内核源码",
+        "path": "D:/refs/velxio/frontend/src/simulation/AVRSimulator.ts",
+        "pass": true
+      },
+      {
+        "item": "内核测试文件",
+        "path": "D:/refs/velxio/frontend/src/__tests__/AVRSimulator.test.ts",
+        "pass": true
+      },
+      {
+        "item": "测试执行器",
+        "path": "D:/refs/velxio/frontend/node_modules/.bin/vitest.cmd",
+        "pass": true
+      },
+      {
+        "item": "内核单测真跑",
+        "pass": true,
+        "exit": 0,
+        "output": " \u001b[32m✓\u001b[39m src/__tests__/AVRSimulator.test.ts \u001b[2m(\u001b[22m\u001b[2m18 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 45\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m18 passed\u001b[39m\u001b[22m\u001b[90m (18)\u001b[39m\n\u001b[2m   Start at \u001b[22m 14:10:58\n\u001b[2m   Duration \u001b[22m 1.58s\u001b[2m (transform 763ms, setup 0ms, import 975ms, tests 45ms, environment 0ms)\u001b[22m"
+      }
+    ],
+    "reason": null,
+    "test_ok": true
+  },
+  "log": {
+    "ready": true,
+    "path": "C:\\Users\\Administrator\\Desktop\\Date\\log\\_preflight_write_test.tmp",
+    "reason": null
+  },
+  "all_ready": true,
+  "verdict": "READY"
+}

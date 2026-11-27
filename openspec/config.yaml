@@ -1,0 +1,53 @@
+schema: spec-driven
+
+# 2026-11-26 项目约束（WorkBuddy 侧维护，勿删）
+context: |
+  Date 项目：Windows 10 + Python 标准库为主，WorkBuddy 运行时只读 .workbuddy/。
+  出网限制仅适用于攻防/黑白客演练（只走 127.0.0.1 靶机）；其他任务正常出网。
+  所有 SDD 执行产物与报告落 log/<日期>-<特性>/ 子目录，禁止 log 根平铺。
+  配置/规则/门禁脚本落 .workbuddy/config|scripts|rules/。
+  不建定时任务、不开后台常驻，检查脚本 exit code 可判才算完成。
+rules:
+  proposal:
+    - 写明 in/out scope，出网动作是否涉及攻防场景
+    - 结论前置，简体中文，大白话
+  specs:
+    - 用 EARS 格式（当…时，系统 SHALL…）
+    - 需求编号唯一，每条带可判验收方式
+  design:
+    - 先写存量分析（已实现/需扩展/需新增）
+    - 接口契约禁止实现代码
+  tasks:
+    - 每任务挂验收标准 + 验证方式（exit code 可判）
+    - 任务拆到单次可完成粒度
+
+# Project context (optional)
+# Add only constraints that should guide OpenSpec artifacts and workflows.
+# Include constraints an agent cannot infer by reading the code.
+# Keep general project documentation and discoverable codebase facts out.
+# Example:
+#   context: |
+#     Designs and tasks must cover Windows, macOS, and Linux
+#     Write all artifacts in Spanish
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing

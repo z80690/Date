@@ -1,0 +1,57 @@
+[
+  {
+    "ts": "2026-11-24T01:13:05",
+    "phase": "init",
+    "detail": "清理历史日志，准备干净靶场"
+  },
+  {
+    "ts": "2026-11-24T01:13:05",
+    "phase": "up",
+    "detail": "靶机 victim 127.0.0.4:8080 启动"
+  },
+  {
+    "ts": "2026-11-24T01:13:05",
+    "phase": "up",
+    "detail": "跳板2 127.0.0.3:9002 -> victim 启动"
+  },
+  {
+    "ts": "2026-11-24T01:13:05",
+    "phase": "up",
+    "detail": "跳板1 127.0.0.2:9001 -> jump2 启动"
+  },
+  {
+    "ts": "2026-11-24T01:13:16",
+    "phase": "check",
+    "detail": "入口连通性=OK"
+  },
+  {
+    "ts": "2026-11-24T01:13:17",
+    "phase": "guard",
+    "detail": "边界校验 exit=0 :: [PASS] 127.0.0.4:8080 PASS 回环地址\n[PASS] 127.0.0.2:9001 PASS 回环地址\n[PASS] 127.0.0.3:9002 PASS 回环地址\nRESULT=ALLOW (3 个目标均在回环白名单)"
+  },
+  {
+    "ts": "2026-11-24T01:13:18",
+    "phase": "attack",
+    "detail": "经 jump1->jump2->victim 发起目录穿越 ../secrets/credential.txt"
+  },
+  {
+    "ts": "2026-11-24T01:13:18",
+    "phase": "loot",
+    "detail": "窃取凭证字节数=169"
+  },
+  {
+    "ts": "2026-11-24T01:13:18",
+    "phase": "snapshot",
+    "detail": "擦除前日志已快照 logs_before_wipe.json"
+  },
+  {
+    "ts": "2026-11-24T01:13:18",
+    "phase": "wipe",
+    "detail": "擦除含 ../secrets 特征的日志行 -> wiped_rows.json"
+  },
+  {
+    "ts": "2026-11-24T01:13:19",
+    "phase": "down",
+    "detail": "所有靶场进程已关闭"
+  }
+]

@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "created": "2026-11-26",
+  "purpose": "双模式触发表：程序按表判模式，不靠我主动想起来（SOUL 第52行）",
+  "default_mode": "sdd",
+  "modes": {
+    "sdd": {
+      "name": "规范驱动开发",
+      "trigger_keywords": [
+        "写代码", "开发", "实现", "重构", "修bug", "修复", "新增功能", "加功能",
+        "配置", "应用", "系统", "模块", "接口", "建站", "小程序", "脚本长期"
+      ],
+      "output_types": ["code", "config", "app"],
+      "steps": ["spec.md", "design.md", "tasks.md", "apply"],
+      "gates": ["需求确认", "设计确认", "任务确认", "验收通过"],
+      "artifacts_dir": "log/<日期>-<特性>/"
+    },
+    "web_coding": {
+      "name": "Web Coding 快速通道",
+      "trigger_keywords": [
+        "一次性", "临时", "探查", "核对", "查看", "问答", "解释", "实验",
+        "演练", "调试", "排查", "查一下", "看看", "试一下", "调研"
+      ],
+      "output_types": ["answer", "evidence", "log"],
+      "steps": ["直接执行"],
+      "gates": ["最小落盘"],
+      "artifacts_dir": "log/<日期>-<特性>/"
+    }
+  },
+  "decision_rules": [
+    "命中 SDD 关键词且产出是代码/配置/应用 → sdd",
+    "只命中 Web Coding 关键词且产出是答案/证据 → web_coding",
+    "两边都命中 → sdd（默认从严，防跳步）",
+    "都没命中 → need_clarify，exit 2，问用户",
+    "用户明说『你定/听你安排/一把到底』 → 门禁可自决，留痕豁免依据"
+  ],
+  "artifact_gates": {
+    "spec.md": {
+      "name": "需求规格",
+      "required_sections": ["背景", "目标", "范围", "需求", "验收对照表", "能力边界"],
+      "min_chars": 500,
+      "human_review_marker": "内容偏差人工扫"
+    },
+    "design.md": {
+      "name": "详细设计",
+      "required_sections": ["存量分析", "实现模型", "接口设计", "数据模型", "测试方案", "EARS追溯表"],
+      "min_chars": 800,
+      "human_review_marker": "内容偏差人工扫"
+    },
+    "tasks.md": {
+      "name": "任务清单",
+      "required_sections": ["基线", "执行序", "任务组", "验收标准", "追溯表"],
+      "min_chars": 500,
+      "human_review_marker": "内容偏差人工扫"
+    },
+    "apply": {
+      "name": "apply 派工执行单",
+      "required_sections": ["基本信息", "门禁命令", "门禁输出回执", "内容偏差人工扫", "产物路径", "推进判定"],
+      "min_chars": 1500,
+      "human_review_marker": "内容偏差人工扫"
+    }
+  }
+}

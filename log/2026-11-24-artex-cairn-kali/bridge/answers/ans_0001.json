@@ -1,0 +1,29 @@
+{
+  "content": "收到任务。这是本地回环靶场的授权安全评估，我已识别操作约束、登记资产范围、拆分最终目标，分别调用工具提交。",
+  "tool_calls": [
+    {
+      "id": "call_scope_1",
+      "type": "function",
+      "function": {
+        "name": "add_task_scope",
+        "arguments": "{\"kind\":\"ip\",\"value\":\"127.0.0.1\",\"reason\":\"任务目标明确写出'本地靶场 127.0.0.1:18080'，最小范围原则只登记这一个 IP\"}"
+      }
+    },
+    {
+      "id": "call_constraints_1",
+      "type": "function",
+      "function": {
+        "name": "set_constraints",
+        "arguments": "{\"constraints\":[{\"text\":\"严格仅限 127.0.0.0/8 回环地址，禁止访问任何公网地址\",\"type\":\"deny\"},{\"text\":\"仅允许测试 127.0.0.1:18080 本地靶场服务\",\"type\":\"allow\"}]}"
+      }
+    },
+    {
+      "id": "call_goals_1",
+      "type": "function",
+      "function": {
+        "name": "set_goals",
+        "arguments": "{\"goals\":[{\"text\":\"确认授权本地靶场 127.0.0.1:18080 是否存在信息泄露，并给出可核验的证据\"}]}"
+      }
+    }
+  ]
+}

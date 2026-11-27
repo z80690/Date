@@ -1,0 +1,1157 @@
+{
+  "seq": "0004",
+  "ts": "2026-11-24 03:29:44",
+  "path": "/chat/completions",
+  "stream": false,
+  "model_requested": "workbuddy-inloop",
+  "messages_summary": "[system] 你是一个网络安全平台授权渗透测试系统的\"规划者\"，被频繁唤醒（图一变就唤醒）。职责：读态势 → 判目标 → **只在确有未被覆盖的新方向时**补充探索意图。你是规划者、不是执行者：本轮所有产物只能是【生成/说清意图】或【判定目标】，绝不在 plan 里把活干了。\n\n任务目标：对授权本地靶场 127.0.0.1:18080 做安全评估,确认是否存在信息泄露;严格仅限 127.0.0.0/8 回环地址\n\n**本轮该产出几个意图（先想清楚这条）**：\n- **硬底线（最高优先）**：只要【目标未达成】且【当前没有任何 open 或 running 意图】（frontier_open=0 且 running_intents 为空），本轮就【必须】产出至少一个向目标推进的意图——没有在跑的 work 可等、也没有在排队的方向时，产出 0 意图=任务停摆；哪怕已知方向都只在 recent_done 里，也要据下面 done/exhausted/blocked 的判断另开一条或续派一条。\n- 硬底线之外，**产出 0 个意图是正常结果，但要有正当理由**（不是\"少派更稳\"的默认）：①**已覆盖**——你想到的方向都已被仍在 open/running 的意图处理（换措辞重复生成已存在的意图是严重错误）；②**等待依赖**——下一步依赖当前在跑 work 的产出、而它还没出来（此时硬派会让下游拿不到\n[user] <system-reminder>\n# currentDate\nToday's date is 2026-11-24.\n</system-reminder>\n[user] 本轮是**定时巡检（心跳到点）**的唤醒,且当前**已没有任何 open 或 running 的意图**——没有 worker 在跑、也没有排队中的方向,探索已停摆。你**必须**在本轮产出一个或多个向目标推进、且与图中既有意图**互不重复**的新意图(不得产出 0 意图);先据下面的态势判定目标是否已达成,未达成则立即补方向：\n\n【本轮态势（graph_overview 预取，等同你调用该工具的返回；需要细节再按需调 node_detail/list_facts 等）】：\n{\"coverage\":{\"by_type\":[],\"denominator\":0,\"host_count\":2,\"note\":\"coverage资产测试覆盖度（包括接口等各种相关资产），粗略估计、仅供参考：包含当前任务与直接关联任务的 scope、事实锚点；关联 scope 只读。容器型资产/大量枚举会让它偏低，勿据此认为已测完；可用 add_task_scope 增补本任务范围、list_untested_assets 看未测资产【通常不调用list_untested_assets，按照任务推进即可】；\",\"pct\":null,\"status\":\"范围未锚定\",\"tested\":0},\"done_intents_total\":0,\"facts\":1,\"finding_list\":[],\"findings_t\n[assistant] 判定目标未达成（当前无事实佐证信息泄露是否存在），且 frontier_open=0、无 running 意图，按硬底线必须补方向。提出一个全新侦察方向：访问授权靶场 127.0.0.1:18080 首页并跟进页面上的链接，收集页面与文件正文作为事实，判断是否存在信息泄露。仅限回环地址。\n[tool] {\"ids\":[5]}",
+  "full_request": {
+    "model": "workbuddy-inloop",
+    "messages": [
+      {
+        "role": "system",
+        "content": "你是一个网络安全平台授权渗透测试系统的\"规划者\"，被频繁唤醒（图一变就唤醒）。职责：读态势 → 判目标 → **只在确有未被覆盖的新方向时**补充探索意图。你是规划者、不是执行者：本轮所有产物只能是【生成/说清意图】或【判定目标】，绝不在 plan 里把活干了。\n\n任务目标：对授权本地靶场 127.0.0.1:18080 做安全评估,确认是否存在信息泄露;严格仅限 127.0.0.0/8 回环地址\n\n**本轮该产出几个意图（先想清楚这条）**：\n- **硬底线（最高优先）**：只要【目标未达成】且【当前没有任何 open 或 running 意图】（frontier_open=0 且 running_intents 为空），本轮就【必须】产出至少一个向目标推进的意图——没有在跑的 work 可等、也没有在排队的方向时，产出 0 意图=任务停摆；哪怕已知方向都只在 recent_done 里，也要据下面 done/exhausted/blocked 的判断另开一条或续派一条。\n- 硬底线之外，**产出 0 个意图是正常结果，但要有正当理由**（不是\"少派更稳\"的默认）：①**已覆盖**——你想到的方向都已被仍在 open/running 的意图处理（换措辞重复生成已存在的意图是严重错误）；②**等待依赖**——下一步依赖当前在跑 work 的产出、而它还没出来（此时硬派会让下游拿不到前置而空转，应等下次唤醒图更新后再派）。\n- 反过来：确有【未覆盖、且不依赖在跑 work】的新方向，或目标未达成且范围内仍有未测面，就该派——别把 0 意图当偷懒的默认。\n\n**每次唤醒的决策流程**：\n\n1. **完整态势已附在本提示下方**（就是 graph_overview 的返回，无需再调它）：task（原始标题+目标/根节点）、资产计数、goals+状态、open/running/recent_done 意图、sites_without_endpoints（无端点的站点，提示可能待探的方向）、facts（探索事实数，与漏洞是两类）、recent_facts（{id,summary,confidence?}）。\n   - **范围**：探索节点（goals/意图/facts/findings）只含本任务；**资产默认按任务隔离**（仅本任务及明确关联任务；用户开启「共享全局资产」后可查询全库）——出现非本任务相关的资产时忽略。\n   - **血缘**：每个意图带 parents（上游：派生自哪些事实/意图）和 yields（下游：产生了哪些事实/发现），recent_facts 每条带 from_intent；据此理解\"哪些事实来自哪个方向、能否综合出新方向\"。\n   - **否定/存疑观察**（recent_facts 里\"端口关闭/不可注入\"等）是 worker 的观察、不是定论：采信前先 node_detail(id) 看 evidence——evidence 扎实、confidence=observed 且手段已穷尽的才视为该方向暂时封住；evidence 缺失、只是\"看起来像/只探一次\"、或 confidence=inferred 的，按【尚未探明】处理，若在范围内且无其它意图覆盖，默认派一条复核意图去证实或推翻（**同一否定方向至多复核一次**；复核后仍为否定、且证据合理，就尊重该结论、不再派）。\n   - **要更深细节才按需调**：list_facts（分页，最新在前，默认 20，可 q 过滤、before 翻页，带 total/has_more）、list_findings（全部漏洞）、node_detail(id)（完整证据/详情；列表/recent_facts 只给摘要）、list_assets（pull：q 搜索、type/company_id/task_id 过滤、分页，或 id/ids 直取）、asset_neighbors。资产是否共享由用户设置决定，不能自行开启；共享不代表扩大测试授权。\n\n2. **判目标（核心职责）**：goals 字段已含目标与状态；对已被某发现/事实证明的未达成目标，调 prove_goal(goal_id, evidence_id, reason) 标 met。**当你标记的恰是最后一个未完成目标时，系统自动判定整个任务完成**——收官只由逐个 prove_goal 驱动，没有别的\"一键完成\"手段。\n   - ⚠️ **量化验收核对（严禁提前盖章）**：目标含可量化条件（覆盖度达 X%、达到指定数量、获得某权限）时，prove_goal 前【必须】核对上方 graph_overview 的实测值（coverage.pct、findings_total 计数等）：未达标就【禁止】prove_goal，改派意图补差；不得以\"大体达成/核心已拿下\"为由提前标 met。例：要求覆盖度 100% 而实测 coverage.pct=40% → 未达成，继续派补测意图。\n\n3. **（可选，仅开局、极轻量）探测理解**：仅当图里几乎还没有 fact（recent_facts 基本为空、任务刚开始）、仅凭态势无法把初始意图说具体时，才用 Bash 等对目标做极少量、只读的探测（如 1–2 次 curl 看首页/指纹）。**唯一合法产物是一句更精准的意图描述**——绝不是漏洞的发现/验证/利用，也不是端点/目录/参数的枚举结果（那些是 worker 的活，写成意图派下去）。三条硬边界：\n   - 图里已有 worker 产出的 fact（facts>0 / recent_facts 非空）→【禁止】再自己探测，一切判断基于已有 fact，本轮产物只能是\"派新意图\"或\"结束\"；想深挖某线索 → 派意图让 worker 去查，不是自己 curl。\n   - 即使开局也最多探 ≤3 次就收手，只为把初始意图说清；一旦发现自己在\"深入查证\"而非\"快速定方向\"（逐个枚举端点/目录、逐个试 id、解码链、反复探同一接口、任何注入/越权/漏洞的测试验证——全是 worker 的重活），立刻停手写成意图。\n   - 能从现有事实/态势判断的，根本不必探测。\n\n4. **决定补哪些新方向**：**这里的\"克制\"只指【不重复已存在的意图】，不是\"能少派就少派\"**——目标未达成时，默认追问是\"为逼近目标，还有哪些更深、更狠、尚未覆盖的打法\"，而不是\"是否可以收尾\"。意图是【开放的探索方向】（不是固定类型/菜单），结合已知事实、资产、目标自判方向，逐一与 open + running + recent_done 比对：\n   - 已有 open/running 覆盖 → 不再生成（正在处理）。\n   - 在 recent_done 里出现过 → **先看该意图的 state（每条都带）分辨怎么停的，再决定**：\n     · **done（正常跑完）**：已覆盖 → 不原样重派；是否死路看它 yields 出的 fact 结论、而非 state；仅出现【材料性新机理】（新事实/资产/参数/明显不同的打法）才重派，且 summary 写清与上次的不同；换措辞、\"再试一次说不定行\"不算，禁止重试。\n     · **exhausted（预算耗尽、探到一半被掐断，只写回部分）/ blocked（模型或网络失败、基本没探成）**：都是中途没善终、信息不全——先用 get_worker_trace / get_worker_output 看它实际做到哪、卡在哪，再从下列里选：接近突破被预算掐 → 派\"接上次进度继续\"；纯外部故障没跑成（blocked 常是）→ 直接重派同方向；每次卡同一处 → 换打法/方向。依据永远是 trace 里的真实进度，不是 state 本身。\n   - 完全无任何意图覆盖的全新方向 → 生成。\n   - 所有已知方向都被仍在 open/running 的意图覆盖 → 不生成、直接结束（有在跑/在排队的 work，等它们推进）；但若只剩 recent_done 覆盖、已无 open/running 而目标未达成 → 按顶部硬底线必须另开或续派。\n   - **深度优先于覆盖度**：coverage 是下限/验收项、不是探索目标本身；发现高价值入口（可能通向 RCE/提权/数据外泄）后，优先派意图把那条路【往深打穿】，而不是为拉平覆盖度去铺广、逐个资产浅测。\n   - **保持路线多样、别过早收敛**：目标未达成时，若现有意图都挤在同一条路线/入口，而存在【本质不同】的未覆盖方向（另一入口面/另一类资产/另一条利用链），优先补那条分歧方向，而不是在同一线上加同义意图（看实质差异，不看措辞）；若该分歧方向已被现有意图覆盖，仍不生成。理想是 2–3 条机理不同的路线并存（如\"从上传链打\"与\"从认证绕过打\"），某条交出【目标逼近】的证据后才把资源集中过去。**但多样性永远服从顶部【操作约束】**：被约束排除的入口面/端口/主机/操作，即使本质不同也绝不生成意图。\n\n   **串行利用链：分步派，别拆成并行。** 强依赖串行链（①→②→③，后一步依赖前一步的实际产出）：不要一次性并行下发（下游拿不到还不存在的前置只会重复/空转）；用 TodoWrite 把整条链记成待办（每步一条），本轮只派\"前置已满足\"的那步（通常第一步），待它产出 fact 后下次唤醒（提示会带上待办清单）再派下一步并把已满足的标 completed。\"同一件事\"别拆两条（\"确认触发点\"和\"触发触发点\"是同一步）；只有【平行、互不依赖】的维度（如枚举多个不相关端点）才用多意图并行。\n\n5. **提交**：用【一次】add_intent 批量提交筛出的新方向（intents 数组，最多 4 个最高价值的，不要逐条多次调）：\n   - **summary**：一句话自然语言描述该方向（测试目标完整地址 + 做什么 + 为什么），不套固定分类；去重主要靠它与已有意图比对。\n   - **asset_ids**：本方向要测试/攻击的目标资产 id（尽量传，0/1/多个，来自 list_assets）——只要方向围绕具体资产（站点/接口/参数/主机）就务必传，用于覆盖去重、连入资产链路，跨多资产就都传；纯全局侦察无具体资产才留空。\n   - **parent_ids**：本方向由哪些上游节点综合得出（可选，0/1/多个）——多个事实结合产生一个意图就都传，派生自某上游意图/发现也传其 id，顶层全新方向留空。\n\n不重复、不硬凑；但目标未达成、又有未覆盖且更深的打法时，该派就派。简洁、聚焦、高效。\n\n**中间产物输出规约**：脚本、payload、抓到的响应体、临时数据等一切中间产物，**一律写到本任务工作目录 D:\\refs\\ARTEX-release\\artex-0.3.29-windows-amd64\\data\\tasks\\2**（相对路径即写在这里，也可用该绝对路径）——**不要写 /tmp、不要用其它绝对路径**。\n\n【操作约束（最高优先级，凌驾于下方一切探索/拓面启发式；每生成一条意图、每执行一个动作前都必须先自检是否违反，违反即不得进行）】：\n允许的操作：\n- 仅允许测试 127.0.0.1:18080 本地靶场服务\n禁止的操作：\n- 严格仅限 127.0.0.0/8 回环地址，禁止访问任何公网地址\n（发现约束之外的新目标/新端口/新主机，不等于获得授权：除非它落在上述允许范围内，否则记为 out-of-scope 事实并跳过，不得为其派生意图或执行动作。）"
+      },
+      {
+        "role": "user",
+        "content": "<system-reminder>\n# currentDate\nToday's date is 2026-11-24.\n</system-reminder>"
+      },
+      {
+        "role": "user",
+        "content": "本轮是**定时巡检（心跳到点）**的唤醒,且当前**已没有任何 open 或 running 的意图**——没有 worker 在跑、也没有排队中的方向,探索已停摆。你**必须**在本轮产出一个或多个向目标推进、且与图中既有意图**互不重复**的新意图(不得产出 0 意图);先据下面的态势判定目标是否已达成,未达成则立即补方向：\n\n【本轮态势（graph_overview 预取，等同你调用该工具的返回；需要细节再按需调 node_detail/list_facts 等）】：\n{\"coverage\":{\"by_type\":[],\"denominator\":0,\"host_count\":2,\"note\":\"coverage资产测试覆盖度（包括接口等各种相关资产），粗略估计、仅供参考：包含当前任务与直接关联任务的 scope、事实锚点；关联 scope 只读。容器型资产/大量枚举会让它偏低，勿据此认为已测完；可用 add_task_scope 增补本任务范围、list_untested_assets 看未测资产【通常不调用list_untested_assets，按照任务推进即可】；\",\"pct\":null,\"status\":\"范围未锚定\",\"tested\":0},\"done_intents_total\":0,\"facts\":1,\"finding_list\":[],\"findings_total\":0,\"frontier_open\":0,\"goals\":[{\"id\":4,\"state\":\"open\",\"text\":\"确认授权本地靶场 127.0.0.1:18080 是否存在信息泄露，并给出可核验的证据\"}],\"hints\":[],\"open_intents\":[],\"recent_done_intents\":[],\"recent_facts\":[{\"id\":3,\"state\":\"origin\",\"summary\":\"任务起点：本地回环靶场 127.0.0.1:18080 授权安全评估；目标：对授权本地靶场 127.0.0.1:18080 做安全评估,确认是否存在信息泄露;严格仅限 127.0.0.0/8 回环地址\"}],\"related_tasks\":[],\"running_intents\":[],\"task\":{\"description\":\"本地回环靶场 127.0.0.1:18080 授权安全评估\",\"goal\":\"对授权本地靶场 127.0.0.1:18080 做安全评估,确认是否存在信息泄露;严格仅限 127.0.0.0/8 回环地址\"}}\n\n据上面的态势，判定目标。目标已【真正达成】（已拿到目标成果/已确认目标漏洞）时用 prove_goal 逐个标记。**硬底线：只要目标尚未达成、且当前没有任何 open 或 running 意图（frontier_open=0 且 running_intents 为空），本轮就必须产出至少一个向目标推进的意图——此时没有在跑的 work 可等、也没有在排队的方向，产出 0 意图=任务停摆。仅当已有 open/running 意图在推进、或目标已达成时，本轮才可以不产出新意图。**"
+      },
+      {
+        "role": "assistant",
+        "content": "判定目标未达成（当前无事实佐证信息泄露是否存在），且 frontier_open=0、无 running 意图，按硬底线必须补方向。提出一个全新侦察方向：访问授权靶场 127.0.0.1:18080 首页并跟进页面上的链接，收集页面与文件正文作为事实，判断是否存在信息泄露。仅限回环地址。",
+        "tool_calls": [
+          {
+            "id": "call_intent_1",
+            "type": "function",
+            "function": {
+              "name": "add_intent",
+              "arguments": "{\"intents\":[{\"summary\":\"访问授权本地靶场 http://127.0.0.1:18080 首页，读取页面正文并跟进其上链接（含 /notes.txt），收集页面与文件内容作为事实，判断是否存在信息泄露。严格仅访问 127.0.0.0/8 回环地址。\",\"priority\":8}]}"
+            }
+          }
+        ]
+      },
+      {
+        "role": "tool",
+        "content": "{\"ids\":[5]}",
+        "tool_call_id": "call_intent_1"
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "graph_overview",
+          "description": "(探索链路图)探索态势蒸馏摘要：资产计数、无接口的站点、frontier、发现、hints(人类/主 agent 的战略提示，生成意图时须纳入)。规划时先调它。",
+          "parameters": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "list_findings",
+          "description": "列本任务及直接关联任务的【确认漏洞】(紧凑：id+task_id+intent_id+vulnclass+severity+摘要+状态)。关联任务条目带 source_task_id/inherited=true 且只读。这里只含漏洞；普通探索事实用 list_facts，详情用 node_detail(id)。",
+          "parameters": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "list_facts",
+          "description": "分页列本任务及直接关联任务的【探索事实/结论】，最新在前(紧凑：id+摘要+状态，摘要过长会截断，全文用 node_detail(id))。参数均可选：limit(默认 20，上限 100)、before(游标，传上一页返回的 next_before 取更旧的一页；省略/0=最新一页)、q(按摘要关键词过滤)。返回 {facts, total, has_more, next_before}：total 是过滤后的总数，has_more=true 时用 next_before 继续翻页。关联任务条目带 source_task_id/inherited=true 且只读。漏洞看 list_findings。",
+          "parameters": {
+            "properties": {
+              "before": {
+                "description": "分页游标：只返回 id 小于该值的更旧事实；省略或 0 = 最新一页",
+                "type": "integer"
+              },
+              "limit": {
+                "description": "返回条数，默认 20，上限 100",
+                "type": "integer"
+              },
+              "q": {
+                "description": "按事实摘要关键词过滤（不区分大小写）；省略 = 不过滤",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "node_detail",
+          "description": "按 id 取本任务或直接关联任务的【探索图节点】完整内容。继承节点带 source_task_id/inherited=true 且只读。仅限 list_facts/list_findings/graph_overview 返回的探索节点 id；资产请用 list_assets/asset_neighbors。",
+          "parameters": {
+            "properties": {
+              "id": {
+                "description": "探索图节点 id(非资产 id)",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "expand_digest",
+          "description": "展开一个 cold digest：返回它折叠的成员紧凑列表（id/summary/state/confidence），与概览 recent_facts/recent_done_intents 同形状。要某条完整细节/证据用 node_detail(member_id)。",
+          "parameters": {
+            "properties": {
+              "id": {
+                "description": "digest 节点 id（来自概览 cold_digests）",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "get_worker_output",
+          "description": "取本任务或直接关联任务某条意图(work)的最终输出结论。关联任务结果带 source_task_id/inherited=true 且只读。正常结束返回其总结；被终止(stopped)/异常的 work 返回其截至中止时的最后输出。",
+          "parameters": {
+            "properties": {
+              "intent_id": {
+                "description": "意图 id（= work 句柄）",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "intent_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "get_worker_trace",
+          "description": "查看某条意图(work)的【执行过程】（区别于 get_worker_output 只给最终结论）。三种用法：\n① 只传 intent_id → 返回该 work 每一步的摘要流（summary≤100字，含 step_id；只是动作轮廓，不含完整输出）；\n② intent_id + q → 只返回命中关键字的步骤摘要（在摘要和完整输出里都搜；仍只给 summary，要看内容用③）；\n③ intent_id + step_ids → 返回这些步骤的完整内容(detail)；一次最多取 5 个，超出只返回前 5 个并在 notice/omitted_step_ids 里告知未取的。\n典型流程：先①/②定位可疑步骤的 step_id，再用③取其完整输出。不含思考(thinking)步骤。支持直接关联任务的历史 trace；其结果带 source_task_id/inherited=true 且只读。",
+          "parameters": {
+            "properties": {
+              "intent_id": {
+                "description": "意图 id（= work 句柄）",
+                "type": "integer"
+              },
+              "limit": {
+                "description": "摘要流/检索的返回上限（可选）",
+                "type": "integer"
+              },
+              "q": {
+                "description": "关键字：只返回摘要/完整输出命中它的步骤（可选；与 step_ids 互斥）",
+                "type": "string"
+              },
+              "step_ids": {
+                "description": "要取完整内容的 step_id（来自①/②返回；一次最多取 5 个，多传只返回前 5 个，其余在 omitted_step_ids 里列出）",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "intent_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "search_all_worker_traces",
+          "description": "【通常不推荐使用，因为系统中已经给了大部分信息了】在【本任务其他 work 的执行过程】里按关键字(q)检索——用于找回某个 worker 见过、却没写进 fact 的东西（某路径/token/报错等）。已自动排除你自己这条意图的步骤（那些本就在你上下文里）。只返回命中步骤的摘要(summary≤100字)，每条带 intent_id；据此再用 get_worker_trace(intent_id, step_ids=[...]) 取完整内容。",
+          "parameters": {
+            "properties": {
+              "limit": {
+                "description": "返回上限，默认 100（可选）",
+                "type": "integer"
+              },
+              "q": {
+                "description": "关键字（在所有 work 步骤的摘要+完整输出里搜）",
+                "type": "string"
+              }
+            },
+            "required": [
+              "q"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "list_goals",
+          "description": "列出本任务的目标节点及其状态（open/met），用于判断是否达成。",
+          "parameters": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "add_intent",
+          "description": "生成【探索方向】写入 frontier，并连入探索链路。意图是开放的探索方向，不是固定类型——用 summary 一句话自由描述要探索/验证/利用什么。\n★优先批量：一轮筛出的多个新方向放进 intents 数组一次提交（比逐条调用省往返）。返回 ids 数组，与 intents 等长同序（失败项 id=0，详情见 errors）。单条则省略 intents 直接给顶层 summary。",
+          "parameters": {
+            "properties": {
+              "asset_ids": {
+                "description": "本方向要测试/攻击的【目标资产 id】（**尽量传**，0/1/多个；是 list_assets 返回的资产 id，不是探索节点 id）：这条探索方向针对哪些资产（站点/接口/参数/主机等）。只要方向围绕某些具体资产就务必传上——它是「这条探索打哪些目标」的结构化标记，用于覆盖去重、把意图连入资产链路。仅当纯全局侦察、确实没有具体目标资产时才留空。",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "intents": {
+                "description": "【优先用这个】要新增的探索方向数组，按顺序处理。每个元素字段同下方顶层字段（summary/asset_ids/parent_ids/priority）。返回 ids 与本数组等长、同序。",
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "parent_ids": {
+                "description": "上游锚点 id（可选，0/1/多个）：本方向由哪些【已确认的事实(fact)/发现(finding)】综合得出。**只能填已存在的 fact/finding 节点 id,不能填意图/目标/提示**——意图必须锚在已确认知识上,发现驱动而非凭空规划。多个事实共同产生一个新意图就传多个;顶层全新侦察方向请留空（会自动挂到任务起点 origin fact）。",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "priority": {
+                "description": "优先级 0-10，默认5",
+                "type": "integer"
+              },
+              "summary": {
+                "description": "[单条] 一句话描述这个探索方向：做什么+为什么。已写清方向即可，不依赖资产 id。",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "prove_goal",
+          "description": "当你判断某个发现/事实证明了某个目标达成时调用：把证据节点连到目标节点，并标记目标 met。",
+          "parameters": {
+            "properties": {
+              "evidence_id": {
+                "description": "证明它的发现/事实节点 id",
+                "type": "integer"
+              },
+              "goal_id": {
+                "description": "目标节点 id",
+                "type": "integer"
+              },
+              "reason": {
+                "description": "为什么这个证据满足该目标",
+                "type": "string"
+              }
+            },
+            "required": [
+              "goal_id",
+              "evidence_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "kill_work",
+          "description": "终止一条正在运行的意图(work)。用于叫停跑偏/无意义的探索；被终止的意图标记为 stopped，不再自动重领。先用 get_worker_output 看看它在干嘛再决定。",
+          "parameters": {
+            "properties": {
+              "intent_id": {
+                "description": "要终止的意图 id（= work 句柄）",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "intent_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "steer_work",
+          "description": "给一条正在运行的意图(work)实时注入纠偏指令，不打断它、不丢已有进展：worker 会在下一步动作前收到你的指令并据此调整。用于'别再走 X、聚焦 Y'这类【意图内】纠偏；若方向整个错了应改用 kill_work 再下新意图。建议先用 get_worker_output 看它在干嘛。",
+          "parameters": {
+            "properties": {
+              "intent_id": {
+                "description": "要纠偏的意图 id（= work 句柄）",
+                "type": "integer"
+              },
+              "message": {
+                "description": "给 worker 的纠偏指令，明确让它停止什么、转向什么",
+                "type": "string"
+              }
+            },
+            "required": [
+              "intent_id",
+              "message"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "report_finding",
+          "description": "记录确认的漏洞，用 evidence 提供命令输出、日志等可验证证据。任务上下文传当前 intent_id。返回的 finding_id 是独立漏洞记录 ID，finding_node_id 是探索节点 ID（第一行保留该节点编号）。",
+          "parameters": {
+            "properties": {
+              "asset_ids": {
+                "description": "受影响资产 id",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "evidence": {
+                "description": "证据/PoC 文本",
+                "type": "string"
+              },
+              "intent_id": {
+                "description": "当前任务的意图 id",
+                "type": "integer"
+              },
+              "name": {
+                "description": "漏洞名称",
+                "type": "string"
+              },
+              "severity": {
+                "description": "critical|high|medium|low",
+                "type": "string"
+              },
+              "summary": {
+                "description": "发现摘要",
+                "type": "string"
+              },
+              "vulnclass": {
+                "description": "漏洞类别",
+                "type": "string"
+              }
+            },
+            "required": [
+              "vulnclass",
+              "severity",
+              "summary"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "list_companies",
+          "description": "列出当前任务可见的【企业/公司】及其资产范围(scope)与可见资产数；开启共享全局资产后可查询全局企业。用于查看有哪些公司、拿到 company_id（insert_assets 关联 app、list_assets 按 company_id 过滤时用）。可选 search 按公司名模糊过滤(不区分大小写)，留空返回全部。",
+          "parameters": {
+            "properties": {
+              "search": {
+                "description": "按公司名模糊过滤(可选，不区分大小写)；留空返回全部",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "list_assets",
+          "description": "查询资产库：DSL 表达式搜索，或按 id/ids 直取；支持分页。默认只返回本任务及直接关联任务的资产；用户开启「共享全局资产」后可查询全局资产。\nDSL：field=value 模糊(ILIKE) | field==value 精确 | field!=value 排除 | 数字字段支持 > >= < <= | 裸词=全文模糊；AND/OR 组合(AND 优先级高)，可用括号分组。资产类型用独立 type 参数，不写进 DSL。\n未传 id/ids 时 dsl 必须非空（不允许无条件全量查询）。\n可用字段：domain(根/子/服务域名)、root_domain、ip、url、page_title、icp、service_name、app_name、method(如 GET/POST)、service_type(http|other)、record_type(如 A/CNAME)、technology(数组，=模糊 ==精确)、port/status_code/company_id(整数)。\n示例：status_code>=400 AND technology=shiro ；(port==80 OR port==443) AND technology=nginx",
+          "parameters": {
+            "properties": {
+              "dsl": {
+                "description": "DSL 查询表达式（语法/字段见工具描述）。未传 id/ids 时必须非空。",
+                "type": "string"
+              },
+              "id": {
+                "description": "直接按单个资产 id 取（可选，与 dsl/type 互斥）",
+                "type": "integer"
+              },
+              "ids": {
+                "description": "直接按多个资产 id 取（可选，与 dsl/type 互斥）",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "limit": {
+                "description": "返回上限，默认 10（可选）",
+                "type": "integer"
+              },
+              "offset": {
+                "description": "分页偏移，默认 0（可选）",
+                "type": "integer"
+              },
+              "type": {
+                "description": "资产类型过滤：root_domain|ip|subdomain|app|service|endpoint（独立字段，可与 dsl 叠加；单独 type 不足以查询，仍需 dsl）",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "add_company_scope",
+          "description": "把域名/IP/CIDR/ICP备案/企业关键词加入某公司的【资产范围】——域名、网络和ICP会自动认领命中的资产，关键词只提供给Agent作为范围提示。\n公司名唯一：company 不存在则新建，已存在则复用(只把范围并进去)。\nscope 一行一条，系统自动识别：根域名 / URL / 单个 IP / CIDR 网段 / ICP备案 / 企业关键词。\n务必给 reason 说明归属依据(whois/证书/ASN 等)。\n护栏：拒绝裸 TLD 与过宽网段(IPv4前缀需为/16-/32、IPv6前缀需为/32-/128)，非法行会被跳过并在 errors 返回。",
+          "parameters": {
+            "properties": {
+              "company": {
+                "description": "公司名(不存在则新建、存在则复用；名称唯一)",
+                "type": "string"
+              },
+              "logo": {
+                "description": "公司图标 URL(可选；仅新建公司时生效)",
+                "type": "string"
+              },
+              "reason": {
+                "description": "归属依据(证据/来源)，务必填写",
+                "type": "string"
+              },
+              "scope": {
+                "description": "资产范围，一行一条：域名 / URL / IP / CIDR / ICP备案 / 企业关键词",
+                "type": "string"
+              }
+            },
+            "required": [
+              "company",
+              "scope"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "add_task_scope",
+          "description": "把测试范围加入【本任务】——这是本任务的授权边界，也是资产测试覆盖度的分母。\nkind 支持：company(整个公司名下资产) / root_domain(整个根域，含所有子域) / subdomain(单个精确子域) / ip / cidr / icp / keyword。\n说明：worker 逐个碰到的主机会被系统【自动】加进范围(精确子域)；本工具用于【主动扩大】——把整个根域/整个公司纳入，或补充指定某子域/IP。\nvalue：company 传公司名或 id(公司须已存在)；root_domain/subdomain 传域名；ip/cidr 传 IP 或网段；icp/keyword 传备案号或企业关键词。\n务必给 reason 说明依据(可审计)。多条用 entries 数组。",
+          "parameters": {
+            "properties": {
+              "entries": {
+                "description": "批量：[{kind, value}]。kind∈company/root_domain/subdomain/ip/cidr/icp/keyword。",
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "kind": {
+                "description": "[单条] company / root_domain / subdomain / ip / cidr / icp / keyword",
+                "type": "string"
+              },
+              "reason": {
+                "description": "加入依据(用于审计)，务必填写",
+                "type": "string"
+              },
+              "value": {
+                "description": "[单条] 公司名或id / 域名 / IP / CIDR / ICP / 关键词",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "list_untested_assets",
+          "description": "查询【本任务及直接关联任务】范围内、还没被事实锚点覆盖的资产（关联范围只读，供你自己判断要不要补测，不代替你决策）。\n可选按资产类型过滤：root_domain/subdomain/service/app/endpoint/ip。\n分页：page 从 1 起、page_size 默认 10。返回 {assets:[{id,type,label}], total, page, page_size}。仅任务上下文可用。",
+          "parameters": {
+            "properties": {
+              "page": {
+                "description": "页码，从 1 起（默认 1）",
+                "type": "integer"
+              },
+              "page_size": {
+                "description": "每页数量（默认 10）",
+                "type": "integer"
+              },
+              "type": {
+                "description": "资产类型过滤（可选）：root_domain/subdomain/service/app/endpoint/ip",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Read",
+          "description": "Reads a file from the local filesystem and returns its contents with line numbers. Use offset/limit for large files. Always read a file before editing it.\n\nfile_path may be absolute or relative to the working directory. Output lines are prefixed with their 1-based line number.",
+          "parameters": {
+            "properties": {
+              "file_path": {
+                "description": "Path to the file to read.",
+                "type": "string"
+              },
+              "limit": {
+                "description": "Max lines to read (default 2000).",
+                "type": "integer"
+              },
+              "offset": {
+                "description": "1-based line to start from.",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "file_path"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Write",
+          "description": "Writes a file to the local filesystem, creating parent directories and overwriting any existing file. Prefer Edit for modifying existing files.\n\nProvide the complete file contents — Write replaces the whole file.",
+          "parameters": {
+            "properties": {
+              "content": {
+                "description": "Full contents to write.",
+                "type": "string"
+              },
+              "file_path": {
+                "description": "Path of the file to write.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "file_path",
+              "content"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Edit",
+          "description": "Performs an exact string replacement in a file. old_string must match exactly once unless replace_all is set. Read the file first so old_string matches precisely.\n\nold_string must match the file exactly (whitespace included) and be unique unless replace_all is true. new_string must differ from old_string.",
+          "parameters": {
+            "properties": {
+              "file_path": {
+                "description": "Path of the file to edit.",
+                "type": "string"
+              },
+              "new_string": {
+                "description": "Replacement text.",
+                "type": "string"
+              },
+              "old_string": {
+                "description": "Exact text to replace.",
+                "type": "string"
+              },
+              "replace_all": {
+                "description": "Replace all occurrences.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "file_path",
+              "old_string",
+              "new_string"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "MultiEdit",
+          "description": "Applies several exact string replacements to a single file in one atomic operation. Edits are applied in order; if any old_string fails to match (or isn't unique without replace_all), the whole operation aborts and the file is left unchanged.\n\nUse this instead of multiple Edit calls on the same file. Each edit's old_string must match the file as modified by the preceding edits. Read the file first.",
+          "parameters": {
+            "properties": {
+              "edits": {
+                "description": "Edits to apply in order.",
+                "items": {
+                  "properties": {
+                    "new_string": {
+                      "description": "Replacement text.",
+                      "type": "string"
+                    },
+                    "old_string": {
+                      "description": "Exact text to replace.",
+                      "type": "string"
+                    },
+                    "replace_all": {
+                      "description": "Replace all occurrences.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "old_string",
+                    "new_string"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "file_path": {
+                "description": "Path of the file to edit.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "file_path",
+              "edits"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "LS",
+          "description": "Lists the files and subdirectories of a directory (non-recursive). Use Glob to match by pattern across depth, or Grep to search contents.\n\npath may be absolute or relative to the working directory; defaults to the working directory.",
+          "parameters": {
+            "properties": {
+              "path": {
+                "description": "Directory to list (default working directory).",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Glob",
+          "description": "Finds files whose path matches a glob pattern (supports ** for any depth, e.g. \"**/*.go\"). Returns paths sorted by modification time, newest first.\n\nUse this instead of `find`. The pattern matches paths relative to the search directory.",
+          "parameters": {
+            "properties": {
+              "path": {
+                "description": "Directory to search (default working dir).",
+                "type": "string"
+              },
+              "pattern": {
+                "description": "Glob pattern, e.g. src/**/*.go",
+                "type": "string"
+              }
+            },
+            "required": [
+              "pattern"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Grep",
+          "description": "A powerful search tool built on ripgrep\n\nUsage:\n- ALWAYS use Grep for search tasks. NEVER invoke `grep` or `rg` as a Bash command. The Grep tool has been optimized for correct permissions and access.\n- Supports full regex syntax (e.g., \"log.*Error\", \"function\\s+\\w+\")\n- Filter files with glob parameter (e.g., \"*.js\", \"**/*.tsx\") or type parameter (e.g., \"js\", \"py\", \"rust\")\n- Output modes: \"content\" shows matching lines, \"files_with_matches\" shows only file paths (default), \"count\" shows match counts\n- Use Agent tool for open-ended searches requiring multiple rounds\n- Pattern syntax: Uses ripgrep (not grep) - literal braces need escaping (use `interface\\{\\}` to find `interface{}` in Go code)\n- Prefer `head_limit` to avoid large result sets.\n- Multiline matching: By default patterns match within single lines only. For cross-line patterns like `struct \\{[\\s\\S]*?field`, use `multiline: true`\n- Prefer Grep over terminal rg/grep for codebase search unless you specifically need shell features.",
+          "parameters": {
+            "properties": {
+              "-A": {
+                "description": "Lines of context to show after each match (content mode).",
+                "type": "integer"
+              },
+              "-B": {
+                "description": "Lines of context to show before each match (content mode).",
+                "type": "integer"
+              },
+              "-C": {
+                "description": "Lines of context before and after each match (content mode).",
+                "type": "integer"
+              },
+              "-i": {
+                "description": "Case-insensitive.",
+                "type": "boolean"
+              },
+              "-n": {
+                "description": "Show line numbers (content mode). Default true.",
+                "type": "boolean"
+              },
+              "glob": {
+                "description": "Only search files matching this glob, e.g. *.go or *.{ts,tsx}",
+                "type": "string"
+              },
+              "head_limit": {
+                "description": "Limit output to the first N results (lines/files/counts). Default 250; pass 0 for unlimited.",
+                "type": "integer"
+              },
+              "multiline": {
+                "description": "Multiline mode: . matches newlines and patterns may span lines. Default false.",
+                "type": "boolean"
+              },
+              "offset": {
+                "description": "Skip the first N results before applying head_limit (paging). Default 0.",
+                "type": "integer"
+              },
+              "output_mode": {
+                "description": "files_with_matches (default) | content | count",
+                "type": "string"
+              },
+              "path": {
+                "description": "File or directory to search. Defaults to the working directory.",
+                "type": "string"
+              },
+              "pattern": {
+                "description": "RE2 regular expression to search for.",
+                "type": "string"
+              },
+              "type": {
+                "description": "Only search a file type, e.g. go, py, js, ts, rust, java. Unknown types are treated as an extension (type:foo → *.foo).",
+                "type": "string"
+              }
+            },
+            "required": [
+              "pattern"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Bash",
+          "description": "Executes a shell command in the working directory and returns combined stdout and stderr. Use for running tests, builds, package managers, and git. Prefer the dedicated file tools for file work. Set run_in_background to return immediately and read the output later.\n\n需要【交互输入】的程序（msfconsole / ssh 交互登录 / mysql、psql、python 等 REPL / 密码或 yes/no 提示 / nc 反弹 shell）不要用 Bash（它没有 stdin、会卡住），改用 shell_open 开交互会话（用完 shell_close）。一次性、非交互命令仍用 Bash。\n\nThe command runs through the shell, so you are not limited to one command: chain steps with && or ;, use pipes, and pass multi-line scripts or heredocs. For anything beyond a simple one-liner — loops, parsing, string/JSON handling, HTTP logic, computation — prefer writing a short script (Python, Node, shell, etc.) and executing it (e.g. via a heredoc or by writing a file then running it) rather than forcing everything into a single command. A timeout (default 120s, max 600s) applies. Avoid commands needing interactive input.",
+          "parameters": {
+            "properties": {
+              "command": {
+                "description": "The shell command to execute.",
+                "type": "string"
+              },
+              "run_in_background": {
+                "description": "Run in the background and return immediately; read its output later with TaskOutput or Read, and you are notified when it completes. A foreground command that exceeds its timeout is also moved to the background automatically.",
+                "type": "boolean"
+              },
+              "timeout_ms": {
+                "description": "Timeout in ms (default 120000, max 600000).",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "sleep",
+          "description": "Waits for N seconds, then returns. Use to let a backgrounded command make progress before reading its partial output with TaskOutput. Interrupted immediately if the run is paused or stopped.",
+          "parameters": {
+            "properties": {
+              "seconds": {
+                "description": "Seconds to wait, 1-3600.",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "seconds"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "get_finding_traffic",
+          "description": "读取漏洞已绑定的真实流量证据，不依赖捕获开关。finding_id 使用 report_finding JSON 返回的独立漏洞记录 ID（不是第一行的探索节点 ID）。先不传 binding_id 获取清单及 version；空清单是正常情况，TCP 等非 HTTP 漏洞或未采集时仍可依据文字/命令证据编写报告，不强制绑定。有绑定时按 binding_id、side(request/response)、offset 分段读取正文。写报告时将读取的 version 作为 evidence_version 传给 update_finding_report，后者 finding_id 仍使用探索节点 ID。",
+          "parameters": {
+            "properties": {
+              "binding_id": {
+                "description": "清单里的绑定 ID，省略则返回清单",
+                "type": "string"
+              },
+              "finding_id": {
+                "description": "独立漏洞记录 ID",
+                "type": "string"
+              },
+              "length": {
+                "type": "integer"
+              },
+              "offset": {
+                "type": "integer"
+              },
+              "side": {
+                "description": "request 或 response，默认 response",
+                "type": "string"
+              }
+            },
+            "required": [
+              "finding_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_open",
+          "description": "开一个持久 PTY 交互会话运行【交互式/需真 TTY 的程序】(msfconsole/ssh 交互/mysql、python 等 REPL/密码提示/nc 会话)，返回 session_id。**一次性、非交互命令用 Bash**。mode: interactive=阻塞到首个提示符/静默再返回启动输出; hands-free(默认)=立即返回, 之后用 shell_read 轮询; dispatch=立即返回, 完成时发通知; monitor=立即返回, 后台盯 watch 关键词命中即发通知(会话不结束, 仅本次运行内存活)。可设 prompt_regex(如 'msf6? >\\s*$')精确判定完成。用完务必 shell_close。",
+          "parameters": {
+            "properties": {
+              "cols": {
+                "description": "可选：PTY 列数(默认 80)",
+                "type": "integer"
+              },
+              "command": {
+                "description": "要运行的交互程序，如 'msfconsole -q' / 'ssh user@host' / 'python3'",
+                "type": "string"
+              },
+              "mode": {
+                "description": "interactive | hands-free(默认) | dispatch | monitor",
+                "type": "string"
+              },
+              "prompt_regex": {
+                "description": "可选：命令完成判定的提示符正则(匹配输出末尾)",
+                "type": "string"
+              },
+              "quiet_ms": {
+                "description": "可选：静默多少毫秒算完成(默认 8000)",
+                "type": "integer"
+              },
+              "rows": {
+                "description": "可选：PTY 行数(默认 24)",
+                "type": "integer"
+              },
+              "startup_grace_ms": {
+                "description": "可选：启动宽限毫秒，此期间不触发静默判定(默认 15000)",
+                "type": "integer"
+              },
+              "watch": {
+                "description": "monitor 模式必填：要盯的关键词/正则数组，输出里命中任一即发通知(每个只报一次)",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_send",
+          "description": "向一个交互会话发送输入：text/submit/keys/hex/paste 可组合，按出现顺序发送(各参数含义见字段)。wait=true(默认)等命令完成并带回增量输出。",
+          "parameters": {
+            "properties": {
+              "hex": {
+                "description": "原始字节的十六进制, 如 ['0x1b','0x5b','0x41']",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "keys": {
+                "description": "具名键: ctrl+c/ctrl+d/tab/enter/esc/up/down/left/right/...",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "paste": {
+                "description": "多行粘贴(bracketed paste, 不触发逐行执行)",
+                "type": "string"
+              },
+              "prompt_regex": {
+                "description": "可选：覆盖会话默认的完成判定提示符",
+                "type": "string"
+              },
+              "quiet_ms": {
+                "description": "可选：静默判定阈值毫秒(默认 8000)",
+                "type": "integer"
+              },
+              "session_id": {
+                "description": "会话 id(shell_open 返回)",
+                "type": "string"
+              },
+              "submit": {
+                "description": "是否在文本后追加回车执行",
+                "type": "boolean"
+              },
+              "text": {
+                "description": "要输入的文本(不自动回车)",
+                "type": "string"
+              },
+              "timeout_ms": {
+                "description": "可选：wait 的硬超时毫秒(默认 120000)",
+                "type": "integer"
+              },
+              "wait": {
+                "description": "是否同步等到命令完成(默认 true)",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "session_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_read",
+          "description": "读一个交互会话的输出(不发输入)。view=stream(默认)增量原始流(流式首选,续读/可 drain 取全量); view=screen 整屏 vt 快照(适合 vim/htop 等全屏程序)。",
+          "parameters": {
+            "properties": {
+              "drain": {
+                "description": "stream: true=返回自上次以来全部原始流(忽略上限)",
+                "type": "boolean"
+              },
+              "max_bytes": {
+                "description": "stream: 最多返回字节(默认 8192)",
+                "type": "integer"
+              },
+              "max_lines": {
+                "description": "stream: 最多返回行数(默认 200)",
+                "type": "integer"
+              },
+              "session_id": {
+                "description": "会话 id",
+                "type": "string"
+              },
+              "since_cursor": {
+                "description": "stream: 从该游标之后读; 不传则用会话内部游标续读",
+                "type": "integer"
+              },
+              "view": {
+                "description": "stream(默认) | screen",
+                "type": "string"
+              }
+            },
+            "required": [
+              "session_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_close",
+          "description": "关闭一个交互会话(杀掉进程、释放 PTY)。",
+          "parameters": {
+            "properties": {
+              "session_id": {
+                "description": "会话 id",
+                "type": "string"
+              }
+            },
+            "required": [
+              "session_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_list",
+          "description": "列出当前所有交互会话及状态。",
+          "parameters": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "WebFetch",
+          "description": "Fetches an HTTP(S) HTML page, documentation page, or API response and returns it as Markdown. Do not use this tool for static assets, including JavaScript, CSS, source maps, images, fonts, audio, or video—even if their URLs are found in a fetched page or explicitly requested. Fetch the owning page instead. Set `extract=true` to list comments, scripts, stylesheets, endpoints, forms, links, and meta tags. Listed asset URLs are for inspection only and must not be fetched. Large responses may be truncated. This makes an external network request.",
+          "parameters": {
+            "properties": {
+              "extract": {
+                "description": "When true, append a RECON section preserving HTML comments, <script src>, inline-script endpoints, forms/inputs (including hidden), links and meta tags. Default false.",
+                "type": "boolean"
+              },
+              "url": {
+                "description": "The absolute http(s) URL to fetch. JS/CSS/static-asset suffix URLs are not allowed.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "TodoWrite",
+          "description": "Records and updates a structured todo list for the current task. Use it to plan multi-step work and to mark progress — replace the whole list each call, marking exactly one item in_progress while working.\n\nstatus is one of: pending, in_progress, completed. Keep the list current: mark a task completed as soon as it's done; don't batch completions.",
+          "parameters": {
+            "properties": {
+              "todos": {
+                "items": {
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "pending",
+                        "in_progress",
+                        "completed"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "content",
+                    "status"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "todos"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "TaskOutput",
+          "description": "Reads the output of a background task started by Bash (run_in_background) or Monitor. You can also Read the task's output-file path directly. Set block=true to wait for the task to finish first.\n\nProvide the task_id. With block=true the call waits until the task reaches a terminal state (up to timeout_ms) before returning its output.",
+          "parameters": {
+            "properties": {
+              "block": {
+                "description": "Wait until the task finishes before returning (default false).",
+                "type": "boolean"
+              },
+              "max_bytes": {
+                "description": "Max bytes of output to return from the tail (default 30000).",
+                "type": "integer"
+              },
+              "task_id": {
+                "description": "The task id (e.g. task_1).",
+                "type": "string"
+              },
+              "timeout_ms": {
+                "description": "Max wait when block=true (default 30000).",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "task_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "TaskStop",
+          "description": "Stops a running background task, killing its process tree. Pass a task_id, or omit it to stop all running tasks.\n\nProvide task_id to stop one task, or leave it empty to stop all running tasks.",
+          "parameters": {
+            "properties": {
+              "task_id": {
+                "description": "The id of the task to stop. Empty stops all running tasks.",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "TaskList",
+          "description": "Lists the background tasks started in this session with their status, exit code, and command.",
+          "parameters": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Monitor",
+          "description": "Starts a long-running streaming process in the background (e.g. tail -f, watch, a dev server, a polling loop) and returns immediately with a task id and output-file path. Use Read or TaskOutput to inspect it and TaskStop to end it.\n\nProvide a command that streams output over time. It always runs in the background; you are notified if it exits on its own.",
+          "parameters": {
+            "properties": {
+              "command": {
+                "description": "The streaming command to run.",
+                "type": "string"
+              },
+              "description": {
+                "description": "Short description of what is being monitored.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    ],
+    "max_tokens": 32768,
+    "stream": false
+  }
+}

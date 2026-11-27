@@ -1,0 +1,44 @@
+===== 盾关闭 =====
+[正常登录] 预期=应该允许 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'S3cret!'
+[密码栏永真] 预期=应该拦截 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' OR '1'='1'
+[注释掉密码] 预期=应该拦截 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' --' AND password = 'anything'
+[大写绕过尝试] 预期=应该拦截 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' oR 1=1'
+[AND 恒等式] 预期=应该拦截 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' AND 1=1'
+[URL编码绕过尝试] 预期=看正则是否覆盖 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' OR 1=1'
+[换行注释绕过] 预期=看正则是否覆盖 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x'
+--'
+[字符串恒等绕过] 预期=看正则是否覆盖 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' OR 'a'='a'
+
+===== 盾开启 =====
+[正常登录] 预期=应该允许 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'S3cret!'
+[密码栏永真] 预期=应该拦截 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' OR '1'='1'
+[注释掉密码] 预期=应该拦截 | 实际=拦截
+    SQL: SELECT * FROM users WHERE username = 'admin' --' AND password = 'anything'
+    [RASP ALERT] SQL Injection Attempt Detected: SELECT * FROM users WHERE username = 'admin' --' AND password = 'anything'
+[大写绕过尝试] 预期=应该拦截 | 实际=拦截
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' oR 1=1'
+    [RASP ALERT] SQL Injection Attempt Detected: SELECT * FROM users WHERE username = 'admin' AND password = 'x' oR 1=1'
+[AND 恒等式] 预期=应该拦截 | 实际=拦截
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' AND 1=1'
+    [RASP ALERT] SQL Injection Attempt Detected: SELECT * FROM users WHERE username = 'admin' AND password = 'x' AND 1=1'
+[URL编码绕过尝试] 预期=看正则是否覆盖 | 实际=拦截
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' OR 1=1'
+    [RASP ALERT] SQL Injection Attempt Detected: SELECT * FROM users WHERE username = 'admin' AND password = 'x' OR 1=1'
+[换行注释绕过] 预期=看正则是否覆盖 | 实际=拦截
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x'
+--'
+    [RASP ALERT] SQL Injection Attempt Detected: SELECT * FROM users WHERE username = 'admin' AND password = 'x'
+--'
+[字符串恒等绕过] 预期=看正则是否覆盖 | 实际=放行
+    SQL: SELECT * FROM users WHERE username = 'admin' AND password = 'x' OR 'a'='a'
+

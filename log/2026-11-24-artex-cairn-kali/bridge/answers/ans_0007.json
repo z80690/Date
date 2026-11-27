@@ -1,0 +1,13 @@
+{
+  "content": "作为执行者，领到的意图是直接读取授权靶场 http://127.0.0.1:18080/notes.txt 正文，判断是否构成信息泄露。用 WebFetch 读取该文件内容。严格仅回环地址。",
+  "tool_calls": [
+    {
+      "id": "call_fetch_notes",
+      "type": "function",
+      "function": {
+        "name": "WebFetch",
+        "arguments": "{\"url\":\"http://127.0.0.1:18080/notes.txt\"}"
+      }
+    }
+  ]
+}

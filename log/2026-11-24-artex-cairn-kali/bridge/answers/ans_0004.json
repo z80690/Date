@@ -1,0 +1,13 @@
+{
+  "content": "上一轮提的方向返回了 id 但 frontier 仍为空、facts 仍只有 origin，判断是该意图未锚定到已确认事实而未被派发。本轮按提示词要求，用 parent_ids 锚定到 origin 事实（id=3）重新提交，确保意图挂在已确认知识上可被 worker 领走。目标未达成，必须补方向。",
+  "tool_calls": [
+    {
+      "id": "call_intent_anchor",
+      "type": "function",
+      "function": {
+        "name": "add_intent",
+        "arguments": "{\"intents\":[{\"summary\":\"访问授权本地靶场 http://127.0.0.1:18080 首页并读取其链接指向的 /notes.txt 文件内容，作为事实记录页面与文件正文，判断是否存在信息泄露。严格仅访问 127.0.0.0/8 回环地址。\",\"parent_ids\":[3],\"priority\":9}]}"
+      }
+    }
+  ]
+}

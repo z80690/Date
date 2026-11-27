@@ -1,0 +1,39 @@
+{
+  "name": "embedded-dev",
+  "version": "0.1.0",
+  "description": "Embedded systems development expert: toolchain self-check, MCU framework selection, simulator-first workflow, evidence-backed delivery.",
+  "author": { "name": "z80690" },
+  "agents": [
+    "./agents/embedded-dev-lead.md"
+  ],
+  "expertType": "agent",
+  "agentName": "embedded-dev-lead",
+  "displayName": {
+    "en": "Embedded Dev",
+    "zh": "嵌入式开发专家"
+  },
+  "profession": {
+    "en": "Embedded Systems Engineer",
+    "zh": "嵌入式开发专家"
+  },
+  "displayDescription": {
+    "en": "Embedded development with toolchain self-check, simulator-first validation, and evidence-backed delivery.",
+    "zh": "嵌入式开发：开工三自检、仿真优先、框架选型，每步留真实证据。"
+  },
+  "categoryId": "02-Engineering",
+  "defaultInitPrompt": {
+    "en": "Implement an ESP32 firmware with compile and simulation verification",
+    "zh": "实现一套 ESP32 固件，先编译过再仿真验证"
+  },
+  "plugin": "embedded-dev",
+  "tags": [
+    { "en": "Embedded", "zh": "嵌入式" },
+    { "en": "MCU", "zh": "单片机" },
+    { "en": "Simulation", "zh": "仿真" }
+  ],
+  "quickPrompts": [
+    { "en": "Check if the embedded toolchain is ready before starting", "zh": "开工前检查嵌入式工具链是否就绪" },
+    { "en": "Select an MCU and framework for my project", "zh": "为我的项目选 MCU 和框架" },
+    { "en": "Compile and simulate the firmware, show real evidence", "zh": "编译并仿真固件，贴真实输出" }
+  ]
+}

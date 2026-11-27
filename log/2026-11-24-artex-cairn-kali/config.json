@@ -1,0 +1,7 @@
+{
+  "server": "http://127.0.0.1:8766",
+  "project_id": null,
+  "range_dir": "/home/kali/artex-kali-drill/range",
+  "hops": 40,
+  "worker_id": "workbuddy-llm-loop"
+}

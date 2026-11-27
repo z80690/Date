@@ -1,0 +1,939 @@
+{
+  "seq": "0005",
+  "ts": "2026-11-24 03:30:39",
+  "path": "/chat/completions",
+  "stream": false,
+  "model_requested": "workbuddy-inloop",
+  "messages_summary": "[system] 你是一个网络安全平台授权渗透测试系统的\"执行者\"(work agent)。你领到【一条意图】(一句话探索方向)，唯一职责：**完成这一条意图、把发现写回知识图谱、然后停止返回。**\n\n**边界（红线）**：\n1. **只做你领到的这一条意图**。**探本意图时若瞥见本意图之外值得深挖的线索**（报错泄露的路径、可能与其它资产联动的点、疑似另一条利用链的入口），**在 fact 的 summary 里点一句交给规划者**。\n2. 初次受阻（payload 被过滤 / 404 / 注入无回显）不代表已探透——把本意图的所有绕过手段走完再输出结论；\n3. 只在授权范围内操作。系统提示顶部若附【操作约束】，那是最高优先级红线：每条命令/探测执行前先自检，违反即不做（哪怕它落在你领到的意图里）。\n\n**边发现边写回**（写进图才算数，脑子/文字里的不算；每得一个结果立刻写，别攒到最后被步数耗尽丢掉）。三种写回，别串图：\n- **新资产/资源 → insert_assets（资产图）**：子域 / service / endpoint / 指纹 / 凭据 等一切资产【本身】。**这里只登记资产；探索结论/判断不写这里，用 record_fact。**\n- **探索结论/事实 → record_fact（探索图，传 intent_id）**：都用它。**多个观察汇总成【一条】事实**（summa\n[user] <system-reminder>\n# currentDate\nToday's date is 2026-11-24.\n</system-reminder>\n[user] \n\n【全局探索态势（只读，帮你把自己这条意图放进大局看）】：\n下面是整个任务当前的探索概况。用途有两个：一是知道别人已发现什么，别重复；二是让你探自己这条意图时，能联想到它和全局的关系。\n**发散是好事**：探本意图时尽管深想、多联想。唯一的界线是——别真的动手去执行别的意图（那是别的 worker 的事，由规划者调度）。但凡你联想到有价值的线索（跨资产的联动、疑似另一条利用链的入口、全局层面的可疑点），**务必写进 fact 交规划者**——这是你重要的产出，不是可有可无。宁可多报一条让规划者判断，也别自己咽下去。\n{\"done_intents_total\":0,\"facts\":1,\"finding_list\":[],\"findings_total\":0,\"frontier_open\":0,\"goals\":[{\"id\":4,\"state\":\"open\",\"text\":\"确认授权本地靶场 127.0.0.1:18080 是否存在信息泄露，并给出可核验的证据\"}],\"hints\":[],\"open_intents\":[],\"recent_done_intents\":[],\"recent_facts\":[{\"id\":3,\"state\":\"origin\",\"summary\":\"任务起点：本地回环靶场 127.0.0.1:18080 授权安全评估；目标：对授权本地靶场 127.0.0.1:",
+  "full_request": {
+    "model": "workbuddy-inloop",
+    "messages": [
+      {
+        "role": "system",
+        "content": "你是一个网络安全平台授权渗透测试系统的\"执行者\"(work agent)。你领到【一条意图】(一句话探索方向)，唯一职责：**完成这一条意图、把发现写回知识图谱、然后停止返回。**\n\n**边界（红线）**：\n1. **只做你领到的这一条意图**。**探本意图时若瞥见本意图之外值得深挖的线索**（报错泄露的路径、可能与其它资产联动的点、疑似另一条利用链的入口），**在 fact 的 summary 里点一句交给规划者**。\n2. 初次受阻（payload 被过滤 / 404 / 注入无回显）不代表已探透——把本意图的所有绕过手段走完再输出结论；\n3. 只在授权范围内操作。系统提示顶部若附【操作约束】，那是最高优先级红线：每条命令/探测执行前先自检，违反即不做（哪怕它落在你领到的意图里）。\n\n**边发现边写回**（写进图才算数，脑子/文字里的不算；每得一个结果立刻写，别攒到最后被步数耗尽丢掉）。三种写回，别串图：\n- **新资产/资源 → insert_assets（资产图）**：子域 / service / endpoint / 指纹 / 凭据 等一切资产【本身】。**这里只登记资产；探索结论/判断不写这里，用 record_fact。**\n- **探索结论/事实 → record_fact（探索图，传 intent_id）**：都用它。**多个观察汇总成【一条】事实**（summary 一句总结 + detail写对总结的拓展，依靠真实的执行过程），不要一个属性一条、一意图通常只一条，拆碎会让图谱无限膨胀——**默认就写一条，能并进 detail 的都并进去**；仅当确有【彼此完全独立、无法归并】的结论时才用 facts 数组分条，这是极少数例外，不是常规。**只写增量**：只记这次【新得到】的，别把已有事实换措辞重记（只印证已有、无新增就不必记）。**只写真实看到的**：给 evidence（一行：命令+最能证明的一两行输出，简洁，细节在 detail）、标 confidence（observed=直接看到 / inferred=据现象推断）。\n- **确认漏洞 → report_finding（探索图，含 PoC，传 intent_id）**：**只有你本次真实触发过、拿到可复现证据（请求/响应或命令输出）才用**。严禁把\"版本/指纹匹配到 CVE\"\"参数看起来可注入\"\"外部漏洞库/更新日志/代码 diff 推断\"当已确认，也不要用查 CVE 库或对比补丁版本替代实际触发。触发不了但有嫌疑 → 用 record_fact 记一条 inferred 事实（嫌疑点+为何未触发）交规划者，别硬记成 finding。\n\n\n完成本意图后用一句话总结你做了什么、写回了哪些事实。\n\n**中间产物输出规约**：脚本、payload、抓到的响应体、临时数据等一切中间产物，**一律写到本次意图的专属工作目录 D:\\refs\\ARTEX-release\\artex-0.3.29-windows-amd64\\data\\tasks\\2\\i5**（已自动建好，直接用相对路径写在这里即可，无需再手动建目录）——**不要写 /tmp、不要用其它绝对路径**。\n\n【操作约束（最高优先级，凌驾于下方一切探索/拓面启发式；每生成一条意图、每执行一个动作前都必须先自检是否违反，违反即不得进行）】：\n允许的操作：\n- 仅允许测试 127.0.0.1:18080 本地靶场服务\n禁止的操作：\n- 严格仅限 127.0.0.0/8 回环地址，禁止访问任何公网地址\n（发现约束之外的新目标/新端口/新主机，不等于获得授权：除非它落在上述允许范围内，否则记为 out-of-scope 事实并跳过，不得为其派生意图或执行动作。）\n\n【你领到的意图（本次唯一任务：只做这一条、只产生事实、做完即停）】：\n{\"summary\": \"访问授权本地靶场 http://127.0.0.1:18080 首页，读取页面正文并跟进其上链接（含 /notes.txt），收集页面与文件内容作为事实，判断是否存在信息泄露。严格仅访问 127.0.0.0/8 回环地址。\"}\n意图 id: 5（写回 record_fact / report_finding 时传它）\n\n开始执行上面这条意图：只做它、只产生事实、assets、finding、做完即停。"
+      },
+      {
+        "role": "user",
+        "content": "<system-reminder>\n# currentDate\nToday's date is 2026-11-24.\n</system-reminder>"
+      },
+      {
+        "role": "user",
+        "content": "\n\n【全局探索态势（只读，帮你把自己这条意图放进大局看）】：\n下面是整个任务当前的探索概况。用途有两个：一是知道别人已发现什么，别重复；二是让你探自己这条意图时，能联想到它和全局的关系。\n**发散是好事**：探本意图时尽管深想、多联想。唯一的界线是——别真的动手去执行别的意图（那是别的 worker 的事，由规划者调度）。但凡你联想到有价值的线索（跨资产的联动、疑似另一条利用链的入口、全局层面的可疑点），**务必写进 fact 交规划者**——这是你重要的产出，不是可有可无。宁可多报一条让规划者判断，也别自己咽下去。\n{\"done_intents_total\":0,\"facts\":1,\"finding_list\":[],\"findings_total\":0,\"frontier_open\":0,\"goals\":[{\"id\":4,\"state\":\"open\",\"text\":\"确认授权本地靶场 127.0.0.1:18080 是否存在信息泄露，并给出可核验的证据\"}],\"hints\":[],\"open_intents\":[],\"recent_done_intents\":[],\"recent_facts\":[{\"id\":3,\"state\":\"origin\",\"summary\":\"任务起点：本地回环靶场 127.0.0.1:18080 授权安全评估；目标：对授权本地靶场 127.0.0.1:18080 做安全评估,确认是否存在信息泄露;严格仅限 127.0.0.0/8 回环地址\"}],\"related_tasks\":[],\"running_intents\":[{\"id\":5,\"parents\":[3],\"state\":\"running\",\"summary\":\"访问授权本地靶场 http://127.0.0.1:18080 首页，读取页面正文并跟进其上链接（含 /notes.txt），收集页面与文件内容作为事实，判断是否存在信息泄露。严格仅访问 127.0.0.0/8 回环地址。\"}],\"task\":{\"description\":\"本地回环靶场 127.0.0.1:18080 授权安全评估\",\"goal\":\"对授权本地靶场 127.0.0.1:18080 做安全评估,确认是否存在信息泄露;严格仅限 127.0.0.0/8 回环地址\"}}"
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "list_findings",
+          "description": "列本任务及直接关联任务的【确认漏洞】(紧凑：id+task_id+intent_id+vulnclass+severity+摘要+状态)。关联任务条目带 source_task_id/inherited=true 且只读。这里只含漏洞；普通探索事实用 list_facts，详情用 node_detail(id)。",
+          "parameters": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "report_finding",
+          "description": "记录确认的漏洞，用 evidence 提供命令输出、日志等可验证证据。任务上下文传当前 intent_id。返回的 finding_id 是独立漏洞记录 ID，finding_node_id 是探索节点 ID（第一行保留该节点编号）。",
+          "parameters": {
+            "properties": {
+              "asset_ids": {
+                "description": "受影响资产 id",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "evidence": {
+                "description": "证据/PoC 文本",
+                "type": "string"
+              },
+              "intent_id": {
+                "description": "当前任务的意图 id",
+                "type": "integer"
+              },
+              "name": {
+                "description": "漏洞名称",
+                "type": "string"
+              },
+              "severity": {
+                "description": "critical|high|medium|low",
+                "type": "string"
+              },
+              "summary": {
+                "description": "发现摘要",
+                "type": "string"
+              },
+              "vulnclass": {
+                "description": "漏洞类别",
+                "type": "string"
+              }
+            },
+            "required": [
+              "vulnclass",
+              "severity",
+              "summary"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "record_fact",
+          "description": "把探索【事实/结论】写入探索图，连到产生它的意图（intent_id）。用于记录探索结果——包括指纹/枚举等【正向结论】，和'端口关闭'/'参数不可注入'/'未发现登录入口'等【否定结论】。\n⚠️一次探索的多个观察要【汇总成一条事实】，不要拆成多条，可以合并成一条事实的就尽量用一条事实表示：summary=对本次结论的总结性一句话，detail=相关细节（可含多个具体项）。例：指纹意图→一条事实 {summary:'识别了 X 站点的技术栈与响应特征', detail:'nginx 1.25 / Vue3 / 200 / title=.. / body_len=..'}，而不是状态码、指纹、标题各记一条。一条意图通常只产出一条事实，拆太碎会让图谱无限膨胀。\n★facts 数组用于一次写多条【彼此不同】的结论（每条可省略 intent_id，默认用顶层 intent_id）。返回 ids 数组，与 facts 等长同序。\n⚠️只写你在工具输出里【真实看到】的结论，不要脑补。evidence 与 confidence 用来防止不准确的结论污染图谱：\n  · evidence=支撑本结论的【一行】关键证据（命令+最能证明的那一两行输出），**务必简洁**——细节已在 detail，这里不要再粘大段输出。\n  · confidence=observed（输出里直接看到）| inferred（据现象推断）。\n  · **否定类结论**（不可注入/端口关闭/未发现入口等）只写\"观察 + 试探性读法\"——陈述你实际看到什么，方向是否放弃由规划者综合全局定；务必给 evidence，手段没穷尽或证据弱（含只探一次、看起来像）标 inferred，确已穷尽且直接看到才标 observed。",
+          "parameters": {
+            "properties": {
+              "asset_ids": {
+                "description": "相关资产 id（可选，0/1/多个）：该事实涉及哪些资产",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "confidence": {
+                "description": "observed（输出里直接看到）| inferred（据现象推断）。否定结论务必如实标注。",
+                "type": "string"
+              },
+              "detail": {
+                "description": "本事实的相关细节：把这次探索的多个观察事实都写进这里",
+                "type": "string"
+              },
+              "evidence": {
+                "description": "【一行】关键证据：命令 + 最能证明结论的那一两行输出。务必简洁，不要粘大段输出（细节放 detail）。",
+                "type": "string"
+              },
+              "facts": {
+                "description": "【有多条不同结论时用】事实数组，元素字段同下方顶层字段（summary/detail/evidence/confidence/intent_id/asset_ids）；省略 intent_id 则用顶层 intent_id。返回 ids 与本数组等长、同序。",
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "intent_id": {
+                "description": "产生本事实的意图 id（你领到的意图；批量时作为各条默认）",
+                "type": "integer"
+              },
+              "summary": {
+                "description": "对本次探索结论的【总结性一句话】（是对 detail 的概括）",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "insert_assets",
+          "description": "批量登记新发现的资产，一次可混合多种类型（type 见枚举）。\n各类型必填字段：root_domain→domain；ip→ip（须为 IPv4/IPv6，非主机名）；subdomain→domain；app→app_name；service(HTTP)→url；service(非HTTP)→service_name+port（ip/domain 至少填一个）；endpoint→url+method。其余字段含义见各自说明。\nauth/technologies/params 为追加合并(append)，不覆盖原值。\n返回：{results:[{index,id,type}], errors:[{index,error}]}",
+          "parameters": {
+            "properties": {
+              "assets": {
+                "description": "资产数组，每个元素对应一条资产记录",
+                "items": {
+                  "properties": {
+                    "app_icp": {
+                      "description": "应用 ICP 备案（可选）",
+                      "type": "string"
+                    },
+                    "app_name": {
+                      "description": "应用名称（app 类型必填）",
+                      "type": "string"
+                    },
+                    "auth": {
+                      "description": "发现的认证信息列表，每条含 type/username/password 等字段（可选，追加不覆盖）",
+                      "items": {
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "bound_domains": {
+                      "description": "该 IP 绑定的域名列表（ip 类型可选）",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "bundle_id": {
+                      "description": "Bundle ID（app 类型可选）",
+                      "type": "string"
+                    },
+                    "category": {
+                      "description": "应用分类（可选）",
+                      "type": "string"
+                    },
+                    "company_id": {
+                      "description": "归属企业 id（app 类型可选；app 无法靠 scope 自动归因，需显式指定。id 由 add_company_scope 返回）",
+                      "type": "integer"
+                    },
+                    "content_length": {
+                      "description": "HTTP 响应体字节数（可选）",
+                      "type": "integer"
+                    },
+                    "description": {
+                      "description": "应用描述（可选）",
+                      "type": "string"
+                    },
+                    "domain": {
+                      "description": "根域名或子域名（root_domain/subdomain 必填）",
+                      "type": "string"
+                    },
+                    "favicon_mmh3": {
+                      "description": "favicon MMH3 哈希（可选）",
+                      "type": "string"
+                    },
+                    "icp": {
+                      "description": "ICP 备案号（可选）",
+                      "type": "string"
+                    },
+                    "ip": {
+                      "description": "IP 地址，必须是 IPv4/IPv6 地址，不能填主机名（主机名请用 type=subdomain 的 domain 字段）；ip 类型必填；service/endpoint 类型可填，用于关联 IP",
+                      "type": "string"
+                    },
+                    "method": {
+                      "description": "HTTP 方法：GET/POST/PUT/PATCH/DELETE 等（endpoint 必填）",
+                      "type": "string"
+                    },
+                    "open_ports": {
+                      "description": "开放端口列表（ip 类型可选）",
+                      "items": {
+                        "properties": {
+                          "port": {
+                            "description": "端口号",
+                            "type": "integer"
+                          },
+                          "service": {
+                            "description": "服务名称，如 http/ssh/mysql 等（可选）",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "port"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "page_title": {
+                      "description": "页面 <title> 内容（可选）",
+                      "type": "string"
+                    },
+                    "params": {
+                      "description": "请求参数列表，每条含 location(query/body/header/path)/name/value/type（可选，追加不覆盖）",
+                      "items": {
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "port": {
+                      "description": "端口号（service 非 HTTP 时必填）",
+                      "type": "integer"
+                    },
+                    "record_type": {
+                      "description": "DNS 解析类型：A/AAAA/CNAME/MX 等（subdomain 可选）",
+                      "type": "string"
+                    },
+                    "record_value": {
+                      "description": "DNS 解析值列表（subdomain 可选，如 [\"1.2.3.4\",\"2.3.4.5\"]）",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "service_name": {
+                      "description": "服务名称，如 ssh/mysql/redis（service 非 HTTP 时必填）",
+                      "type": "string"
+                    },
+                    "status_code": {
+                      "description": "HTTP 响应状态码，如 200/301/403/404（可选）",
+                      "type": "integer"
+                    },
+                    "technologies": {
+                      "description": "指纹/技术栈列表，如 [\"Nginx\",\"Vue\",\"Bootstrap\"]（可选）",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "type": {
+                      "description": "资产类型",
+                      "enum": [
+                        "root_domain",
+                        "ip",
+                        "subdomain",
+                        "app",
+                        "service",
+                        "endpoint"
+                      ],
+                      "type": "string"
+                    },
+                    "url": {
+                      "description": "完整 URL，含协议和端口（HTTP 服务必填；service_type 自动设为 http）",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "assets"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "list_assets",
+          "description": "查询资产库：DSL 表达式搜索，或按 id/ids 直取；支持分页。默认只返回本任务及直接关联任务的资产；用户开启「共享全局资产」后可查询全局资产。\nDSL：field=value 模糊(ILIKE) | field==value 精确 | field!=value 排除 | 数字字段支持 > >= < <= | 裸词=全文模糊；AND/OR 组合(AND 优先级高)，可用括号分组。资产类型用独立 type 参数，不写进 DSL。\n未传 id/ids 时 dsl 必须非空（不允许无条件全量查询）。\n可用字段：domain(根/子/服务域名)、root_domain、ip、url、page_title、icp、service_name、app_name、method(如 GET/POST)、service_type(http|other)、record_type(如 A/CNAME)、technology(数组，=模糊 ==精确)、port/status_code/company_id(整数)。\n示例：status_code>=400 AND technology=shiro ；(port==80 OR port==443) AND technology=nginx",
+          "parameters": {
+            "properties": {
+              "dsl": {
+                "description": "DSL 查询表达式（语法/字段见工具描述）。未传 id/ids 时必须非空。",
+                "type": "string"
+              },
+              "id": {
+                "description": "直接按单个资产 id 取（可选，与 dsl/type 互斥）",
+                "type": "integer"
+              },
+              "ids": {
+                "description": "直接按多个资产 id 取（可选，与 dsl/type 互斥）",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "limit": {
+                "description": "返回上限，默认 10（可选）",
+                "type": "integer"
+              },
+              "offset": {
+                "description": "分页偏移，默认 0（可选）",
+                "type": "integer"
+              },
+              "type": {
+                "description": "资产类型过滤：root_domain|ip|subdomain|app|service|endpoint（独立字段，可与 dsl 叠加；单独 type 不足以查询，仍需 dsl）",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "search_all_worker_traces",
+          "description": "【通常不推荐使用，因为系统中已经给了大部分信息了】在【本任务其他 work 的执行过程】里按关键字(q)检索——用于找回某个 worker 见过、却没写进 fact 的东西（某路径/token/报错等）。已自动排除你自己这条意图的步骤（那些本就在你上下文里）。只返回命中步骤的摘要(summary≤100字)，每条带 intent_id；据此再用 get_worker_trace(intent_id, step_ids=[...]) 取完整内容。",
+          "parameters": {
+            "properties": {
+              "limit": {
+                "description": "返回上限，默认 100（可选）",
+                "type": "integer"
+              },
+              "q": {
+                "description": "关键字（在所有 work 步骤的摘要+完整输出里搜）",
+                "type": "string"
+              }
+            },
+            "required": [
+              "q"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "get_worker_trace",
+          "description": "查看某条意图(work)的【执行过程】（区别于 get_worker_output 只给最终结论）。三种用法：\n① 只传 intent_id → 返回该 work 每一步的摘要流（summary≤100字，含 step_id；只是动作轮廓，不含完整输出）；\n② intent_id + q → 只返回命中关键字的步骤摘要（在摘要和完整输出里都搜；仍只给 summary，要看内容用③）；\n③ intent_id + step_ids → 返回这些步骤的完整内容(detail)；一次最多取 5 个，超出只返回前 5 个并在 notice/omitted_step_ids 里告知未取的。\n典型流程：先①/②定位可疑步骤的 step_id，再用③取其完整输出。不含思考(thinking)步骤。支持直接关联任务的历史 trace；其结果带 source_task_id/inherited=true 且只读。",
+          "parameters": {
+            "properties": {
+              "intent_id": {
+                "description": "意图 id（= work 句柄）",
+                "type": "integer"
+              },
+              "limit": {
+                "description": "摘要流/检索的返回上限（可选）",
+                "type": "integer"
+              },
+              "q": {
+                "description": "关键字：只返回摘要/完整输出命中它的步骤（可选；与 step_ids 互斥）",
+                "type": "string"
+              },
+              "step_ids": {
+                "description": "要取完整内容的 step_id（来自①/②返回；一次最多取 5 个，多传只返回前 5 个，其余在 omitted_step_ids 里列出）",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "intent_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "node_detail",
+          "description": "按 id 取本任务或直接关联任务的【探索图节点】完整内容。继承节点带 source_task_id/inherited=true 且只读。仅限 list_facts/list_findings/graph_overview 返回的探索节点 id；资产请用 list_assets/asset_neighbors。",
+          "parameters": {
+            "properties": {
+              "id": {
+                "description": "探索图节点 id(非资产 id)",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Read",
+          "description": "Reads a file from the local filesystem and returns its contents with line numbers. Use offset/limit for large files. Always read a file before editing it.\n\nfile_path may be absolute or relative to the working directory. Output lines are prefixed with their 1-based line number.",
+          "parameters": {
+            "properties": {
+              "file_path": {
+                "description": "Path to the file to read.",
+                "type": "string"
+              },
+              "limit": {
+                "description": "Max lines to read (default 2000).",
+                "type": "integer"
+              },
+              "offset": {
+                "description": "1-based line to start from.",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "file_path"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Write",
+          "description": "Writes a file to the local filesystem, creating parent directories and overwriting any existing file. Prefer Edit for modifying existing files.\n\nProvide the complete file contents — Write replaces the whole file.",
+          "parameters": {
+            "properties": {
+              "content": {
+                "description": "Full contents to write.",
+                "type": "string"
+              },
+              "file_path": {
+                "description": "Path of the file to write.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "file_path",
+              "content"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Edit",
+          "description": "Performs an exact string replacement in a file. old_string must match exactly once unless replace_all is set. Read the file first so old_string matches precisely.\n\nold_string must match the file exactly (whitespace included) and be unique unless replace_all is true. new_string must differ from old_string.",
+          "parameters": {
+            "properties": {
+              "file_path": {
+                "description": "Path of the file to edit.",
+                "type": "string"
+              },
+              "new_string": {
+                "description": "Replacement text.",
+                "type": "string"
+              },
+              "old_string": {
+                "description": "Exact text to replace.",
+                "type": "string"
+              },
+              "replace_all": {
+                "description": "Replace all occurrences.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "file_path",
+              "old_string",
+              "new_string"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "LS",
+          "description": "Lists the files and subdirectories of a directory (non-recursive). Use Glob to match by pattern across depth, or Grep to search contents.\n\npath may be absolute or relative to the working directory; defaults to the working directory.",
+          "parameters": {
+            "properties": {
+              "path": {
+                "description": "Directory to list (default working directory).",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Bash",
+          "description": "Executes a shell command in the working directory and returns combined stdout and stderr. Use for running tests, builds, package managers, and git. Prefer the dedicated file tools for file work. Set run_in_background to return immediately and read the output later.\n\n需要【交互输入】的程序（msfconsole / ssh 交互登录 / mysql、psql、python 等 REPL / 密码或 yes/no 提示 / nc 反弹 shell）不要用 Bash（它没有 stdin、会卡住），改用 shell_open 开交互会话（用完 shell_close）。一次性、非交互命令仍用 Bash。\n\nThe command runs through the shell, so you are not limited to one command: chain steps with && or ;, use pipes, and pass multi-line scripts or heredocs. For anything beyond a simple one-liner — loops, parsing, string/JSON handling, HTTP logic, computation — prefer writing a short script (Python, Node, shell, etc.) and executing it (e.g. via a heredoc or by writing a file then running it) rather than forcing everything into a single command. A timeout (default 120s, max 600s) applies. Avoid commands needing interactive input.",
+          "parameters": {
+            "properties": {
+              "command": {
+                "description": "The shell command to execute.",
+                "type": "string"
+              },
+              "run_in_background": {
+                "description": "Run in the background and return immediately; read its output later with TaskOutput or Read, and you are notified when it completes. A foreground command that exceeds its timeout is also moved to the background automatically.",
+                "type": "boolean"
+              },
+              "timeout_ms": {
+                "description": "Timeout in ms (default 120000, max 600000).",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "sleep",
+          "description": "Waits for N seconds, then returns. Use to let a backgrounded command make progress before reading its partial output with TaskOutput. Interrupted immediately if the run is paused or stopped.",
+          "parameters": {
+            "properties": {
+              "seconds": {
+                "description": "Seconds to wait, 1-3600.",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "seconds"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Skill",
+          "description": "Invokes a named skill — a reusable procedure — and returns its step-by-step instructions for you to follow. Use a skill when the task matches one of the available skills below.\n\nAvailable skills:\n- api-recon: 收集网站API接口时调用该skill。",
+          "parameters": {
+            "properties": {
+              "args": {
+                "description": "Optional additional context for the skill.",
+                "type": "string"
+              },
+              "name": {
+                "description": "The skill to invoke.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "get_finding_traffic",
+          "description": "读取漏洞已绑定的真实流量证据，不依赖捕获开关。finding_id 使用 report_finding JSON 返回的独立漏洞记录 ID（不是第一行的探索节点 ID）。先不传 binding_id 获取清单及 version；空清单是正常情况，TCP 等非 HTTP 漏洞或未采集时仍可依据文字/命令证据编写报告，不强制绑定。有绑定时按 binding_id、side(request/response)、offset 分段读取正文。写报告时将读取的 version 作为 evidence_version 传给 update_finding_report，后者 finding_id 仍使用探索节点 ID。",
+          "parameters": {
+            "properties": {
+              "binding_id": {
+                "description": "清单里的绑定 ID，省略则返回清单",
+                "type": "string"
+              },
+              "finding_id": {
+                "description": "独立漏洞记录 ID",
+                "type": "string"
+              },
+              "length": {
+                "type": "integer"
+              },
+              "offset": {
+                "type": "integer"
+              },
+              "side": {
+                "description": "request 或 response，默认 response",
+                "type": "string"
+              }
+            },
+            "required": [
+              "finding_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_open",
+          "description": "开一个持久 PTY 交互会话运行【交互式/需真 TTY 的程序】(msfconsole/ssh 交互/mysql、python 等 REPL/密码提示/nc 会话)，返回 session_id。**一次性、非交互命令用 Bash**。mode: interactive=阻塞到首个提示符/静默再返回启动输出; hands-free(默认)=立即返回, 之后用 shell_read 轮询; dispatch=立即返回, 完成时发通知; monitor=立即返回, 后台盯 watch 关键词命中即发通知(会话不结束, 仅本次运行内存活)。可设 prompt_regex(如 'msf6? >\\s*$')精确判定完成。用完务必 shell_close。",
+          "parameters": {
+            "properties": {
+              "cols": {
+                "description": "可选：PTY 列数(默认 80)",
+                "type": "integer"
+              },
+              "command": {
+                "description": "要运行的交互程序，如 'msfconsole -q' / 'ssh user@host' / 'python3'",
+                "type": "string"
+              },
+              "mode": {
+                "description": "interactive | hands-free(默认) | dispatch | monitor",
+                "type": "string"
+              },
+              "prompt_regex": {
+                "description": "可选：命令完成判定的提示符正则(匹配输出末尾)",
+                "type": "string"
+              },
+              "quiet_ms": {
+                "description": "可选：静默多少毫秒算完成(默认 8000)",
+                "type": "integer"
+              },
+              "rows": {
+                "description": "可选：PTY 行数(默认 24)",
+                "type": "integer"
+              },
+              "startup_grace_ms": {
+                "description": "可选：启动宽限毫秒，此期间不触发静默判定(默认 15000)",
+                "type": "integer"
+              },
+              "watch": {
+                "description": "monitor 模式必填：要盯的关键词/正则数组，输出里命中任一即发通知(每个只报一次)",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_send",
+          "description": "向一个交互会话发送输入：text/submit/keys/hex/paste 可组合，按出现顺序发送(各参数含义见字段)。wait=true(默认)等命令完成并带回增量输出。",
+          "parameters": {
+            "properties": {
+              "hex": {
+                "description": "原始字节的十六进制, 如 ['0x1b','0x5b','0x41']",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "keys": {
+                "description": "具名键: ctrl+c/ctrl+d/tab/enter/esc/up/down/left/right/...",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "paste": {
+                "description": "多行粘贴(bracketed paste, 不触发逐行执行)",
+                "type": "string"
+              },
+              "prompt_regex": {
+                "description": "可选：覆盖会话默认的完成判定提示符",
+                "type": "string"
+              },
+              "quiet_ms": {
+                "description": "可选：静默判定阈值毫秒(默认 8000)",
+                "type": "integer"
+              },
+              "session_id": {
+                "description": "会话 id(shell_open 返回)",
+                "type": "string"
+              },
+              "submit": {
+                "description": "是否在文本后追加回车执行",
+                "type": "boolean"
+              },
+              "text": {
+                "description": "要输入的文本(不自动回车)",
+                "type": "string"
+              },
+              "timeout_ms": {
+                "description": "可选：wait 的硬超时毫秒(默认 120000)",
+                "type": "integer"
+              },
+              "wait": {
+                "description": "是否同步等到命令完成(默认 true)",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "session_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_read",
+          "description": "读一个交互会话的输出(不发输入)。view=stream(默认)增量原始流(流式首选,续读/可 drain 取全量); view=screen 整屏 vt 快照(适合 vim/htop 等全屏程序)。",
+          "parameters": {
+            "properties": {
+              "drain": {
+                "description": "stream: true=返回自上次以来全部原始流(忽略上限)",
+                "type": "boolean"
+              },
+              "max_bytes": {
+                "description": "stream: 最多返回字节(默认 8192)",
+                "type": "integer"
+              },
+              "max_lines": {
+                "description": "stream: 最多返回行数(默认 200)",
+                "type": "integer"
+              },
+              "session_id": {
+                "description": "会话 id",
+                "type": "string"
+              },
+              "since_cursor": {
+                "description": "stream: 从该游标之后读; 不传则用会话内部游标续读",
+                "type": "integer"
+              },
+              "view": {
+                "description": "stream(默认) | screen",
+                "type": "string"
+              }
+            },
+            "required": [
+              "session_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_close",
+          "description": "关闭一个交互会话(杀掉进程、释放 PTY)。",
+          "parameters": {
+            "properties": {
+              "session_id": {
+                "description": "会话 id",
+                "type": "string"
+              }
+            },
+            "required": [
+              "session_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "shell_list",
+          "description": "列出当前所有交互会话及状态。",
+          "parameters": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "WebFetch",
+          "description": "Fetches an HTTP(S) HTML page, documentation page, or API response and returns it as Markdown. Do not use this tool for static assets, including JavaScript, CSS, source maps, images, fonts, audio, or video—even if their URLs are found in a fetched page or explicitly requested. Fetch the owning page instead. Set `extract=true` to list comments, scripts, stylesheets, endpoints, forms, links, and meta tags. Listed asset URLs are for inspection only and must not be fetched. Large responses may be truncated. This makes an external network request.",
+          "parameters": {
+            "properties": {
+              "extract": {
+                "description": "When true, append a RECON section preserving HTML comments, <script src>, inline-script endpoints, forms/inputs (including hidden), links and meta tags. Default false.",
+                "type": "boolean"
+              },
+              "url": {
+                "description": "The absolute http(s) URL to fetch. JS/CSS/static-asset suffix URLs are not allowed.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "TodoWrite",
+          "description": "Records and updates a structured todo list for the current task. Use it to plan multi-step work and to mark progress — replace the whole list each call, marking exactly one item in_progress while working.\n\nstatus is one of: pending, in_progress, completed. Keep the list current: mark a task completed as soon as it's done; don't batch completions.",
+          "parameters": {
+            "properties": {
+              "todos": {
+                "items": {
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "pending",
+                        "in_progress",
+                        "completed"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "content",
+                    "status"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "todos"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "TaskOutput",
+          "description": "Reads the output of a background task started by Bash (run_in_background) or Monitor. You can also Read the task's output-file path directly. Set block=true to wait for the task to finish first.\n\nProvide the task_id. With block=true the call waits until the task reaches a terminal state (up to timeout_ms) before returning its output.",
+          "parameters": {
+            "properties": {
+              "block": {
+                "description": "Wait until the task finishes before returning (default false).",
+                "type": "boolean"
+              },
+              "max_bytes": {
+                "description": "Max bytes of output to return from the tail (default 30000).",
+                "type": "integer"
+              },
+              "task_id": {
+                "description": "The task id (e.g. task_1).",
+                "type": "string"
+              },
+              "timeout_ms": {
+                "description": "Max wait when block=true (default 30000).",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "task_id"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "TaskStop",
+          "description": "Stops a running background task, killing its process tree. Pass a task_id, or omit it to stop all running tasks.\n\nProvide task_id to stop one task, or leave it empty to stop all running tasks.",
+          "parameters": {
+            "properties": {
+              "task_id": {
+                "description": "The id of the task to stop. Empty stops all running tasks.",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "TaskList",
+          "description": "Lists the background tasks started in this session with their status, exit code, and command.",
+          "parameters": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "Monitor",
+          "description": "Starts a long-running streaming process in the background (e.g. tail -f, watch, a dev server, a polling loop) and returns immediately with a task id and output-file path. Use Read or TaskOutput to inspect it and TaskStop to end it.\n\nProvide a command that streams output over time. It always runs in the background; you are notified if it exits on its own.",
+          "parameters": {
+            "properties": {
+              "command": {
+                "description": "The streaming command to run.",
+                "type": "string"
+              },
+              "description": {
+                "description": "Short description of what is being monitored.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    ],
+    "max_tokens": 32768,
+    "stream": false
+  }
+}

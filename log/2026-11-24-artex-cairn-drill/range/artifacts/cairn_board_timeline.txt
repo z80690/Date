@@ -1,0 +1,79 @@
+[2026-11-24 01:31:21] PROJECT CREATED
+  origin: 本地回环靶场 attacker-127.0.0.1 -> jump1-127.0.0.2:9001 -> jump2-127.0.0.3:9002 -> victim-127.0.0.4:8080
+  goal: 复现凭证外带并擦除痕迹, 全部动作写回黑板并产出可核对证据
+
+[2026-11-24 01:31:21] HINT by case-research
+  真实案例-韩国金融: CrowdStrike 报中国语系行为体攻击韩国银行, 贷款查询服务+员工移动系统, 约67000人数据泄露 (FBI 2026-11-13 FLASH)
+
+[2026-11-24 01:31:21] HINT by case-research
+  真实案例-供应链: Storm-0940 借 ConnectWise Cloud Backup 供应链, 用 ARTEX 尝试登录 2250+ 租户, 多数未成功
+
+[2026-11-24 01:31:21] HINT by case-research
+  真实案例-间谍: VAPOR PANDA 用 ARTEX 打 200+ 组织/14国(外交部/制药/半导体/国防/核), 警戒 4 小时级
+
+[2026-11-24 01:31:21] HINT by case-research
+  真实案例-Amazon诱捕: MadPot 假 LLM API 10/03-11/05 收到 agent 上传的完整作战记忆, 证实 shared memory 架构
+
+[2026-11-24 01:31:21] HINT by case-research
+  真实武器库关键词: 目录穿越CWE-22 / 默认口令 / SSRF云元数据 / XXE / alg:none JWT / Kerberoasting / 凭证外带 / 日志擦除
+
+[2026-11-24 01:31:21] HINT by case-research
+  ARTEX架构词: planner+worker+verification+compression 四类agent, 持久化 knowledge graph 作共享记忆(共享大脑), Go+Next.js+PostgreSQL
+
+[2026-11-24 01:31:21] HINT by case-research
+  速度指标: 初始目标到特权访问最短<3小时(Microsoft); 单次agent突发2-25秒; 密码喷洒约1次/秒
+
+[2026-11-24 01:31:21] HINT by case-research
+  反制启示: 失陷多因基础卫生缺失(默认口令/暴露接口/未打补丁), 非0day; 日志集中外发可反制痕迹擦除
+
+[2026-11-24 01:31:22] INTENT DECLARED i001 by dispatcher.bootstrap
+  from: origin
+  bootstrap
+
+[2026-11-24 01:31:35] INTENT CONCLUDED i001 by workbuddy-local
+  from: origin
+  produced: f001
+  靶场三级服务启动(127.0.0.2:9001->.3:9002->.4:8080), 入口连通=OK; 边界护栏正向ALLOW(exit0)/反向DENY(exit2)=PASS, 仅放行回环, 公网含中国IP拒绝
+
+[2026-11-24 01:31:35] INTENT DECLARED i002 by workbuddy-local
+  from: f001
+  侦察探活+关键词映射(对齐真实案例暴露面)
+
+[2026-11-24 01:31:35] INTENT DECLARED i003 by workbuddy-local
+  from: f001
+  目录穿越CWE-22凭证外带(对齐韩国银行案凭证窃取)
+
+[2026-11-24 01:31:35] INTENT DECLARED i004 by workbuddy-local
+  from: f001
+  擦除攻击日志痕迹(对齐真实案例anti-forensics)
+
+[2026-11-24 01:31:35] INTENT DECLARED i005 by workbuddy-local
+  from: f001
+  关停靶场服务(用完即关)
+
+[2026-11-24 01:31:36] INTENT CONCLUDED i002 by workbuddy-local
+  from: f001
+  produced: f002
+  经两级跳板对靶机探活 HTTP 200; 结合黑板Hint对齐真实案例暴露面(默认口令/暴露接口/未打补丁), 本靶场选目录穿越CWE-22作可复现入口
+
+[2026-11-24 01:31:37] INTENT CONCLUDED i003 by workbuddy-local
+  from: f001
+  produced: f003
+  经jump1->jump2->victim发起../secrets/credential.txt目录穿越, HTTP200, 外带凭证169字节->artifacts/loot_credential.txt(靶场假凭证无真实效力)
+
+[2026-11-24 01:31:38] INTENT CONCLUDED i004 by workbuddy-local
+  from: f001
+  produced: f004
+  擦除含../secrets特征日志行, 擦前快照->logs_before_wipe.json, 被删原文->wiped_rows.json, 擦后行数victim=5/j1=3/j2=5
+
+[2026-11-24 01:31:38] INTENT CONCLUDED i005 by workbuddy-local
+  from: f001
+  produced: f005
+  靶场三级服务进程全部terminate/kill, 8080/9001/9002端口释放, 无残留
+
+[2026-11-24 01:31:38] INTENT DECLARED i006 by workbuddy-local
+  from: f003, f004, f005
+  凭证已外带+日志已擦除+服务已关停, goal闭环; 全链事实写回黑板, 守护栏未碰公网
+
+[2026-11-24 01:31:38] PROJECT COMPLETED by workbuddy-local
+  via: i006 from f003, f004, f005

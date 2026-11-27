@@ -1,0 +1,2 @@
+FROM richardyoung/qwen2.5-7b-instruct-abliterated:latest
+PARAMETER num_ctx 32768

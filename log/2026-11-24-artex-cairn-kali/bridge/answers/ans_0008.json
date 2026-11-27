@@ -1,0 +1,13 @@
+{
+  "content": "首页返回 200，正文显示这是一个模拟靶场，并明确列出了可跟进链接 /notes.txt。按意图要求跟进该链接，用 WebFetch 读取其正文，确认是否构成信息泄露。仅回环地址。",
+  "tool_calls": [
+    {
+      "id": "call_follow_notes",
+      "type": "function",
+      "function": {
+        "name": "WebFetch",
+        "arguments": "{\"url\":\"http://127.0.0.1:18080/notes.txt\"}"
+      }
+    }
+  ]
+}
