@@ -1,0 +1,71 @@
+{
+  "time": "2026-11-27T07:49:42.252043+00:00",
+  "all_pass": true,
+  "verdict": "PASS",
+  "checks": [
+    {
+      "item": "规矩层第10条存在: .codebuddy\\rules\\项目工作规则.md",
+      "pass": true
+    },
+    {
+      "item": "规矩层第10条存在: .workbuddy\\rules\\项目工作规则.md",
+      "pass": true
+    },
+    {
+      "item": "两处规矩第10条逐字一致（不打架）",
+      "pass": true
+    },
+    {
+      "item": "第10条语义点: 外部故障重派",
+      "pass": true
+    },
+    {
+      "item": "第10条语义点: 预算耗尽断点续",
+      "pass": true
+    },
+    {
+      "item": "第10条语义点: exhausted 不算失败",
+      "pass": true
+    },
+    {
+      "item": "第10条语义点: 跑完没成禁原样重派",
+      "pass": true
+    },
+    {
+      "item": "第10条语义点: 同处卡住换方向",
+      "pass": true
+    },
+    {
+      "item": "第10条语义点: 退避翻倍封顶",
+      "pass": true
+    },
+    {
+      "item": "第10条语义点: 失败落盘checkpoint",
+      "pass": true
+    },
+    {
+      "item": "第10条语义点: 绝对截止时间",
+      "pass": true
+    },
+    {
+      "item": "第10条语义点: 次数仅最后保险",
+      "pass": true
+    },
+    {
+      "item": "用户级记忆指向规矩层第10条",
+      "pass": true
+    },
+    {
+      "item": "项目级记忆指向规矩层第10条",
+      "pass": true
+    },
+    {
+      "item": "用户级记忆已清除 attempt_budget.py 虚假声明",
+      "pass": true
+    },
+    {
+      "item": "用户级记忆不再残留旧'第4次直接拒绝'硬规则",
+      "pass": true
+    }
+  ]
+}

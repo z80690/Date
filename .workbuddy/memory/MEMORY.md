@@ -38,11 +38,18 @@
 - `.workbuddy/rules/项目协作公约.md`（六条）+ `项目工作规则.md`（八条）为 WorkBuddy 侧唯一权威全文。
 - 来源（`.codeartsdoer/rule/*.mdc`、项目根 `AGENTS`/`CLAUDE`）仅标注、非运行时依赖。
 
-## 嵌入式工具链位置（2026-11-27 实测定案）
+## 嵌入式工具链位置（E1/E2 · 2026-11-27 实测定案）
 
+- **规矩编号**：E1 = 开工体检门禁（脚本退出码 0 才往下走）；E2 = 工具路径铁律（PATH 查不到 ≠ 没装）。用户级 MEMORY.md 同步了一份，换工作区靠它兜底。
 - **别只查系统 PATH 就说"没装"**：工具装在项目外的 D 盘，常规抽屉里看不到。下"工具没有"结论前必须翻 `log/` 旧账 + 查项目外目录。
 - 工具位置：`D:/refs/velxio/tools/arduino-cli.exe`（版本 1.6.0）+ 芯片包 `arduino:avr 1.8.8`。项目外只读参考，不进 git。
 - 现成接线代码：`workspace/02_软件源码/workflow_base/adapters/velxio_adapter.py`（探测/编译归一）。
 - **开工一键体检**：`python workspace/06_开发工具/embedded/toolchain_preflight.py` → 退出码 0 = 编译/仿真/日志三项全过；非 0 停在原地修，不往下走。结果落 `log/embedded-preflight-latest.json`。
 - 仿真验证：`D:/refs/velxio/.venv/Scripts/python.exe verify_blink_mcp.py` → `VELXIO_MCP_BLINK: PASS`；内核单测 `vitest run src/__tests__/AVRSimulator.test.ts`（18/18）。
 - 实测范围：AVR/Uno 板 L4。ESP32/RISC-V/Docker 端到端本轮未跑，别冒充。
+
+## 试错与止损规矩（2026-11-27 立 · 权威在规矩层）
+
+- **唯一权威正文** = 规矩层第 10 条（`.codebuddy/rules/项目工作规则.md` 与 `.workbuddy/rules/项目工作规则.md` 两处逐字一致）。旧的"固定 3 次 / 40 分钟一刀切"已作废。
+- 要点：按失败类型分类处置（外部故障重派 / 预算耗尽断点续 / 跑完没成禁原样重派 / 同处卡住换方向）；退避翻倍封顶；失败落盘 checkpoint；绝对截止时间到点收尾写回；次数上限只是最后保险。
+- 机器判定：`.workbuddy/scripts/retry_policy_check.py`，exit 0 = 两处规矩一致且记忆层已对齐。
