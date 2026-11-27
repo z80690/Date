@@ -37,3 +37,12 @@
 
 - `.workbuddy/rules/项目协作公约.md`（六条）+ `项目工作规则.md`（八条）为 WorkBuddy 侧唯一权威全文。
 - 来源（`.codeartsdoer/rule/*.mdc`、项目根 `AGENTS`/`CLAUDE`）仅标注、非运行时依赖。
+
+## 嵌入式工具链位置（2026-11-27 实测定案）
+
+- **别只查系统 PATH 就说"没装"**：工具装在项目外的 D 盘，常规抽屉里看不到。下"工具没有"结论前必须翻 `log/` 旧账 + 查项目外目录。
+- 工具位置：`D:/refs/velxio/tools/arduino-cli.exe`（版本 1.6.0）+ 芯片包 `arduino:avr 1.8.8`。项目外只读参考，不进 git。
+- 现成接线代码：`workspace/02_软件源码/workflow_base/adapters/velxio_adapter.py`（探测/编译归一）。
+- **开工一键体检**：`python workspace/06_开发工具/embedded/toolchain_preflight.py` → 退出码 0 = 编译/仿真/日志三项全过；非 0 停在原地修，不往下走。结果落 `log/embedded-preflight-latest.json`。
+- 仿真验证：`D:/refs/velxio/.venv/Scripts/python.exe verify_blink_mcp.py` → `VELXIO_MCP_BLINK: PASS`；内核单测 `vitest run src/__tests__/AVRSimulator.test.ts`（18/18）。
+- 实测范围：AVR/Uno 板 L4。ESP32/RISC-V/Docker 端到端本轮未跑，别冒充。
