@@ -6,3 +6,6 @@ temp/*.mp4
 workspace/**/*.exe
 *.mp4
 *.exe
+
+# 嵌入式编译中间产物（固件 hex 从系统目录另存，build 全是 .o/.d 垃圾）
+workspace/06_开发工具/embedded/hello_world/build/
